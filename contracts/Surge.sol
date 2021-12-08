@@ -12,13 +12,15 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Surge is ERC721 {
+contract Surge is ERC721, ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     using Address for address;
+    using SafeMath for uint256;
     using Strings for uint256;
 
     /*----------------------------------------------*/
@@ -35,24 +37,37 @@ contract Surge is ERC721 {
     uint256 public totalGiftMints = 0;
 
     bool public saleIsActive = false;
-
+    string private baseURI;
 
     /*----------------------------------------------*/
     /*                  MODIFIERS                  */
     /*--------------------------------------------*/
-    modifier isSaleActive() {
+    modifier isSaleActive {
         require(saleIsActive, "Sale is currently not active");
         _;
     }
 
+    modifier maxMint(uint256 numOfToken){
+        require(
+            balanceOf(msg.sender) + numOfToken <= MAX_PER_USER,
+            "You can only mint 8 per wallet"
+        );
+        _;
+    }
+
     modifier isEnoughEth(uint256 numOfTokens) {
-        require(numOfTokens * TOKEN_PRICE == msg.value, 
+        require(SafeMath.mul(numOfTokens, TOKEN_PRICE) == msg.value, 
         "Incorrect ETH value");
         _;
     }
 
-    constructor() ERC721("Surge Women", "SURGE") {
-        console.log("Testing test deploy");
+ 
+    /**
+     * @dev it will not be ready to start sale upon deploy
+     */
+    constructor(string memory name, string memory symbol, string memory baseURI) ERC721(name, symbol) {
+        setBaseURI(baseURI);
+        console.log("Testing test deploy", name, symbol);
     }
 
 
@@ -62,33 +77,52 @@ contract Surge is ERC721 {
     //public minting
     function mint(uint256 numOfTokens) 
         external 
-        payable 
+        payable
         nonReentrant 
-        isSaleActive()
+        isSaleActive
+        maxMint(numOfTokens) 
         isEnoughEth(numOfTokens) {
-        /* TO DO: 
-          implement : 
-            - check if public sale has started
-            - check that there is tokens to mint left
-            - check that user does not have more than 8 tokens
-            ✓ check that they have enough money
-        */
         for(uint i=0; i< numOfTokens; i++) {
             uint256 newTokenId = _tokenIds.current() + 1;
+            require(newTokenId <= MAX_TOKENS, "No more available tokens to mint");
             _safeMint(msg.sender, newTokenId);
             _tokenIds.increment();
         }
     }
 
     //gift minting
-    function giftMint(uint256 numOfTokens) public onlyOwner {
-        //checks if there is enough reserved token for giftin left
-        require(_tokenIds.current() + 1 + numOfTokens <= MAX_RESERVED_TOKEN);
-        for(uint i=0; i< numOfTokens; i++) {
+    function giftMint(address [] calldata receivers) external nonReentrant onlyOwner {
+        uint totalReceivers = receivers.length;
+        for(uint i=0; i< totalReceivers; i++) {
+    
+            //checks if there is enough reserved token for gifting left
+            require(totalGiftMints <= MAX_RESERVED_TOKENS, "No more tokens for gifting");
             totalGiftMints++;
             uint256 newTokenId = _tokenIds.current() + 1;
-            _safeMint(msg.sender, newTokenId);
+            _safeMint(receivers[i], newTokenId);
             _tokenIds.increment();
             }
         }
+
+ /**************ADMIN BASE FUNCTIONS *************/ 
+    function _baseURI() internal view override(ERC721) returns(string memory) {
+        return baseURI;
+    }
+
+    function setBaseURI(string memory _URI) public onlyOwner {
+        baseURI = _URI;
+    }
+
+    function startSale() external onlyOwner {
+        saleIsActive = true;
+    }
+
+    function pauseSale() external onlyOwner {
+        saleIsActive = false;
+    }
+
+    function getSaleStatus() external view returns (bool) {
+        return saleIsActive;
+    }
+    
 }
