@@ -15,9 +15,9 @@ async function main() {
 
   // We get the contract to deploy
   const Surge = await hre.ethers.getContractFactory("Surge");
-  const surge = await Surge.deploy();
+  const surge = await Surge.deploy("Surge Women", "SURGE", "baseURI");
 
-  await surge.deployed();
+  await surge.deployed()
 
   console.log("Surge deployed to:", surge.address);
 }
