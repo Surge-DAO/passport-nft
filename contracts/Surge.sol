@@ -37,7 +37,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     uint256 public totalGiftMints = 0;
 
     bool public saleIsActive = false;
-
+    string private baseURI;
 
     /*----------------------------------------------*/
     /*                  MODIFIERS                  */
@@ -61,12 +61,12 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
         _;
     }
 
-
-
+ 
     /**
      * @dev it will not be ready to start sale upon deploy
      */
     constructor(string memory name, string memory symbol, string memory baseURI) ERC721(name, symbol) {
+        setBaseURI(baseURI);
         console.log("Testing test deploy", name, symbol);
     }
 
@@ -103,4 +103,15 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
             _tokenIds.increment();
             }
         }
+
+ /**************ADMIN BASE FUNCTIONS *************/ 
+    function _baseURI() internal view override(ERC721) returns(string memory) {
+        return baseURI;
+    }
+
+    function setBaseURI(string memory _URI) public onlyOwner {
+        baseURI = _URI;
+    }
+
+
 }
