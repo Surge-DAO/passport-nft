@@ -12,6 +12,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -50,15 +51,11 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
         require(
             balanceOf(msg.sender) + amountOfTokens <= MAX_PER_USER,
             "You can only mint" +  MAX_PER_USER  + "per wallet"
-        );
-        _;
-    }
+
 
     modifier isEnoughEth(uint256 amountOfTokens) {
         require(SafeMath.mul(amountOfTokens, TOKEN_PRICE) == msg.value, 
-        "Incorrect ETH value");
-        _;
-    }
+
 
  
     /**
@@ -81,7 +78,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
         isSaleActive
         maxMint(amountOfTokens) 
         isEnoughEth(amountOfTokens) {
-        for(uint i=0; i< amountOfTokens; i++) {
+        for(uint i=0; i < amountOfTokens; i++) {
             uint256 newTokenId = _tokenIds.current() + 1;
             require(newTokenId <= MAX_TOKENS, "No more available tokens to mint");
             _safeMint(msg.sender, newTokenId);
@@ -93,7 +90,6 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     function giftMint(address [] calldata receivers) external nonReentrant onlyOwner {
         uint totalReceivers = receivers.length;
         for(uint i=0; i < totalReceivers; i++) {
-    
             //checks if there is enough reserved token for gifting left
             require(totalGiftMints <= MAX_RESERVED_TOKENS, "No more tokens for gifting");
             totalGiftMints++;
@@ -121,5 +117,4 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     }
 
 
-   
 }
