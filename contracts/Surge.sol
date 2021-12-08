@@ -104,6 +104,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
             }
         }
 
+ /**************ADMIN BASE FUNCTIONS *************/ 
     function _baseURI() internal view override(ERC721) returns(string memory) {
         return baseURI;
     }
@@ -111,4 +112,19 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     function setBaseURI(string memory _URI) public onlyOwner {
         baseURI = _URI;
     }
+
+    function startSale() external onlyOwner {
+        saleIsActive = true;
+    }
+
+    function pauseSale() external onlyOwner {
+        saleIsActive = false;
+    }
+
+    function getSaleStatus() external view returns (bool) {
+        return saleIsActive;
+    }
+    
+
+   
 }
