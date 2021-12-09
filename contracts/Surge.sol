@@ -12,6 +12,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -19,6 +20,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Surge is ERC721, ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     using Address for address;
+    using SafeMath for uint256;
     using Strings for uint256;
 
     /*----------------------------------------------*/
@@ -48,7 +50,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     modifier maxMint(uint256 amountOfTokens){
         require(
             balanceOf(msg.sender) + amountOfTokens <= MAX_PER_USER,
-            "You can only mint 8 per wallet"
+             "You can only mint" +  MAX_PER_USER  + "per wallet"
         );
         _;
     }
@@ -58,7 +60,6 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
         "Incorrect ETH value");
         _;
     }
-
  
     /**
      * @dev it will not be ready to start sale upon deploy
@@ -80,7 +81,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
         isSaleActive
         maxMint(amountOfTokens) 
         isEnoughEth(amountOfTokens) {
-        for(uint i=0; i< amountOfTokens; i++) {
+        for(uint i=0; i < amountOfTokens; i++) {
             uint256 newTokenId = _tokenIds.current() + 1;
             require(newTokenId <= MAX_TOKENS, "No more available tokens to mint");
             _safeMint(msg.sender, newTokenId);
@@ -92,7 +93,6 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     function giftMint(address [] calldata receivers) external nonReentrant onlyOwner {
         uint totalReceivers = receivers.length;
         for(uint i=0; i < totalReceivers; i++) {
-    
             //checks if there is enough reserved token for gifting left
             require(totalGiftMints <= MAX_RESERVED_TOKENS, "No more tokens for gifting");
             totalGiftMints++;
@@ -118,5 +118,5 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     function pauseSale() external onlyOwner {
         saleIsActive = false;
     }
-   
+
 }
