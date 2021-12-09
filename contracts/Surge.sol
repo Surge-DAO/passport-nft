@@ -50,13 +50,16 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     modifier maxMint(uint256 amountOfTokens){
         require(
             balanceOf(msg.sender) + amountOfTokens <= MAX_PER_USER,
-            "You can only mint" +  MAX_PER_USER  + "per wallet"
-
+             "You can only mint" +  MAX_PER_USER  + "per wallet"
+        );
+        _;
+    }
 
     modifier isEnoughEth(uint256 amountOfTokens) {
-        require(SafeMath.mul(amountOfTokens, TOKEN_PRICE) == msg.value, 
-
-
+        require(amountOfTokens * TOKEN_PRICE == msg.value, 
+        "Incorrect ETH value");
+        _;
+    }
  
     /**
      * @dev it will not be ready to start sale upon deploy
@@ -115,6 +118,5 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     function pauseSale() external onlyOwner {
         saleIsActive = false;
     }
-
 
 }
