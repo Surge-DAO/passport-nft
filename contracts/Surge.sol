@@ -28,15 +28,14 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     /*--------------------------------------------*/
     Counters.Counter private _tokenIds;
 
+    uint8 public constant MAX_PER_USER = 8;
+    uint8 public constant MAX_RESERVED_TOKENS = 200;
+    uint8 public totalGiftMints = 0;
+    bool public saleIsActive;
+
+    uint16 public constant MAX_TOKENS = 10000;
     uint256 public constant TOKEN_PRICE = 50000000000000000; //0.05ETH
-    uint256 public constant MAX_PER_USER = 8;
-    uint256 public constant MAX_TOKENS = 10000;
-    uint256 public constant MAX_RESERVED_TOKENS = 200;
-    string public baseTokenURI;
-
-    uint256 public totalGiftMints = 0;
-
-    bool public saleIsActive = false;
+    
     string private baseURI;
 
     /*----------------------------------------------*/
@@ -50,7 +49,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     modifier maxMint(uint256 amountOfTokens){
         require(
             balanceOf(msg.sender) + amountOfTokens <= MAX_PER_USER,
-             "You can only mint" +  MAX_PER_USER  + "per wallet"
+             "You already have maximum number of tokens allowed per wallet"
         );
         _;
     }
@@ -64,8 +63,8 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
     /**
      * @dev it will not be ready to start sale upon deploy
      */
-    constructor(string memory name, string memory symbol, string memory baseURI) ERC721(name, symbol) {
-        setBaseURI(baseURI);
+    constructor(string memory name, string memory symbol, string memory uri) ERC721(name, symbol) {
+        setBaseURI(uri);
         console.log("Testing test deploy", name, symbol);
     }
 
