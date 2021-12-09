@@ -119,7 +119,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
         saleIsActive = false;
     }
 
-    function test() returns{
+    function test() returns(){
 
     }
 
