@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "compile": "hardhat compile",
-    "test": "hardhat run scripts/sample-script.js"
+    "test": "hardhat run scripts/sample-script.js",
+    "solhint": "./node_modules/.bin/solhint -f table contracts/**/*.sol"
   },
   "keywords": [],
   "license": "ISC",

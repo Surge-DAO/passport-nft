@@ -107,8 +107,8 @@ contract Surge is ERC721, ReentrancyGuard, Ownable {
         return baseURI;
     }
 
-    function setBaseURI(string memory _URI) public onlyOwner {
-        baseURI = _URI;
+    function setBaseURI(string memory uri) public onlyOwner {
+        baseURI = uri;
     }
 
     function startSale() external onlyOwner {
