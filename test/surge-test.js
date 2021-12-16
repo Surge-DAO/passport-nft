@@ -71,4 +71,23 @@ describe("Surge", function () {
             expect(await surge.symbol()).to.equal(symbol);
         });
       });
+
+      describe("Base URI", function () {
+        it("Should allow only owner to change base URI", async function () {
+            let newURI = 'www.test.org';
+            
+            const setBaseURITx = await surge.connect(owner).setBaseURI(newURI);
+            await setBaseURITx.wait();
+            
+            expect(await surge.baseURI()).to.equal(newURI);
+        });
+
+        it("Should not allow any address to change base URI", async function () {
+            let newURI = 'www.test.org';
+
+            expect(surge.connect(addr1).setBaseURI(newURI)).to.be.revertedWith("Ownable: caller is not the owner");
+            
+            expect(await surge.baseURI()).to.equal(uri);
+        });
+      });
 });
