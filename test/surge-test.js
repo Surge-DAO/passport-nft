@@ -30,7 +30,7 @@ describe("Surge", function () {
         await surge.deployed();
       });
 
-      describe("Deployment", function () {
+    describe("Deployment", function () {
         it("Should set the right owner", async function () {
           expect(await surge.owner()).to.equal(owner.address);
         });
@@ -70,9 +70,9 @@ describe("Surge", function () {
         it("Should return the right name", async function () {
             expect(await surge.symbol()).to.equal(symbol);
         });
-      });
+    });
 
-      describe("Base URI", function () {
+    describe("Base URI", function () {
         it("Should allow only owner to change base URI", async function () {
             let newURI = 'www.test.org';
             
@@ -89,5 +89,38 @@ describe("Surge", function () {
             
             expect(await surge.baseURI()).to.equal(uri);
         });
-      });
+    });
+
+    describe("Start/Pause sale", function () {
+        it("Should allow only owner to start sale", async function () {
+            const startSaleTx = await surge.connect(owner).startSale();
+            await startSaleTx.wait();
+            
+            expect(await surge.saleIsActive()).to.equal(true);
+        });
+
+        it("Should not allow any address to start sale", async function () {
+            expect(surge.connect(addr1).startSale()).to.be.revertedWith("Ownable: caller is not the owner");
+            
+            expect(await surge.saleIsActive()).to.equal(false);
+        });
+
+        it("Should allow only owner to pause sale", async function () {
+            const startSaleTx = await surge.connect(owner).startSale();
+            await startSaleTx.wait();
+            
+            expect(await surge.saleIsActive()).to.equal(true);
+
+            const pauseSaleTx = await surge.connect(owner).pauseSale();
+            await pauseSaleTx.wait();
+            
+            expect(await surge.saleIsActive()).to.equal(false);
+        });
+
+        it("Should not allow any address to pause sale", async function () {
+            expect(surge.connect(addr1).pauseSale()).to.be.revertedWith("Ownable: caller is not the owner");
+            
+            expect(await surge.saleIsActive()).to.equal(false);
+        });
+    });
 });
