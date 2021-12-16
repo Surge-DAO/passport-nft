@@ -123,4 +123,13 @@ describe("Surge", function () {
             expect(await surge.saleIsActive()).to.equal(false);
         });
     });
+
+    describe("Mint", function () {
+        //TODO: tests
+
+    }); 
+
+    describe("Gift Mint", function () {
+        //TODO: tests
+    }); 
 });
