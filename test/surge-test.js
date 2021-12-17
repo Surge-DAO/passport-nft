@@ -17,6 +17,7 @@ describe("Surge", function () {
     let MAX_RESERVED_TOKENS = 200;
     let MAX_TOKENS = 10000;
     let TOKEN_PRICE = 50000000000000000n;
+    let decimals = 1000000000000000000;
     
     beforeEach(async function () {
         // Get the ContractFactory and Signers here.
@@ -125,8 +126,61 @@ describe("Surge", function () {
     });
 
     describe("Mint", function () {
-        //TODO: tests
+        it("Should not allow to mint tokens is sale is not active", async function () {
+            let amountOfTokens = 1;
 
+            expect(await surge.saleIsActive()).to.equal(false);
+            
+            expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith("Sale is currently not active");
+            
+            expect(await surge.balanceOf(addr1.address)).to.equal(0);
+        });
+
+        it("Should not allow to mint more than 8 tokens per wallet", async function () {
+            let amountOfTokens = MAX_PER_USER;
+            
+            const startSaleTx = await surge.connect(owner).startSale();
+            await startSaleTx.wait();   
+            expect(await surge.saleIsActive()).to.equal(true);
+
+            let price = (await surge.TOKEN_PRICE() * amountOfTokens) / decimals;
+
+            const mintTx = await surge.connect(addr1).mint(amountOfTokens, { value: ethers.utils.parseEther(price.toString())});
+            await mintTx.wait();
+                        
+            expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+
+            expect(surge.connect(addr1).mint(1)).to.be.revertedWith("You already have maximum number of tokens allowed per wallet");
+
+            expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+        });
+
+        it("Should not allow to mint a token if user has not enough eth", async function () {
+            let amountOfTokens = 1;
+
+            const startSaleTx = await surge.connect(owner).startSale();
+            await startSaleTx.wait();   
+            expect(await surge.saleIsActive()).to.equal(true);
+
+            expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith("Incorrect ETH value");
+
+            expect(await surge.balanceOf(addr1.address)).to.equal(0);
+        });
+
+        it("Should not allow user to mint a token", async function () {
+            let amountOfTokens = 1;
+
+            const startSaleTx = await surge.connect(owner).startSale();
+            await startSaleTx.wait();   
+            expect(await surge.saleIsActive()).to.equal(true);
+
+            let price = (await surge.TOKEN_PRICE() * amountOfTokens) / decimals;
+
+            const mintTx = await surge.connect(addr1).mint(amountOfTokens, { value: ethers.utils.parseEther(price.toString())});
+            await mintTx.wait();
+
+            expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+        });
     }); 
 
     describe("Gift Mint", function () {
