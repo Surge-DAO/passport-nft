@@ -184,6 +184,42 @@ describe("Surge", function () {
     }); 
 
     describe("Gift Mint", function () {
-        //TODO: tests
+        it("Should not allow any address to gift mint tokens", async function () {
+            let receivers = [addr1.address];
+
+            expect(surge.connect(addr1).giftMint(receivers)).to.be.revertedWith("Ownable: caller is not the owner");
+                        
+            expect(await surge.balanceOf(addr1.address)).to.equal(0);
+        });
+
+        it("Should allow owner to gift mint tokens", async function () {
+            let receivers = [addr1.address, addr2.address, addr3.address];
+
+            const mintTx = await surge.connect(owner).giftMint(receivers);
+            await mintTx.wait();
+                        
+            expect(await surge.balanceOf(addr1.address)).to.equal(1);
+            expect(await surge.balanceOf(addr2.address)).to.equal(1);
+            expect(await surge.balanceOf(addr3.address)).to.equal(1);
+        });
+
+        it("Should not allow to gift mint more than MAX_RESERVED_TOKENS", async function () {
+            //let receivers = [addr1.address, addr2.address, addr3.address];
+
+            let receivers = [];
+
+            for (var i = 0; i < MAX_RESERVED_TOKENS; i++) {
+                receivers.push(addr1.address);
+            }
+
+            const mintTx = await surge.connect(owner).giftMint(receivers);
+            await mintTx.wait();
+                        
+            expect(await surge.balanceOf(addr1.address)).to.equal(MAX_RESERVED_TOKENS);
+
+            expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith("No more tokens for gifting");
+
+            expect(await surge.balanceOf(addr1.address)).to.equal(MAX_RESERVED_TOKENS);
+        });
     }); 
 });
