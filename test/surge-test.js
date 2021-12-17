@@ -204,8 +204,6 @@ describe("Surge", function () {
         });
 
         it("Should not allow to gift mint more than MAX_RESERVED_TOKENS", async function () {
-            //let receivers = [addr1.address, addr2.address, addr3.address];
-
             let receivers = [];
 
             for (var i = 0; i < MAX_RESERVED_TOKENS; i++) {
