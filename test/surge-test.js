@@ -12,7 +12,7 @@ describe("Surge", function () {
     let addrs;
     let name = 'Surge';
     let symbol = 'SRG';
-    let uri = 'www.surge.org'
+    let uri = 'https://surgewomen.io';
     let MAX_PER_USER = 8;
     let MAX_RESERVED_TOKENS = 200;
     let MAX_TOKENS = 10000;
@@ -25,7 +25,7 @@ describe("Surge", function () {
         [owner, addr1, addr2, addr3, ...addrs] = await ethers.getSigners();
         
         // To deploy our contract, we just have to call Token.deploy() and await
-        // for it to be deployed(), which happens onces its transaction has been
+        // for it to be deployed(), which happens once its transaction has been
         // mined.
         surge = await Surge.deploy(name, symbol, uri);
         await surge.deployed();
