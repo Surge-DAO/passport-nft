@@ -15,7 +15,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-import "@openzeppelin/contracts/secURIty/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
@@ -47,16 +47,16 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         _;
     }
 
-    modifier maxMint(uint256 amountOfTokens){
+    modifier maxMint(uint256 _amountOfTokens){
         require(
-            balanceOf(msg.sender) + amountOfTokens <= MAX_PER_USER,
+            balanceOf(msg.sender) + _amountOfTokens <= MAX_PER_USER,
              "You already have maximum number of tokens allowed per wallet"
         );
         _;
     }
 
-    modifier isEnoughEth(uint256 amountOfTokens) {
-        require(amountOfTokens * TOKEN_PRICE == msg.value, 
+    modifier isEnoughEth(uint256 _amountOfTokens) {
+        require(_amountOfTokens * TOKEN_PRICE == msg.value, 
         "Incorrect ETH value");
         _;
     }
@@ -64,9 +64,9 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     /**
      * @dev it will not be ready to start sale upon deploy
      */
-    constructor(string memory name, string memory symbol, string memory baseURI) ERC721(name, symbol) {
-        setBaseURI(baseURI);
-        console.log("Testing test deploy", name, symbol);
+    constructor(string memory _name, string memory _symbol, string memory _baseURI) ERC721(_name, _symbol) {
+        setBaseURI(_baseURI);
+        console.log("Testing test deploy", _name, _symbol);
     }
 
 
@@ -74,14 +74,14 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     /*                  FUNCTIONS                  */
     /*--------------------------------------------*/
     //public minting
-    function mint(uint256 amountOfTokens) 
+    function mint(uint256 _amountOfTokens) 
         external 
         payable
         nonReentrant 
         isSaleActive
-        maxMint(amountOfTokens) 
-        isEnoughEth(amountOfTokens) {
-        for(uint i=0; i < amountOfTokens; i++) {
+        maxMint(_amountOfTokens) 
+        isEnoughEth(_amountOfTokens) {
+        for(uint i=0; i < _amountOfTokens; i++) {
             uint256 newTokenId = _tokenIds.current() + 1;
             require(newTokenId <= MAX_TOKENS, "No more available tokens to mint");
             _safeMint(msg.sender, newTokenId);
@@ -90,22 +90,22 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     }
 
     //gift minting
-    function giftMint(address [] calldata receivers) external nonReentrant onlyOwner {
-        uint totalReceivers = receivers.length;
+    function giftMint(address [] calldata _receivers) external nonReentrant onlyOwner {
+        uint totalReceivers = _receivers.length;
         for(uint i=0; i < totalReceivers; i++) {
             //checks if there is enough reserved token for gifting left
             require(totalGiftMints <= MAX_RESERVED_TOKENS, "No more tokens for gifting");
-            require(balanceOf(receivers[i]) + 1 <= MAX_PER_USER, "Wallet has Max number of tokens allowed");
+            require(balanceOf(_receivers[i]) + 1 <= MAX_PER_USER, "Wallet has Max number of tokens allowed");
             totalGiftMints++;
             uint256 newTokenId = _tokenIds.current() + 1;
-            _safeMint(receivers[i], newTokenId);
+            _safeMint(_receivers[i], newTokenId);
             _tokenIds.increment();
             }
         }
 
 
-    //getter for tokens owened by a user
-    function getOwnerTokens(address _owner) external view returns (uint256[] memory) {
+    //getter for tokens owend by a user
+    function getTokens(address _owner) external view returns (uint256[] memory) {
         uint256 totalCount = balanceOf(_owner);
         uint256[] memory tokenIds = new uint256[](totalCount);
 
@@ -118,20 +118,20 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
 
    //ERC721 Enumerable
      function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
+        address _from,
+        address _to,
+        uint256 _tokenId
     ) internal virtual override(ERC721, ERC721Enumerable) {
-        super._beforeTokenTransfer(from, to, tokenId);
+        super._beforeTokenTransfer(_from, _to, _tokenId);
     }
 
-    function supportsInterface(bytes4 interfaceId)
+    function supportsInterface(bytes4 _interfaceId)
         public
         view
         override(ERC721, ERC721Enumerable)
         returns (bool)
     {
-        return super.supportsInterface(interfaceId);
+        return super.supportsInterface(_interfaceId);
     }
 
 
@@ -140,8 +140,8 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         return baseTokenURI;
     }
 
-    function setBaseURI(string memory baseURI) public onlyOwner {
-        baseTokenURI = baseURI;
+    function setBaseURI(string memory _baseURI) public onlyOwner {
+        baseTokenURI = _baseURI;
     }
 
     function startSale() external onlyOwner {
