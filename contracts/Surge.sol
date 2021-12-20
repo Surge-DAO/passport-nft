@@ -8,6 +8,7 @@ pragma solidity ^0.8.0;
 // ▄█ █▄█ █▀▄ █▄█ ██▄   ▀▄▀▄▀ █▄█ █░▀░█ ██▄ █░▀█
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
@@ -18,7 +19,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/secURIty/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
+contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable, IERC2981 {
     using Counters for Counters.Counter;
     using Address for address;
     using SafeMath for uint256;
@@ -128,12 +129,29 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, ERC721Enumerable)
+        override(ERC721, ERC721Enumerable, IERC165)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
     }
 
+    /**
+     * @dev Called with the sale price to determine how much royalty is owed and to whom.
+     * @param tokenId - the NFT asset queried for royalty information
+     * @param salePrice - the sale price of the NFT asset specified by `tokenId`
+     * @return receiver - address of who should be sent the royalty payment
+     * @return royaltyAmount - the royalty payment amount for `salePrice`
+     */
+        function royaltyInfo(uint256 tokenId, uint256 salePrice)
+        external
+        view
+        override
+        returns (address receiver, uint256 royaltyAmount)
+    {
+        require(_exists(tokenId), "Nonexistent token");
+
+        //TO DO: implement the logic to determine the receiver and amount of the royalty
+    }  
 
  /**************ADMIN BASE FUNCTIONS *************/ 
     function _baseURI() internal view override(ERC721) returns(string memory) {
