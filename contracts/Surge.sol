@@ -33,17 +33,27 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     uint8 public constant MAX_RESERVED_TOKENS = 200;
     uint8 public totalGiftMints = 0;
     bool public saleIsActive;
+    bool public presaleIsActive;
 
     uint16 public constant MAX_TOKENS = 10000;
     uint256 public constant TOKEN_PRICE = 50000000000000000; //0.05ETH
     
     string private baseTokenURI;
 
+    mapping(address => bool) internal _presaleApproved;
+    mapping(address => bool) internal _presaleMinted;
+
+
     /*----------------------------------------------*/
     /*                  MODIFIERS                  */
     /*--------------------------------------------*/
     modifier isSaleActive {
         require(saleIsActive, "Sale is currently not active");
+        _;
+    }
+
+    modifier isPresaleActive {
+        require(presaleIsActive, "Presale is currently not active");
         _;
     }
 
@@ -61,6 +71,15 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         _;
     }
  
+    modifier isInPresale(){
+        require(_presaleApproved[msg.sender], "You are not in the pre-sale");
+        _;
+    }
+
+    modifier hasMintedPresale(){
+        require(_presaleMinted[msg.sender], "You have minted your tokens yet");
+        _;
+    }
     /**
      * @dev it will not be ready to start sale upon deploy
      */
@@ -87,6 +106,29 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
             _safeMint(msg.sender, newTokenId);
             _tokenIds.increment();
         }
+    }
+
+    function addToPresale(address _wallet) external onlyOwner{
+        require(!_presaleApproved[_wallet], "Wallet is already in the presale");
+        _presaleApproved[_wallet] = true;
+    }
+
+    function presaleMint(uint256 _amountOfTokens) 
+        external 
+        payable
+        nonReentrant 
+        isPresaleActive
+        maxMint(_amountOfTokens) 
+        isEnoughEth(_amountOfTokens) 
+        isInPresale 
+        hasMintedPresale {
+        for(uint i=0; i < _amountOfTokens; i++) {
+            uint256 newTokenId = _tokenIds.current() + 1;
+            require(newTokenId <= MAX_TOKENS, "No more available tokens to mint");
+            _safeMint(msg.sender, newTokenId);
+            _tokenIds.increment();
+        }
+        _presaleMinted[msg.sender] = true;
     }
 
     //gift minting
@@ -140,8 +182,8 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         return baseTokenURI;
     }
 
-    function setBaseURI(string memory _baseURI) public onlyOwner {
-        baseTokenURI = _baseURI;
+    function setBaseURI(string memory _baseTokenURI) public onlyOwner {
+        baseTokenURI = _baseTokenURI;
     }
 
     function startSale() external onlyOwner {
@@ -150,6 +192,14 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
 
     function pauseSale() external onlyOwner {
         saleIsActive = false;
+    }
+
+    function startPresale() external onlyOwner {
+        presaleIsActive = true;
+    }
+
+    function pausePresale() external onlyOwner {
+        presaleIsActive = false;
     }
 
     function getTokensMinted() public view returns(uint256) {
