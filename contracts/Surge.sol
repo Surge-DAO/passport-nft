@@ -108,11 +108,13 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         }
     }
 
+    //add a waller to give them access to the presale
     function addToPresale(address _wallet) external onlyOwner{
         require(!_presaleApproved[_wallet], "Wallet is already in the presale");
         _presaleApproved[_wallet] = true;
     }
 
+    //presale minting
     function presaleMint(uint256 _amountOfTokens) 
         external 
         payable
