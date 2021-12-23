@@ -50,7 +50,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     modifier maxMint(uint256 amountOfTokens){
         require(
             balanceOf(msg.sender) + amountOfTokens <= MAX_PER_USER,
-             "You already have maximum number of tokens allowed per wallet"
+             "You have the maximum number of tokens allowed per wallet"
         );
         _;
     }
