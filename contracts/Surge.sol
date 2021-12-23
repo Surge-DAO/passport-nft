@@ -104,7 +104,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         }
 
 
-    //getter for tokens owend by a user
+    //getter for tokens owned by a user
     function getTokens(address _owner) external view returns (uint256[] memory) {
         uint256 totalCount = balanceOf(_owner);
         uint256[] memory tokenIds = new uint256[](totalCount);
