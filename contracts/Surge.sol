@@ -77,7 +77,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     }
 
     modifier hasMintedPresale(){
-        require(_presaleMinted[msg.sender], "You have minted your tokens yet");
+        require(_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
         _;
     }
     /**
@@ -100,15 +100,15 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         isSaleActive
         maxMint(_amountOfTokens) 
         isEnoughEth(_amountOfTokens) {
-        for(uint i=0; i < _amountOfTokens; i++) {
-            uint256 newTokenId = _tokenIds.current() + 1;
-            require(newTokenId <= MAX_TOKENS, "No more available tokens to mint");
-            _safeMint(msg.sender, newTokenId);
-            _tokenIds.increment();
-        }
+            for(uint i=0; i < _amountOfTokens; i++) {
+                uint256 newTokenId = _tokenIds.current() + 1;
+                require(newTokenId <= MAX_TOKENS, "No available tokens to mint");
+                _safeMint(msg.sender, newTokenId);
+                _tokenIds.increment();
+            }
     }
 
-    //add a waller to give them access to the presale
+    //add a wallet to give them access to the presale
     function addToPresale(address _wallet) external onlyOwner{
         require(!_presaleApproved[_wallet], "Wallet is already in the presale");
         _presaleApproved[_wallet] = true;
@@ -124,13 +124,13 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         isEnoughEth(_amountOfTokens) 
         isInPresale 
         hasMintedPresale {
-        for(uint i=0; i < _amountOfTokens; i++) {
-            uint256 newTokenId = _tokenIds.current() + 1;
-            require(newTokenId <= MAX_TOKENS, "No more available tokens to mint");
-            _safeMint(msg.sender, newTokenId);
-            _tokenIds.increment();
-        }
-        _presaleMinted[msg.sender] = true;
+            for(uint i=0; i < _amountOfTokens; i++) {
+                uint256 newTokenId = _tokenIds.current() + 1;
+                require(newTokenId <= MAX_TOKENS, "No available tokens to mint");
+                _safeMint(msg.sender, newTokenId);
+                _tokenIds.increment();
+            }
+            _presaleMinted[msg.sender] = true;
     }
 
     //gift minting
@@ -138,8 +138,8 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         uint totalReceivers = _receivers.length;
         for(uint i=0; i < totalReceivers; i++) {
             //checks if there is enough reserved token for gifting left
-            require(totalGiftMints <= MAX_RESERVED_TOKENS, "No more tokens for gifting");
-            require(balanceOf(_receivers[i]) + 1 <= MAX_PER_USER, "Wallet has Max number of tokens allowed");
+            require(totalGiftMints <= MAX_RESERVED_TOKENS, "No available tokens for gifting");
+            require(balanceOf(_receivers[i]) + 1 <= MAX_PER_USER, "Wallet has max number of tokens allowed");
             totalGiftMints++;
             uint256 newTokenId = _tokenIds.current() + 1;
             _safeMint(_receivers[i], newTokenId);
@@ -209,7 +209,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     }
 
    function withdrawAll() public payable onlyOwner {
-    require(payable(msg.sender).send(address(this).balance));
-  }
+       require(payable(msg.sender).send(address(this).balance));
+   }
 
 }
