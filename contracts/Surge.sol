@@ -49,7 +49,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
 
     modifier maxMint(uint256 _amountOfTokens){
         require(
-            balanceOf(msg.sender) + amountOfTokens <= MAX_PER_USER,
+            balanceOf(msg.sender) + _amountOfTokens <= MAX_PER_USER,
              "You have the maximum number of tokens allowed per wallet"
         );
         _;
@@ -136,12 +136,12 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
 
 
  /**************ADMIN BASE FUNCTIONS *************/ 
-    function _baseURI() internal view override(ERC721) returns(string memory) {
-        return baseTokenURI;
+    function _setBaseURI(string memory baseURI) internal virtual {
+        baseTokenURI = baseURI;
     }
 
     function setBaseURI(string memory _baseURI) public onlyOwner {
-        baseTokenURI = _baseURI;
+        _setBaseURI(_baseURI);
     }
 
     function startSale() external onlyOwner {
