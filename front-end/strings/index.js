@@ -1,0 +1,3 @@
+const STRINGS = {
+  hello: 'hello'
+}
