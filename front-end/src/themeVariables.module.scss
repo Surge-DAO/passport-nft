@@ -1,8 +1,10 @@
 // Colors
 $primary: #f86464;
 $secondary:  #fce7e7;
+$third: #F7C2CA;
 $dark: #1f1f1f;
 $light: #fefefe;
+$white: #ffffff;
 
 // Fonts
 $primaryFont: 'Mattone';
@@ -23,8 +25,10 @@ $extraBoldWeight: 800;
 :export {
     primaryColor: $primary;
     secondaryColor: $secondary;
+    thirdColor: $third;
     darkColor: $dark;
     lightColor: $light;
+    whiteColor: $white;
     primaryFont: $primaryFont;
     secondaryFont: $secondaryFont;
     h1: $h1;
