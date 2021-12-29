@@ -1,3 +1,0 @@
-const STRINGS = {
-  hello: 'hello'
-}
