@@ -76,8 +76,8 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         _;
     }
 
-    modifier hasMintedPresale(){
-        require(_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
+    modifier hasMintedMaxPresale(){
+        require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
         _;
     }
     /**
@@ -123,7 +123,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         maxMint(_amountOfTokens) 
         isEnoughEth(_amountOfTokens) 
         isInPresale 
-        hasMintedPresale {
+        hasMintedMaxPresale {
             for(uint i=0; i < _amountOfTokens; i++) {
                 uint256 newTokenId = _tokenIds.current() + 1;
                 require(newTokenId <= MAX_TOKENS, "No available tokens to mint");
