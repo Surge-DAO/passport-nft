@@ -108,7 +108,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
             }
     }
 
-    //add a wallet to give them access to the presale
+   //add a wallet to give them access to the presale
     function addToPresale(address _wallet) external onlyOwner{
         require(!_presaleApproved[_wallet], "Wallet is already in the presale");
         _presaleApproved[_wallet] = true;
@@ -150,7 +150,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         }
 
 
-    //getter for tokens owend by a user
+    //getter for tokens owned by a user
     function getTokens(address _owner) external view returns (uint256[] memory) {
         uint256 totalCount = balanceOf(_owner);
         uint256[] memory tokenIds = new uint256[](totalCount);
@@ -210,8 +210,8 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         return _tokenIds.current() + 1;
     }
 
-   function withdrawAll() public payable onlyOwner {
-       require(payable(msg.sender).send(address(this).balance));
-   }
+    function withdrawAll() public payable onlyOwner {
+         require(payable(msg.sender).send(address(this).balance));
+     }
 
 }

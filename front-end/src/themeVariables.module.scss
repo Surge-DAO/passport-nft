@@ -1,0 +1,41 @@
+// Colors
+$primary: #f86464;
+$secondary:  #fce7e7;
+$third: #F7C2CA;
+$dark: #1f1f1f;
+$darkGray: #2B2B2B;
+$light: #fefefe;
+$white: #ffffff;
+
+// Fonts
+$primaryFont: 'Mattone';
+$secondaryFont: 'Inter';
+
+// Font Size
+$h1: '48px';
+$title: '40px';
+$secondaryTitle: '24px';
+$btnText: '16px';
+$paragraph: '18px';
+
+// Font Weights
+$normalWeigth: 100;
+$boldWeight: 700;
+$extraBoldWeight: 800;
+
+:export {
+    primaryColor: $primary;
+    secondaryColor: $secondary;
+    thirdColor: $third;
+    darkColor: $dark;
+    darkGrayColor: $darkGray;
+    lightColor: $light;
+    whiteColor: $white;
+    primaryFont: $primaryFont;
+    secondaryFont: $secondaryFont;
+    h1: $h1;
+    title: $title;
+    secondaryTitle: $secondaryTitle;
+    btnText: $btnText;
+    paragraph: $paragraph
+};
