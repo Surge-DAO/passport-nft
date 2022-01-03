@@ -163,6 +163,51 @@ describe("Surge", function () {
         });
     });
 
+    describe("Presale whitelisting", function () {
+        it("Should allow only owner to add address to presale", async function () {
+            const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
+            await addToPresaleTx.wait();
+        });
+
+        it("Should not allow to add address to presale twice", async function () {
+            const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
+            await addToPresaleTx.wait();
+
+            expect(surge.connect(owner).addToPresale(addr1.address)).to.be.revertedWith("Wallet is already in the presale");
+        });
+
+        it("Should not allow any address to add address to presale", async function () {
+            expect(surge.connect(addr1).addToPresale(addr1.address)).to.be.revertedWith("Ownable: caller is not the owner");
+        });
+    });
+
+    describe("Get Tokens", function () {
+        it("Should allow to get tokens owned by given account before minting", async function () {
+            const getTokensTx = await surge.connect(owner).getTokens(owner.address);
+            expect(getTokensTx.length).to.equal(0);
+        });
+
+        it("Should allow to get tokens owned by given account after minting", async function () {
+            let receivers = [addr1.address, addr1.address];
+
+            const mintTx = await surge.connect(owner).giftMint(receivers);
+            await mintTx.wait();
+                        
+            expect(await surge.balanceOf(addr1.address)).to.equal(2);
+            
+            var getTokensTx = await surge.connect(owner).getTokens(addr1.address);
+            const result = Object.values(getTokensTx);
+            result.forEach((element, index) => result[index] = element.toNumber());
+            
+            expect(JSON.stringify(result)).to.equal(JSON.stringify([1,2]));
+        });
+
+        it("Should allow to get tokens owned by given account from a different account", async function () {
+            const getTokensTx = await surge.connect(addr1).getTokens(owner.address);
+            expect(getTokensTx.length).to.equal(0);
+        });
+    });
+
     describe("Mint", function () {
         it("Should not allow to mint tokens is sale is not active", async function () {
             let amountOfTokens = 1;
