@@ -151,7 +151,7 @@ describe("Surge", function () {
                         
             expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
 
-            expect(surge.connect(addr1).mint(1)).to.be.revertedWith("You have the maximum number of tokens allowed per wallet");
+            expect(surge.connect(addr1).mint(1)).to.be.revertedWith("You already have maximum number of tokens allowed per wallet");
 
             expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
         });
