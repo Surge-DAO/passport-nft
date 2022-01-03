@@ -266,6 +266,17 @@ describe("Surge", function () {
         });
     }); 
 
+    describe("Withdraw", function () {
+        it("Should allow only owner to withdraw", async function () {
+            const withdrawAllTx = await surge.connect(owner).withdrawAll();
+            await withdrawAllTx.wait();
+        });
+
+        it("Should not allow any address to withdraw", async function () {
+            expect(surge.connect(addr1).withdrawAll()).to.be.revertedWith("Ownable: caller is not the owner");
+        });
+    });
+
     describe("Gift Mint", function () {
         it("Should not allow any address to gift mint tokens", async function () {
             let receivers = [addr1.address];
@@ -318,5 +329,5 @@ describe("Surge", function () {
 
             expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith("No available tokens for gifting");
         });
-    }); 
+    });
 });
