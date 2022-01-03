@@ -60,9 +60,9 @@ describe("Surge", function () {
             expect(await surge.TOKEN_PRICE()).to.equal(TOKEN_PRICE);
         });
 
-        // it("Should return the right baseTokenUri", async function () {
-        //     expect(await surge.setBaseURI()).to.equal(uri);
-        // });
+        it("Should return the right baseTokenUri", async function () {
+            expect(await surge.baseTokenURI()).to.equal(uri);
+        });
 
         it("Should return the right name", async function () {
             expect(await surge.name()).to.equal(name);
