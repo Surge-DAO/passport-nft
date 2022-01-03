@@ -53,6 +53,10 @@ describe("Surge", function () {
             expect(await surge.saleIsActive()).to.equal(false);
         });
 
+        it("Should set presaleIsActive as false", async function () {
+            expect(await surge.presaleIsActive()).to.equal(false);
+        });
+
         it("Should return the right MAX_TOKENS", async function () {
             expect(await surge.MAX_TOKENS()).to.equal(MAX_TOKENS);
         });
@@ -123,6 +127,39 @@ describe("Surge", function () {
             expect(surge.connect(addr1).pauseSale()).to.be.revertedWith("Ownable: caller is not the owner");
             
             expect(await surge.saleIsActive()).to.equal(false);
+        });
+    });
+
+    describe("Start/Pause presale", function () {
+        it("Should allow only owner to start presale", async function () {
+            const startPresaleTx = await surge.connect(owner).startPresale();
+            await startPresaleTx.wait();
+            
+            expect(await surge.presaleIsActive()).to.equal(true);
+        });
+
+        it("Should not allow any address to start presale", async function () {
+            expect(surge.connect(addr1).startPresale()).to.be.revertedWith("Ownable: caller is not the owner");
+            
+            expect(await surge.presaleIsActive()).to.equal(false);
+        });
+
+        it("Should allow only owner to pause presale", async function () {
+            const startPresaleTx = await surge.connect(owner).startPresale();
+            await startPresaleTx.wait();
+            
+            expect(await surge.presaleIsActive()).to.equal(true);
+
+            const pausePresaleTx = await surge.connect(owner).pausePresale();
+            await pausePresaleTx.wait();
+            
+            expect(await surge.presaleIsActive()).to.equal(false);
+        });
+
+        it("Should not allow any address to pause presale", async function () {
+            expect(surge.connect(addr1).pausePresale()).to.be.revertedWith("Ownable: caller is not the owner");
+            
+            expect(await surge.presaleIsActive()).to.equal(false);
         });
     });
 
