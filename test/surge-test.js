@@ -1,5 +1,6 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+var crypto = require('crypto');
 
 describe("Surge", function () {
 
@@ -73,25 +74,24 @@ describe("Surge", function () {
         });
     });
 
-    //TO DO: Needs to get fixed
-    // describe("Base URI", function () {
-    //     it("Should allow only owner to change base URI", async function () {
-    //         let newURI = 'www.test.org';
+    describe("Base URI", function () {
+        it("Should allow only owner to change base URI", async function () {
+            let newURI = 'www.test.org';
             
-    //         const setBaseURITx = await surge.connect(owner).setBaseURI(newURI);
-    //         await setBaseURITx.wait();
+            const setBaseURITx = await surge.connect(owner).setBaseURI(newURI);
+            await setBaseURITx.wait();
             
-    //         expect(await surge.base()).to.equal(newURI);
-    //     });
+            expect(await surge.baseTokenURI()).to.equal(newURI);
+        });
 
-    //     it("Should not allow any address to change base URI", async function () {
-    //         let newURI = 'www.test.org';
+        it("Should not allow any address to change base URI", async function () {
+            let newURI = 'www.test.org';
 
-    //         expect(surge.connect(addr1).setBaseURI(newURI)).to.be.revertedWith("Ownable: caller is not the owner");
+            expect(surge.connect(addr1).setBaseURI(newURI)).to.be.revertedWith("Ownable: caller is not the owner");
             
-    //         expect(await surge.baseTokenUri()).to.equal(uri);
-    //     });
-    // });
+            expect(await surge.baseTokenURI()).to.equal(uri);
+        });
+    });
 
     describe("Start/Pause sale", function () {
         it("Should allow only owner to start sale", async function () {
@@ -204,22 +204,37 @@ describe("Surge", function () {
             expect(await surge.balanceOf(addr3.address)).to.equal(1);
         });
 
-        //TO DO: Needs to get fixed
-        // it("Should not allow to gift mint more than MAX_RESERVED_TOKENS", async function () {
-        //     let receivers = [];
+        it("Should not allow to gift mint more than 5 tokens per wallet", async function () {
+            let receivers = [];
 
-        //     for (var i = 0; i < MAX_RESERVED_TOKENS; i++) {
-        //         receivers.push(addr1.address);
-        //     }
+            for (var i = 0; i < MAX_PER_USER; i++) {
+                receivers.push(addr1.address);
+            }
 
-        //     const mintTx = await surge.connect(owner).giftMint(receivers);
-        //     await mintTx.wait();
-                        
-            // expect(await surge.balanceOf(addr1.address)).to.equal(MAX_RESERVED_TOKENS);
+            const mintTx = await surge.connect(owner).giftMint(receivers);
+            await mintTx.wait();
 
-            // expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith("No available tokens for gifting");
+            expect(await surge.balanceOf(addr1.address)).to.equal(MAX_PER_USER);
 
-            // expect(await surge.balanceOf(addr1.address)).to.equal(MAX_RESERVED_TOKENS);
-        // });
+            expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith("Wallet has max number of tokens allowed");
+
+            expect(await surge.balanceOf(addr1.address)).to.equal(MAX_PER_USER);
+        });
+
+        it("Should not allow to gift mint more than MAX_RESERVED_TOKENS", async function () {
+            let receivers = [];
+
+            for (var i = 0; i < MAX_RESERVED_TOKENS; i++) {
+                var id = crypto.randomBytes(32).toString('hex');
+                var privateKey = "0x"+id;
+                var wallet = new ethers.Wallet(privateKey);
+                receivers.push(wallet.address);
+            }
+
+            const mintTx = await surge.connect(owner).giftMint(receivers);
+            await mintTx.wait();
+
+            expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith("No available tokens for gifting");
+        });
     }); 
 });
