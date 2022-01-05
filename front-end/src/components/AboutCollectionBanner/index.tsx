@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
   }
 })
 
- export default function AboutCollectionBanner () : JSX.Element {
+ export default function AboutCollectionBanner(): JSX.Element {
     return (
-      <div className={css(styles.container )}>
+      <div className={css(styles.container)}>
         <div>
           <h1 className={css(styles.title)}>{STRINGS.aboutTitle}</h1>
           <p className={css(styles.desc)} dangerouslySetInnerHTML={{ __html: STRINGS.aboutDescription.replace(/\n/g, '<br/>')}}></p>
