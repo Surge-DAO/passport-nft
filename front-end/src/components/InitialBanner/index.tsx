@@ -37,6 +37,6 @@ export default function InitialComponent(): JSX.Element {
           <p>{STRINGS.whatIs}<span><strong> {STRINGS.minting}</strong></span></p>
         </div>
       </div>
-    </div>    
+    </div>   
   )
 }

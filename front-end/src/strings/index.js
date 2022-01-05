@@ -10,7 +10,7 @@ export const STRINGS = {
   receive mentorships from experts in the industry,  get whitelisted for cool 
   NFT projects, as well as other perks and discounts within the crypto space.
   `,
-  aboutTitle: 'About the Collection',
+  aboutCollection: 'About the Collection',
   clickToMint: 'CLICK TO MINT',
   minting: 'minting?',
   whatIs: 'Wait, what is',

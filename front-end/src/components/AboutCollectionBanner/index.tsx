@@ -21,8 +21,7 @@ const styles = StyleSheet.create({
     width: '371px',
     padding : '40px 0'
   },
-  title:{
-    fontFamily: themeVariables.primaryFont,
+  title: {
     textAlign: 'left',
     padding: '60px 0 20px 0',
     '@media (max-width: 768px)': {
@@ -30,8 +29,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     } 
   },
-  desc:{
-    fontFamily: themeVariables.secondaryFont,
+  description: {
     fontSize: '18px',
     textAlign : 'left'
   }
@@ -41,8 +39,8 @@ const styles = StyleSheet.create({
     return (
       <div className={css(styles.container)}>
         <div>
-          <h1 className={css(styles.title)}>{STRINGS.aboutTitle}</h1>
-          <p className={css(styles.desc)} dangerouslySetInnerHTML={{ __html: STRINGS.aboutDescription.replace(/\n/g, '<br/>')}}></p>
+          <h2 className={css(styles.title)}>{STRINGS.aboutCollection}</h2>
+          <p className={css(styles.description)} dangerouslySetInnerHTML={{ __html: STRINGS.aboutDescription.replace(/\n/g, '<br/>')}}></p>
         </div>
         <img className={css(styles.image)} src={require('../../images/about-collection.png')} alt='collection'/>
       </div>  
