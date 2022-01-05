@@ -3,7 +3,6 @@ import { StyleSheet, css } from 'aphrodite';
 import gradientBackground from '../../images/gradient-background.png';
 import { STRINGS } from '../../strings';
 import Image from 'react-bootstrap/Image'
-import AboutCollection from '../AboutCollection';
 
 const styles = StyleSheet.create({
   banner: {
@@ -29,7 +28,6 @@ const styles = StyleSheet.create({
 
 export default function InitialComponent(): JSX.Element {
   return (
-    <div>
     <div className={css(styles.banner)}>
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
       <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" />
@@ -39,9 +37,6 @@ export default function InitialComponent(): JSX.Element {
           <p>{STRINGS.whatIs}<span><strong> {STRINGS.minting}</strong></span></p>
         </div>
       </div>
-    </div>
-      <AboutCollection/>
-    </div>
-    
+    </div>    
   )
 }
