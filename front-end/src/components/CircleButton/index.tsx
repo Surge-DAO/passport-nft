@@ -25,10 +25,10 @@ interface CircleParams {
 	link: string;
 }
 
-export default function CircleButton(circle: CircleParams) : JSX.Element {
+export default function CircleButton(params: CircleParams) : JSX.Element {
   return (
-    <a href={circle.link} className={css(styles.circle)}>
-        <img className={css(styles.img)} src={require(`../../images/${circle.img}`)} alt='social-icons'/>  
+    <a href={params.link} className={css(styles.circle)}>
+        <img className={css(styles.img)} src={require(`../../images/${params.img}`)} alt='social-icons'/>  
     </a>
   )
 }
