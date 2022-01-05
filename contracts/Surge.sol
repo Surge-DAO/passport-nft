@@ -38,7 +38,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     uint16 public constant MAX_TOKENS = 2500;
     uint256 public constant TOKEN_PRICE = 50000000000000000; //0.05ETH
     
-    string private baseTokenURI;
+    string public baseTokenURI;
 
     mapping(address => bool) internal _presaleApproved;
     mapping(address => bool) internal _presaleMinted;
