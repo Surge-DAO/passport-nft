@@ -9,6 +9,7 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 
 import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -20,7 +21,8 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable, IERC2981 {
+contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable, IERC2981,
+    PaymentSplitter {
     using Counters for Counters.Counter;
     using Address for address;
     using SafeMath for uint256;
@@ -50,6 +52,14 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable, IERC2981 {
     mapping(address => bool) internal _presaleApproved;
     mapping(address => bool) internal _presaleMinted;
 
+    /**
+     * @dev it will not be ready to start sale upon deploy
+     */
+    constructor(string memory _name, string memory _symbol, string memory _baseURI, address[] memory payees, uint256[] memory shares
+    ) ERC721(_name, _symbol) PaymentSplitter(payees, shares) {
+        setBaseURI(_baseURI);
+        console.log("Testing test deploy", _name, _symbol);
+    }
 
 
     /*----------------------------------------------*/
@@ -88,14 +98,6 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable, IERC2981 {
         require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
         _;
     }
-    /**
-     * @dev it will not be ready to start sale upon deploy
-     */
-    constructor(string memory _name, string memory _symbol, string memory _baseURI) ERC721(_name, _symbol) {
-        setBaseURI(_baseURI);
-        console.log("Testing test deploy", _name, _symbol);
-    }
-
 
     /*----------------------------------------------*/
     /*                  FUNCTIONS                  */
