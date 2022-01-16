@@ -1,7 +1,7 @@
-import React from 'react';
-import Button from 'react-bootstrap/Button';
-import { StyleSheet, css } from 'aphrodite';
-import themeVariables from '../../themeVariables.module.scss';
+import React from 'react'
+import Button from 'react-bootstrap/Button'
+import { StyleSheet, css } from 'aphrodite'
+import themeVariables from '../../themeVariables.module.scss'
 
 const styles = StyleSheet.create({
   button: {
@@ -14,23 +14,25 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     background: themeVariables.primaryColor,
-    color: themeVariables.lightColor
+    color: themeVariables.lightColor,
   },
   secondaryButton: {
     background: themeVariables.whiteColor,
     border: `2px solid ${themeVariables.thirdColor}`,
     boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.32)',
-    color: themeVariables.darkColor
-  }
+    color: themeVariables.darkColor,
+  },
 })
 
 interface Params {
-  callToAction: string;
-  primary?: boolean;
+  callToAction: string
+  primary?: boolean
 }
 
 export default function MainButton(params: Params): JSX.Element {
-  const style = params.primary ? css(styles.primaryButton) : css(styles.secondaryButton)
+  const style = params.primary
+    ? css(styles.primaryButton)
+    : css(styles.secondaryButton)
 
   return (
     <Button variant="primary" className={`${css(styles.button)} ${style}`}>
