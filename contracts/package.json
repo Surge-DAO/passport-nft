@@ -4,7 +4,7 @@
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
-    "solhint": "./node_modules/.bin/solhint -f table contracts/**/*.sol"
+    "solhint": "solhint -f table src/**/*.sol"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.3",
