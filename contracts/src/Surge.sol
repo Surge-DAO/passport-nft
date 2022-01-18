@@ -88,6 +88,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         string memory _baseTokenURI
     ) ERC721(_name, _symbol) {
         setBaseURI(_baseTokenURI);
+        //REMINDER: Delete Later
         console.log("Testing test deploy", _name, _symbol);
     }
 
