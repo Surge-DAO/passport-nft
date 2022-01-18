@@ -1,8 +1,8 @@
-import MainButton from '../MainButton'
-import { StyleSheet, css } from 'aphrodite'
-import gradientBackground from '../../images/gradient-background.png'
-import { STRINGS } from '../../strings'
-import Image from 'react-bootstrap/Image'
+import MainButton from '../MainButton';
+import { StyleSheet, css } from 'aphrodite';
+import gradientBackground from '../../images/gradient-background.png';
+import { STRINGS } from '../../strings';
+import Image from 'react-bootstrap/Image';
 
 const styles = StyleSheet.create({
   banner: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     paddingTop: '3%',
     paddingBottom: '3%',
   },
-})
+});
 
 export default function InitialComponent(): JSX.Element {
   return (
@@ -43,5 +43,5 @@ export default function InitialComponent(): JSX.Element {
         </div>
       </div>
     </div>
-  )
+  );
 }
