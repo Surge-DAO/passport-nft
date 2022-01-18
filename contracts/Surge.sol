@@ -21,7 +21,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable, IERC2981,
+contract Surge is ERC721, ReentrancyGuard, Ownable, IERC2981,
     PaymentSplitter {
     using Counters for Counters.Counter;
     using Address for address;
@@ -158,37 +158,6 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable, IERC2981,
             _tokenIds.increment();
             }
         }
-
-
-    //getter for tokens owned by a user
-    function getTokens(address _owner) external view returns (uint256[] memory) {
-        uint256 totalCount = balanceOf(_owner);
-        uint256[] memory tokenIds = new uint256[](totalCount);
-
-        for(uint i=0; i < totalCount; i++) {
-            tokenIds[i] = tokenOfOwnerByIndex(_owner, i);
-        }
-
-        return tokenIds;
-   }
-
-   //ERC721 Enumerable
-     function _beforeTokenTransfer(
-        address _from,
-        address _to,
-        uint256 _tokenId
-    ) internal virtual override(ERC721, ERC721Enumerable) {
-        super._beforeTokenTransfer(_from, _to, _tokenId);
-    }
-
-    function supportsInterface(bytes4 _interfaceId)
-        public
-        view
-        override(ERC721, ERC721Enumerable, IERC165)
-        returns (bool)
-    {
-        return super.supportsInterface(_interfaceId);
-    }
 
     //Sets salePrice at time of blockstamp, if marketplace takes longer to return royalties they will be different
     //and must be taken up with the marketplace
