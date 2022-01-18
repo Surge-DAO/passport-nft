@@ -90,9 +90,7 @@ describe('Surge', function () {
     it('Should not allow any address to change base URI', async function () {
       let newURI = 'www.test.org'
 
-      expect(surge.connect(addr1).setBaseURI(newURI)).to.be.revertedWith(
-        'Ownable: caller is not the owner',
-      )
+      expect(surge.connect(addr1).setBaseURI(newURI)).to.be.revertedWith('Ownable: caller is not the owner')
 
       expect(await surge.baseTokenURI()).to.equal(uri)
     })
@@ -107,9 +105,7 @@ describe('Surge', function () {
     })
 
     it('Should not allow any address to start sale', async function () {
-      expect(surge.connect(addr1).startSale()).to.be.revertedWith(
-        'Ownable: caller is not the owner',
-      )
+      expect(surge.connect(addr1).startSale()).to.be.revertedWith('Ownable: caller is not the owner')
 
       expect(await surge.saleIsActive()).to.equal(false)
     })
@@ -127,9 +123,7 @@ describe('Surge', function () {
     })
 
     it('Should not allow any address to pause sale', async function () {
-      expect(surge.connect(addr1).pauseSale()).to.be.revertedWith(
-        'Ownable: caller is not the owner',
-      )
+      expect(surge.connect(addr1).pauseSale()).to.be.revertedWith('Ownable: caller is not the owner')
 
       expect(await surge.saleIsActive()).to.equal(false)
     })
@@ -144,9 +138,7 @@ describe('Surge', function () {
     })
 
     it('Should not allow any address to start presale', async function () {
-      expect(surge.connect(addr1).startPresale()).to.be.revertedWith(
-        'Ownable: caller is not the owner',
-      )
+      expect(surge.connect(addr1).startPresale()).to.be.revertedWith('Ownable: caller is not the owner')
 
       expect(await surge.presaleIsActive()).to.equal(false)
     })
@@ -164,9 +156,7 @@ describe('Surge', function () {
     })
 
     it('Should not allow any address to pause presale', async function () {
-      expect(surge.connect(addr1).pausePresale()).to.be.revertedWith(
-        'Ownable: caller is not the owner',
-      )
+      expect(surge.connect(addr1).pausePresale()).to.be.revertedWith('Ownable: caller is not the owner')
 
       expect(await surge.presaleIsActive()).to.equal(false)
     })
@@ -174,27 +164,19 @@ describe('Surge', function () {
 
   describe('Presale whitelisting', function () {
     it('Should allow only owner to add address to presale', async function () {
-      const addToPresaleTx = await surge
-        .connect(owner)
-        .addToPresale(addr1.address)
+      const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address)
       await addToPresaleTx.wait()
     })
 
     it('Should not allow to add address to presale twice', async function () {
-      const addToPresaleTx = await surge
-        .connect(owner)
-        .addToPresale(addr1.address)
+      const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address)
       await addToPresaleTx.wait()
 
-      expect(
-        surge.connect(owner).addToPresale(addr1.address),
-      ).to.be.revertedWith('Wallet is already in the presale')
+      expect(surge.connect(owner).addToPresale(addr1.address)).to.be.revertedWith('Wallet is already in the presale')
     })
 
     it('Should not allow any address to add address to presale', async function () {
-      expect(
-        surge.connect(addr1).addToPresale(addr1.address),
-      ).to.be.revertedWith('Ownable: caller is not the owner')
+      expect(surge.connect(addr1).addToPresale(addr1.address)).to.be.revertedWith('Ownable: caller is not the owner')
     })
   })
 
@@ -231,9 +213,7 @@ describe('Surge', function () {
 
       expect(await surge.saleIsActive()).to.equal(false)
 
-      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith(
-        'Sale is currently not active',
-      )
+      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Sale is currently not active')
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0)
     })
@@ -268,9 +248,7 @@ describe('Surge', function () {
       await startSaleTx.wait()
       expect(await surge.saleIsActive()).to.equal(true)
 
-      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith(
-        'Incorrect ETH value',
-      )
+      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Incorrect ETH value')
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0)
     })
@@ -300,9 +278,7 @@ describe('Surge', function () {
     })
 
     it('Should not allow any address to withdraw', async function () {
-      expect(surge.connect(addr1).withdrawAll()).to.be.revertedWith(
-        'Ownable: caller is not the owner',
-      )
+      expect(surge.connect(addr1).withdrawAll()).to.be.revertedWith('Ownable: caller is not the owner')
     })
   })
 
@@ -310,9 +286,7 @@ describe('Surge', function () {
     it('Should not allow any address to gift mint tokens', async function () {
       let receivers = [addr1.address]
 
-      expect(surge.connect(addr1).giftMint(receivers)).to.be.revertedWith(
-        'Ownable: caller is not the owner',
-      )
+      expect(surge.connect(addr1).giftMint(receivers)).to.be.revertedWith('Ownable: caller is not the owner')
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0)
     })
@@ -360,9 +334,7 @@ describe('Surge', function () {
       const mintTx = await surge.connect(owner).giftMint(receivers)
       await mintTx.wait()
 
-      expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith(
-        'No available tokens for gifting',
-      )
+      expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith('No available tokens for gifting')
     })
   })
 })

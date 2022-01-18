@@ -30,9 +30,7 @@ interface Params {
 }
 
 export default function MainButton(params: Params): JSX.Element {
-  const style = params.primary
-    ? css(styles.primaryButton)
-    : css(styles.secondaryButton)
+  const style = params.primary ? css(styles.primaryButton) : css(styles.secondaryButton)
 
   return (
     <Button variant="primary" className={`${css(styles.button)} ${style}`}>

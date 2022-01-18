@@ -30,10 +30,7 @@ export default function InitialComponent(): JSX.Element {
   return (
     <div className={css(styles.banner)}>
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
-      <Image
-        src={require('../../images/nft-carousel.png')}
-        alt="nft-sneak-peek"
-      />
+      <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" />
       <div className={css(styles.bannerFooter)}>
         <MainButton callToAction={STRINGS.clickToMint} primary />
         <div>
