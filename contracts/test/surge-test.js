@@ -247,11 +247,9 @@ describe('Surge', function () {
 
       let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals
 
-      const mintTx = await surge
-        .connect(addr1)
-        .mint(amountOfTokens, {
-          value: ethers.utils.parseEther(price.toString()),
-        })
+      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+        value: ethers.utils.parseEther(price.toString()),
+      })
       await mintTx.wait()
 
       expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens)
@@ -286,11 +284,9 @@ describe('Surge', function () {
 
       let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals
 
-      const mintTx = await surge
-        .connect(addr1)
-        .mint(amountOfTokens, {
-          value: ethers.utils.parseEther(price.toString()),
-        })
+      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+        value: ethers.utils.parseEther(price.toString()),
+      })
       await mintTx.wait()
 
       expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens)

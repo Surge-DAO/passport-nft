@@ -65,10 +65,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     }
 
     modifier isEnoughEth(uint256 _amountOfTokens) {
-        require(
-            _amountOfTokens * TOKEN_PRICE == msg.value,
-            "Incorrect ETH value"
-        );
+        require(_amountOfTokens * TOKEN_PRICE == msg.value, "Incorrect ETH value");
         _;
     }
 
@@ -78,10 +75,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     }
 
     modifier hasMintedMaxPresale() {
-        require(
-            !_presaleMinted[msg.sender],
-            "You have already minted your tokens for the presale"
-        );
+        require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
         _;
     }
 
@@ -91,9 +85,9 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     constructor(
         string memory _name,
         string memory _symbol,
-        string memory _baseURI
+        string memory _baseTokenURI
     ) ERC721(_name, _symbol) {
-        setBaseURI(_baseURI);
+        setBaseURI(_baseTokenURI);
         console.log("Testing test deploy", _name, _symbol);
     }
 
@@ -146,22 +140,12 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     }
 
     //gift minting
-    function giftMint(address[] calldata _receivers)
-        external
-        nonReentrant
-        onlyOwner
-    {
+    function giftMint(address[] calldata _receivers) external nonReentrant onlyOwner {
         uint256 totalReceivers = _receivers.length;
         for (uint256 i = 0; i < totalReceivers; i++) {
             //checks if there is enough reserved token for gifting left
-            require(
-                totalGiftMints <= MAX_RESERVED_TOKENS,
-                "No available tokens for gifting"
-            );
-            require(
-                balanceOf(_receivers[i]) + 1 <= MAX_PER_USER,
-                "Wallet has max number of tokens allowed"
-            );
+            require(totalGiftMints <= MAX_RESERVED_TOKENS, "No available tokens for gifting");
+            require(balanceOf(_receivers[i]) + 1 <= MAX_PER_USER, "Wallet has max number of tokens allowed");
             totalGiftMints++;
             uint256 newTokenId = _tokenIds.current() + 1;
             _safeMint(_receivers[i], newTokenId);
@@ -170,11 +154,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     }
 
     //getter for tokens owned by a user
-    function getTokens(address _owner)
-        external
-        view
-        returns (uint256[] memory)
-    {
+    function getTokens(address _owner) external view returns (uint256[] memory) {
         uint256 totalCount = balanceOf(_owner);
         uint256[] memory tokenIds = new uint256[](totalCount);
 
@@ -194,12 +174,7 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
         super._beforeTokenTransfer(_from, _to, _tokenId);
     }
 
-    function supportsInterface(bytes4 _interfaceId)
-        public
-        view
-        override(ERC721, ERC721Enumerable)
-        returns (bool)
-    {
+    function supportsInterface(bytes4 _interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
         return super.supportsInterface(_interfaceId);
     }
 
