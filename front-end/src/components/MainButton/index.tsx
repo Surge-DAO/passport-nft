@@ -14,15 +14,15 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     background: themeVariables.primaryColor,
-    color: themeVariables.lightColor
+    color: themeVariables.lightColor,
   },
   secondaryButton: {
     background: themeVariables.whiteColor,
     border: `2px solid ${themeVariables.thirdColor}`,
     boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.32)',
-    color: themeVariables.darkColor
-  }
-})
+    color: themeVariables.darkColor,
+  },
+});
 
 interface Params {
   callToAction: string;
@@ -30,11 +30,11 @@ interface Params {
 }
 
 export default function MainButton(params: Params): JSX.Element {
-  const style = params.primary ? css(styles.primaryButton) : css(styles.secondaryButton)
+  const style = params.primary ? css(styles.primaryButton) : css(styles.secondaryButton);
 
   return (
     <Button variant="primary" className={`${css(styles.button)} ${style}`}>
       {params.callToAction}
     </Button>
-  )
+  );
 }
