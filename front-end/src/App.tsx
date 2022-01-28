@@ -9,7 +9,6 @@ function App() {
       <InitialBanner />
       <AboutCollectionBanner/>
     </div>
-
   );
 }
 

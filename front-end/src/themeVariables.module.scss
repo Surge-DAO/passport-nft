@@ -1,9 +1,9 @@
 // Colors
 $primary: #f86464;
-$secondary:  #fce7e7;
-$third: #F7C2CA;
+$secondary: #fce7e7;
+$third: #f7c2ca;
 $dark: #1f1f1f;
-$darkGray: #2B2B2B;
+$darkGray: #2b2b2b;
 $light: #fefefe;
 $white: #ffffff;
 
@@ -24,18 +24,18 @@ $boldWeight: 700;
 $extraBoldWeight: 800;
 
 :export {
-    primaryColor: $primary;
-    secondaryColor: $secondary;
-    thirdColor: $third;
-    darkColor: $dark;
-    darkGrayColor: $darkGray;
-    lightColor: $light;
-    whiteColor: $white;
-    primaryFont: $primaryFont;
-    secondaryFont: $secondaryFont;
-    h1: $h1;
-    title: $title;
-    secondaryTitle: $secondaryTitle;
-    btnText: $btnText;
-    paragraph: $paragraph
-};
+  primaryColor: $primary;
+  secondaryColor: $secondary;
+  thirdColor: $third;
+  darkColor: $dark;
+  darkGrayColor: $darkGray;
+  lightColor: $light;
+  whiteColor: $white;
+  primaryFont: $primaryFont;
+  secondaryFont: $secondaryFont;
+  h1: $h1;
+  title: $title;
+  secondaryTitle: $secondaryTitle;
+  btnText: $btnText;
+  paragraph: $paragraph;
+}
