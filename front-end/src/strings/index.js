@@ -6,7 +6,7 @@ export const STRINGS = {
   speedboat.
   
   You’ll get access to educational platforms, indulge in Web3 organizations, 
-  receive mentorships from experts in the industry, get whitelisted for cool 
+  receive mentorships from experts in the industry, get whitelisted for new innovative 
   NFT projects, as well as other perks and discounts within the crypto space.
   `,
   aboutCollection: 'About the Collection',
