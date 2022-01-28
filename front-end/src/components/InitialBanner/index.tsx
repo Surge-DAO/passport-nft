@@ -42,6 +42,6 @@ export default function InitialComponent(): JSX.Element {
           </p>
         </div>
       </div>
-    </div>
-  );
+    </div>   
+  )
 }
