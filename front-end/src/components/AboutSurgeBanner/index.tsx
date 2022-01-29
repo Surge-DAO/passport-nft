@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, css } from "aphrodite";
 import { STRINGS } from '../../strings';
 import themeVariables from '../../themeVariables.module.scss';
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: '18px',
-    textAlign : 'left'
+    textAlign: 'left'
   }
 })
 
