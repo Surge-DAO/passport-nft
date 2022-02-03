@@ -2,7 +2,8 @@ import MainButton from '../MainButton';
 import { StyleSheet, css } from 'aphrodite';
 import gradientBackground from '../../images/gradient-background.png';
 import { STRINGS } from '../../strings';
-import Image from 'react-bootstrap/Image'
+import Image from 'react-bootstrap/Image';
+import Navbar from '../Navbar';
 
 const styles = StyleSheet.create({
   banner: {
@@ -12,7 +13,10 @@ const styles = StyleSheet.create({
     backgroundImage: `url(${gradientBackground})`,
     backgroundSize: 'cover',
     paddingVertical: '5%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    '@media (min-width: 375px) and (max-width: 785px)': {
+      minHeight: '100vh'
+    }
   },
   title: {
     paddingTop: '5%',
@@ -29,6 +33,7 @@ const styles = StyleSheet.create({
 export default function InitialComponent(): JSX.Element {
   return (
     <div className={css(styles.banner)}>
+      <Navbar />
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
       <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" />
       <div className={css(styles.bannerFooter)}>
