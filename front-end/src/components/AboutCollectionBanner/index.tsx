@@ -1,7 +1,6 @@
-import React from "react";
-import { StyleSheet, css } from "aphrodite";
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
-import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,17 +8,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width : '80%',
     margin: 'auto',
-    '@media (max-width: 768px)': {
+    '@media (max-width: 1100px)': {
         display: 'flex',
         flexDirection: 'column-reverse',
         justifyContent: 'center',
-        alignItems: 'center'
-    } 
+        alignItems: 'center',
+        paddingBottom: '50px'
+    }
   },
   image: {
-    height: '371px',
     width: '371px',
-    padding : '40px 0'
+    padding : '7%',
+    '@media (max-width: 768px)': {
+      width: '270px',
+    }
   },
   title: {
     textAlign: 'left',
@@ -27,22 +29,25 @@ const styles = StyleSheet.create({
     '@media (max-width: 768px)': {
         padding: '0 0 20px 0',
         textAlign: 'center'
-    } 
+    }
   },
   description: {
     fontSize: '18px',
     textAlign : 'left'
+  },
+  text: {
+    width: '85%'
   }
 })
 
  export default function AboutCollectionBanner(): JSX.Element {
     return (
       <div className={css(styles.container)}>
-        <div>
+        <div className={css(styles.text)}>
           <h2 className={css(styles.title)}>{STRINGS.aboutCollection}</h2>
           <p className={css(styles.description)} dangerouslySetInnerHTML={{ __html: STRINGS.aboutDescription.replace(/\n/g, '<br/>')}}></p>
         </div>
         <img className={css(styles.image)} src={require('../../images/about-collection.png')} alt='collection'/>
-      </div>  
+      </div>
   )
  }
