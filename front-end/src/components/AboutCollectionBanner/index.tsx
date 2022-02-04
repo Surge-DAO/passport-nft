@@ -1,7 +1,6 @@
-import React from "react";
-import { StyleSheet, css } from "aphrodite";
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
-import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,11 +8,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width : '80%',
     margin: 'auto',
-    '@media (max-width: 768px)': {
+    '@media (max-width: 1100px)': {
         display: 'flex',
         flexDirection: 'column-reverse',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingBottom: '50px'
     }
   },
   image: {
