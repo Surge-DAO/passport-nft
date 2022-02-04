@@ -22,8 +22,11 @@ const styles = StyleSheet.create({
   },
   bannerFooter: {
     paddingTop: '3%',
-    paddingBottom: '3%',
+    paddingBottom: '5%',
   },
+  mintingText: {
+    paddingTop: '5%'
+  }
 });
 
 export default function InitialComponent(): JSX.Element {
@@ -34,7 +37,7 @@ export default function InitialComponent(): JSX.Element {
       <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" />
       <div className={css(styles.bannerFooter)}>
         <MainButton callToAction={STRINGS.clickToMint} primary />
-        <div>
+        <div className={css(styles.mintingText)}>
           <p>
             {STRINGS.whatIs}
             <span>
