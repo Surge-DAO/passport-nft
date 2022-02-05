@@ -5,6 +5,10 @@ Parameters:
     Type: String
     Description: Name for the ECR Repository
     Default: "passport-nft-ecr-repository"
+  EcrImageRetentionCount:
+    Type: Number
+    Description: Number of ECR images to retain
+    Default: 10
 
 Resources:
   PassportNftEcrRepository:
@@ -21,6 +25,21 @@ Resources:
               - "arn:aws:iam::222432677463:role/app-runner-service-role"
           Action:
             - "ecr:*"
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [
+            {
+              "rulePriority": 1,
+              "description": "Expire and delete old ECR images",
+              "selection": {
+                "tagStatus": "any",
+                "countType": "imageCountMoreThan",
+                "countNumber": !Ref EcrImageRetentionCount
+              },
+              "action": { "type": "expire" }
+            }]
+          }
 
   AppRunnerServiceRole:
     Type: AWS::IAM::Role
