@@ -5,14 +5,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
-    outputs:
-      image: ${{ steps.build-image.outputs.image }}
-      image_tag: ${{ github.sha }}
 
     steps:
       - name: Checkout
@@ -50,12 +47,24 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
+  deploy-to-test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Deploy to App Runner (Test)
         id: deploy-apprunner-test
         uses: awslabs/amazon-app-runner-deploy@main
         with:
           service: passport-nft-service-test
-          image: ${{ steps.build-image.outputs.image }}
+          image: ${{ secrets.ECR_REGISTRY_NAME }}/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
           access-role-arn: ${{ secrets.ACCESS_ROLE_ARN }}
           region: us-east-1
           cpu : 1
@@ -65,12 +74,24 @@ jobs:
       - name: App Runner test output
         run: echo "App runner test service output ${{ steps.deploy-apprunner-test.outputs.service-id }}"
 
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: [build, deploy-to-test]
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Deploy to App Runner (Prod)
         id: deploy-apprunner-prod
         uses: awslabs/amazon-app-runner-deploy@main
         with:
           service: passport-nft-service-prod
-          image: ${{ steps.build-image.outputs.image }}
+          image: ${{ secrets.ECR_REGISTRY_NAME }}/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
           access-role-arn: ${{ secrets.ACCESS_ROLE_ARN }}
           region: us-east-1
           cpu: 1
