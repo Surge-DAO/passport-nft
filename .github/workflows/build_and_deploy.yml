@@ -59,12 +59,21 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Create image name
+        id: get-image
+        env:
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY_NAME }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
       - name: Deploy to App Runner (Test)
         id: deploy-apprunner-test
         uses: awslabs/amazon-app-runner-deploy@main
         with:
           service: passport-nft-service-test
-          image: ${{ secrets.ECR_REGISTRY_NAME }}/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
+          image: ${{ steps.get-image.outputs.image }}
           access-role-arn: ${{ secrets.ACCESS_ROLE_ARN }}
           region: us-east-1
           cpu : 1
