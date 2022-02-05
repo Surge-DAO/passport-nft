@@ -1,0 +1,81 @@
+name: Build Image and Deploy to App Runner
+on:
+  push:
+    branches: [ build/set-up-pipeline-for-test-env ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    outputs:
+      image: ${{ steps.build-image.outputs.image }}
+      image_tag: ${{ github.sha }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to AWS CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          capabilities: CAPABILITY_NAMED_IAM
+          name: passport-nft-stack
+          template: cloudformation/app_runner_resources.yml
+          no-fail-on-empty-changeset: "1"
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Deploy to App Runner (Test)
+        id: deploy-apprunner-test
+        uses: awslabs/amazon-app-runner-deploy@main
+        with:
+          service: passport-nft-service-test
+          image: ${{ steps.build-image.outputs.image }}
+          access-role-arn: ${{ secrets.ACCESS_ROLE_ARN }}
+          region: us-east-1
+          cpu : 1
+          memory : 2
+          wait-for-service-stability: true
+
+      - name: App Runner test output
+        run: echo "App runner test service output ${{ steps.deploy-apprunner-test.outputs.service-id }}"
+
+      - name: Deploy to App Runner (Prod)
+        id: deploy-apprunner-prod
+        uses: awslabs/amazon-app-runner-deploy@main
+        with:
+          service: passport-nft-service-prod
+          image: ${{ steps.build-image.outputs.image }}
+          access-role-arn: ${{ secrets.ACCESS_ROLE_ARN }}
+          region: us-east-1
+          cpu: 1
+          memory: 2
+          wait-for-service-stability: true
+
+      - name: App Runner prod output
+        run: echo "App runner prod service output ${{ steps.deploy-apprunner-prod.outputs.service-id }}"
