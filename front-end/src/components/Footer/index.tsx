@@ -1,15 +1,14 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
 import { STRINGS } from '../../strings';
-import themeVariables from '../../themeVariables.module.scss';
-import CircleButton from "../CircleButton";
-
+import CircleButton from '../CircleButton';
+import footerBackground  from '../../images/footer-background.svg'
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
     justifyContent: 'space-between', 
     padding: '24px',
-    backgroundColor: themeVariables.thirdColor,
+    backgroundImage: `url(${footerBackground})`,
     '@media (max-width: 768px)': {
         display: 'flex',
         flexDirection: 'column',
@@ -19,10 +18,6 @@ const styles = StyleSheet.create({
   },  
   image: {
     verticalAlign: 'middle',
-    '@media (max-width: 379)': {
-      width: '60%',
-      margin: 'auto'
-    }
   },
   tagline: {
     marginLeft: '18px',
