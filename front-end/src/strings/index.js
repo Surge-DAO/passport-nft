@@ -24,5 +24,6 @@ export const STRINGS = {
   connectWallet: 'Connect Wallet',
   learnMoreAboutSurge: 'LEARN MORE ABOUT SURGE',
   minting: 'minting?',
+  securingWomen: 'Securing women’s place in Web3',
   whatIs: 'Wait, what is',
 };
