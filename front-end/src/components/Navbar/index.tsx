@@ -128,7 +128,7 @@ export default function Navbar(): JSX.Element {
   return (
     <div className={css(styles.flex)}>
       <div className={css(styles.leftItems)}>
-        <img src={require('../../images/surge-logo.png')} alt="surge logo" className={css(styles.logoSize)}/>
+        <img src={require('../../images/surge-logo.svg').default} alt="surge logo" className={css(styles.logoSize)}/>
         {!isMobile &&
           <div>
             <MenuItems listStyle={(css(styles.desktopMenu))} />

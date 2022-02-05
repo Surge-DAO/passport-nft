@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
   },
   itemText: {
     color: themeVariables.darkColor,
-    fontWeight: 500
+    fontWeight: 500,
+    marginTop: '18px'
   }
 })
 
