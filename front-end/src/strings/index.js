@@ -20,9 +20,14 @@ export const STRINGS = {
 
   Our mission is to bring more women into the space and fix the gender imbalance.
   `,
+  discord: 'Discord',
   clickToMint: 'CLICK TO MINT',
   connectWallet: 'Connect Wallet',
+  instagram: 'Instagram',
   learnMoreAboutSurge: 'LEARN MORE ABOUT SURGE',
   minting: 'minting?',
+  roadmap: 'Roadmap',
+  twitter: 'Twitter',
+  roadmapUpdate: 'Get the latest updates on our roadmap',
   whatIs: 'Wait, what is',
 };

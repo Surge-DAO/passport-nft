@@ -1,17 +1,19 @@
 import React from 'react'
 import { StyleSheet, css } from 'aphrodite'
 import themeVariables from '../../themeVariables.module.scss';
-import {Row, Col} from 'react-bootstrap'
 
 const styles = StyleSheet.create({
   card: {
-    width: '60%',
-    height: 'auto',
-    boxShadow: '5px 10px 18px 5px #fce7e7',
-    border: '1px solid #f7c2ca',
+    boxShadow: `1px 1px 8px ${themeVariables.secondaryColor}`,
+    border: `1px solid ${themeVariables.secondaryColor}`,
     borderRadius: '8px',
     padding: '10px',
-    margin: '24px'
+    margin: '24px', 
+  },
+  active: {
+    ':hover': {
+      border: `3px solid ${themeVariables.thirdColor}`
+    }
   },
   container: {
     display: 'flex',
@@ -26,37 +28,46 @@ const styles = StyleSheet.create({
     display: 'inline',
     color: themeVariables.primaryColor,
   },
-  subTitle: {
+  description: {
     textAlign: 'left',
+    marginLeft: '24px',
+    marginRight: '24px',
+    lineHeight: '24px'
   },
   listStyle: {
     listStyleType: 'circle',
-    textAlign: 'left'  
+    textAlign: 'left',
+    margin: '10px',
+    fontSize: '18px'
   }
-
 })
 
-interface CardParams {
+export interface CardParams {
 	title: string,
 	stepNo: number,
-	active: boolean,
+	active?: boolean,
 	description: string,
 	additionalSteps: string[]
 }
 
 export default function RoadMapCard(params: CardParams) : JSX.Element{
+  const style = params.active ? css(styles.active) : css(styles.card);
   return(
-    <div className={css(styles.card)}>
+    <div>
+      <div className={`${css(styles.card)} ${style}`}>
       <div>
         <div className={css(styles.container)}>
-          <h3 className={css(styles.stepNo)}>1.</h3>
-          <h3 className={css(styles.title)}>Surge Community</h3>
+          <h3 className={css(styles.stepNo)}>{params.stepNo}.</h3>
+          <h3 className={css(styles.title)}>{params.title}</h3>
         </div>
-        <p className={css(styles.subTitle)}>We are a vibrant Discord community with over 1k+ Surge heroines and allies sharing educational insights with one another and collaborating on fun projects. </p>
+        <p className={css(styles.description)}>{params.description}</p>     
         <ul>
-          <li className={css(styles.listStyle)}>We are creating educational content for our community</li>
+        {params.additionalSteps.map((item, id) =>{
+          return <li key={id} className={css(styles.listStyle)}>{item}</li>
+        })}
         </ul>
       </div>
     </div>
+    </div>  
   )
 }
