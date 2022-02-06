@@ -52,6 +52,7 @@ export interface CardParams {
 
 export default function RoadMapCard(params: CardParams) : JSX.Element{
   const style = params.active ? css(styles.active) : css(styles.card);
+  
   return(
     <div>
       <div className={`${css(styles.card)} ${style}`}>

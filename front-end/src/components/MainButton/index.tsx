@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     fontFamily: themeVariables.secondaryFont,
     fontWeight: 800,
     padding: '16px 24px',
-    margin: '8px'
+    margin: '8px',
   },
   primaryButton: {
     background: themeVariables.primaryColor,
@@ -35,8 +35,10 @@ export default function MainButton(params: Params): JSX.Element {
   const style = params.primary ? css(styles.primaryButton) : css(styles.secondaryButton);
 
   return (
-    <Button variant="primary" className={`${css(styles.button)} ${style}`}>
-      {params.callToAction}
-    </Button>
+    <a href={params.link} target='_blank' rel='noreferrer'>
+      <Button variant="primary" className={`${css(styles.button)} ${style}`}>
+        {params.callToAction}
+      </Button>
+    </a>  
   );
 }
