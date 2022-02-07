@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
   },
   displayBlock: {
     display: 'block'
+  },
+  imgLogo: {
+    maxWidth: '120px'
   }
 })
 
@@ -46,7 +49,7 @@ export default function NavBar(): JSX.Element {
     <Navbar bg="light" expand="sm" collapseOnSelect>
       <Container fluid>
         <Navbar.Brand href={STRINGS.surgeURL}>
-          <Image src={require('../../images/surge-logo.png')} className="img-fluid" />
+          <Image src={require('../../images/surge-logo.png')} className={css(styles.imgLogo)} />
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">
           <Nav>
