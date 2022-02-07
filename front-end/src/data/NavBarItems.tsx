@@ -1,21 +1,23 @@
+import { STRINGS } from '../strings';
+
 interface LinkItemsParams {
   name: string;
   link: string;
 }
 
 export const navBarItems: LinkItemsParams[] = [{
-  name: 'About',
+  name: STRINGS.about,
   link: '#'
 }, {
-  name: 'Perks',
+  name: STRINGS.perks,
   link: '#'
 }, {
-  name: 'Roadmap',
+  name: STRINGS.roadmap,
   link: '#'
 }, {
-  name: 'Team',
+  name: STRINGS.team,
   link: '#'
 }, {
-  name: 'FAQ',
+  name: STRINGS.faq,
   link: '#'
 }];

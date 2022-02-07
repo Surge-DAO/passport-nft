@@ -2,6 +2,7 @@
   font-family: 'Mattone';
   src: local('Mattone'), url(./fonts/Mattone-Regular.otf) format('truetype');
 }
+
 @font-face {
   font-family: 'Inter';
   src: local('Inter'), url(./fonts/Inter-VariableFont_slntwght.ttf) format('truetype');
@@ -37,6 +38,7 @@ p {
 
 ul {
   list-style: none;
+  padding-left: 0px;
 }
 
 a {
@@ -50,4 +52,9 @@ h2 {
   margin: 0px;
   font-weight: 600;
   line-height: 58px;
+}
+
+// Bootstrap overrides
+.offcanvas-end {
+  max-width: 50%
 }
