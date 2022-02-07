@@ -1,39 +1,38 @@
-import React from 'react'
+import { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import themeVariables from '../../themeVariables.module.scss';
-import {Accordion, Card} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 const styles = StyleSheet.create({
   card: {
     boxShadow: '5px 10px 18px 5px #fce7e7',
     border: '1px solid #f7c2ca',
     borderRadius: '8px',
-    padding: '10px',
     margin: '24px',
-    backgroundColor: themeVariables.whiteColor
+    backgroundColor: themeVariables.whiteColor,
   },
   questionSection: {
     display: 'flex',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    marginLeft: '24px',
+    marginRight: '24px',
+    textAlign: 'left'
   },
   answerSection: {
-    display: 'none'
+    transition: '0.5s'    
   },
   line: {
     border: '1px solid #f7c2ca',
   },
   answer:{
     marginLeft: '24px',
+    textAlign: 'left',
+    padding: '10px',
   },
-  displayNone: {
-    display: 'none'
-  },
-  displayBlock:{
-    display: 'block'
-  },
-  
+  icon: {
+    marginTop: '20px',
+  }, 
 })
 
 export interface FAQParams {
@@ -44,27 +43,22 @@ export interface FAQParams {
   
 export default function FAQCard(params: FAQParams) : JSX.Element{
   const [open, setOpen] = useState<boolean>(false);
-  let display = open ? css(styles.answerSection) && css(styles.displayBlock) : css(styles.displayNone);
-
-  const openAnswer = () =>{
-    setOpen(!open)
-    css(styles.line) && css(styles.answer)
-  }
 
   return(
-    
-       <div className={css(styles.card)} onClick={() => openAnswer()}>
-                {open ?  <div className={css(styles.answerSection)}>
-           <hr className={css(styles.line)} />
-           <p className={css(styles.answer)}>{params.answer}</p>
-         </div>  :  <div className={css(styles.questionSection)}>
-           <h3>{params.question}</h3>
-           <FontAwesomeIcon icon='times' onClick={() => setOpen(open)} className={`${open && display}`}/>
-         </div> }
-
-         
-       </div>
-  
-   
+    <div className={css(styles.card )} onClick={() => setOpen(!open)}>
+      <div className={css(styles.questionSection)}>
+        <h4 >{params.question}</h4>
+        {!open && <FontAwesomeIcon className={css(styles.icon)} icon={faAngleDown} size="lg" onClick={() => setOpen(!open)}/>}
+        {open && <FontAwesomeIcon className={css(styles.icon)} icon={faAngleUp} size="lg" onClick={() => setOpen(!open)}/>}
+      </div>
+      <div> 
+        {open && (
+            <div className={css(styles.answerSection)}> 
+            <hr className={css(styles.line)} />
+            <p className={css(styles.answer)} dangerouslySetInnerHTML={{ __html: `${params.answer}`.replace(/\n/g, '<br/>')}}></p> 
+            </div>
+        )}              
+      </div> 
+    </div>  
   )
 }

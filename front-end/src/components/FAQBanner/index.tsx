@@ -1,4 +1,3 @@
-import React from 'react'
 import { StyleSheet, css } from 'aphrodite'
 import themeVariables from '../../themeVariables.module.scss';
 import FAQCard from '../FAQCard';
@@ -12,9 +11,12 @@ const styles = StyleSheet.create({
   container: {
     width: '60%',
     margin: 'auto',
+    padding: '24px',
+    '@media (max-width: 768px)': {
+      width: '100%',
+    }
   },
 })
-
 
 export default function FAQBanner() : JSX.Element{
   return(
@@ -22,7 +24,7 @@ export default function FAQBanner() : JSX.Element{
       <h2>{STRINGS.faq}</h2>
       <div className={css(styles.container)}>
         {faqItems.map((item, id) =>{
-          return <FAQCard question={item.question} answer={item.answer} active={true}/>
+          return <FAQCard key={id} question={item.question} answer={item.answer} />
         })}   
     </div>
     </div>
