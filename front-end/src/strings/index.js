@@ -22,6 +22,7 @@ export const STRINGS = {
   `,
   clickToMint: 'CLICK TO MINT',
   connectWallet: 'Connect Wallet',
+  faq: 'Frequently Asked Questions',
   learnMoreAboutSurge: 'LEARN MORE ABOUT SURGE',
   minting: 'minting?',
   securingWomen: 'Securing women’s place in Web3',
