@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     width: '48px',
     height: '48px',
     borderRadius: '50%',
-    background: themeVariables.white,
+    backgroundColor: themeVariables.whiteColor,
     display: 'block',
     margin: '8px'
   },
@@ -27,8 +27,8 @@ interface CircleParams {
 
 export default function CircleButton(params: CircleParams) : JSX.Element {
   return (
-    <a href={params.link} className={css(styles.circle)}>
-        <img className={css(styles.img)} src={require(`../../images/${params.img}`)} alt='social-icons'/>  
+    <a href={params.link} target='_blank' rel='noreferrer' className={css(styles.circle)}>
+        <img className={css(styles.img)} src={require(`../../images/${params.img}.svg`)} alt='social-icons'/>  
     </a>
   )
 }

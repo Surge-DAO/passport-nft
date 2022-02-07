@@ -28,6 +28,7 @@ export const STRINGS = {
   minting: 'minting?',
   perks: 'Perks',
   roadmap: 'Roadmap',
+  securingWomen: 'Securing women’s place in Web3',
   surgeURL: 'https://surgewomen.io',
   team: 'Team',
   whatIs: 'Wait, what is',
