@@ -3,6 +3,8 @@ import { StyleSheet, css } from "aphrodite";
 import { STRINGS } from '../../strings';
 import CircleButton from '../CircleButton';
 import footerBackground  from '../../images/footer-background.svg'
+import { socialMedia } from "../../data/surgePlatforms";
+
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
@@ -42,10 +44,11 @@ const styles = StyleSheet.create({
             <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
           </div>
           <div className={css(styles.socials)}>
-            <CircleButton link={STRINGS.discordLink} img="discord"/>
-            <CircleButton link={STRINGS.twitterLink} img="twitter"/>
-            <CircleButton link={STRINGS.instagramLink} img="instagram"/>
-            <CircleButton link={STRINGS.openSeaLink} img="opensea"/>
+          {socialMedia.map((platform, idx) => {
+            return (
+              <CircleButton link={platform.link} key={idx} img={platform.name} />
+            )
+          })}
           </div>      
       </div>
   )

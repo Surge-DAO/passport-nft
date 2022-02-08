@@ -1,24 +1,25 @@
 import React from 'react'
 import { StyleSheet, css } from 'aphrodite'
 import RoadMapCard from '../RoadMapCard';
-import {roadMapItems} from '../../data/RoadMapItems'
+import { roadMapItems } from '../../data/RoadMapItems';
 import { STRINGS } from '../../strings';
 import MainButton from '../MainButton';
+import { socialMedia } from '../../data/surgePlatforms';
 
 const styles = StyleSheet.create({
   wrapper: {
     width: '60%',
     margin: 'auto',
-    '@media (max-width: 375px) and (max-width: 768px)': {
+    '@media (max-width: 768px)': {
       width: '100%',
       margin: '24px',
-  } 
+    } 
   },
   socials: {
     margin: '24px',
     '@media (max-width: 375px) ': {
       width: '100%',
-  } 
+    } 
   },
   update: {
     marginTop: '36px',
@@ -35,9 +36,11 @@ export default function RoadMapBanner() : JSX.Element{
         })}
         <p className={css(styles.update)}>{STRINGS.roadmapUpdate}</p>
         <div className={css(styles.socials)}>
-          <MainButton callToAction={STRINGS.discord.toUpperCase()} primary={false} link={STRINGS.discordLink}/>
-          <MainButton callToAction={STRINGS.twitter.toUpperCase()} primary={false}  link={STRINGS.twitterLink}/>
-          <MainButton callToAction={STRINGS.instagram.toUpperCase()} primary={false} link={STRINGS.instagramLink}/>
+        {socialMedia.map((platform, idx) => {
+            return (
+              <MainButton key={idx} callToAction={platform.name.toUpperCase()} primary={false} link={platform.link}/>
+              )
+          })}
         </div>
       </div>    
   )

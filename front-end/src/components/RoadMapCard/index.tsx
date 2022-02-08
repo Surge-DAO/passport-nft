@@ -52,23 +52,19 @@ export interface CardParams {
 
 export default function RoadMapCard(params: CardParams) : JSX.Element{
   const style = params.active ? css(styles.active) : css(styles.card);
-  
+
   return(
-    <div>
-      <div className={`${css(styles.card)} ${style}`}>
-      <div>
-        <div className={css(styles.container)}>
-          <h3 className={css(styles.stepNo)}>{params.stepNo}.</h3>
-          <h3 className={css(styles.title)}>{params.title}</h3>
-        </div>
+    <div className={`${css(styles.card)} ${style}`}>
+      <div className={css(styles.container)}>
+        <h3 className={css(styles.stepNo)}>{params.stepNo}.</h3>
+        <h3 className={css(styles.title)}>{params.title}</h3>
+      </div>
         <p className={css(styles.description)}>{params.description}</p>     
         <ul>
-        {params.additionalSteps.map((item, id) =>{
-          return <li key={id} className={css(styles.listStyle)}>{item}</li>
-        })}
+          {params.additionalSteps.map((item, id) =>{
+            return <li key={id} className={css(styles.listStyle)}>{item}</li>
+          })}
         </ul>
-      </div>
-    </div>
     </div>  
   )
 }

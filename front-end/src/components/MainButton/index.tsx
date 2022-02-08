@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     fontFamily: themeVariables.secondaryFont,
     fontWeight: 800,
     padding: '16px 24px',
-    margin: '8px',
   },
   primaryButton: {
     background: themeVariables.primaryColor,
