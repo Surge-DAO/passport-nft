@@ -4,9 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { socialMedia } from '../../data/SocialMedia';
 
 const styles = StyleSheet.create({
-  listInline: {
-    display: 'flex',
-    margin: 'auto'
+  flex: {
+    display: 'flex'
   },
   icon: {
     marginRight: '25px',
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
 
 export default function SocialMediaIcons(): JSX.Element {
   return (
-    <ul className={css(styles.listInline)}>
+    <ul className={css(styles.flex)}>
       {socialMedia.map((platform, idx) => {
         return (
           <li key={idx} className={css(styles.icon)}>

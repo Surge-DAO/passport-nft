@@ -6,8 +6,8 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 const styles = StyleSheet.create({
   card: {
-    boxShadow: '5px 10px 18px 5px #fce7e7',
-    border: '1px solid #f7c2ca',
+    boxShadow: `5px 10px 18px 5px ${themeVariables.secondaryColor}`,
+    border: `1px solid  ${themeVariables.thirdColor}`,
     borderRadius: '8px',
     margin: '24px',
     backgroundColor: themeVariables.whiteColor,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     transition: '0.5s'    
   },
   line: {
-    border: '1px solid #f7c2ca',
+    border: `1px solid  ${themeVariables.secondaryColor}`,
   },
   answer:{
     marginLeft: '24px',
@@ -47,7 +47,7 @@ export default function FAQCard(params: FAQParams) : JSX.Element{
   return(
     <div className={css(styles.card )} onClick={() => setOpen(!open)}>
       <div className={css(styles.questionSection)}>
-        <h4 >{params.question}</h4>
+        <h5 >{params.question}</h5>
         {!open && <FontAwesomeIcon className={css(styles.icon)} icon={faAngleDown} size="lg" onClick={() => setOpen(!open)}/>}
         {open && <FontAwesomeIcon className={css(styles.icon)} icon={faAngleUp} size="lg" onClick={() => setOpen(!open)}/>}
       </div>

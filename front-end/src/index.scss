@@ -2,6 +2,7 @@
   font-family: 'Mattone';
   src: local('Mattone'), url(./fonts/Mattone-Regular.otf) format('truetype');
 }
+
 @font-face {
   font-family: 'Inter';
   src: local('Inter'), url(./fonts/Inter-VariableFont_slntwght.ttf) format('truetype');
@@ -19,7 +20,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4,h5 {
   font-family: 'Mattone';
   padding: 0px;
   margin: 0px;
@@ -37,9 +38,15 @@ p {
 
 ul {
   list-style: none;
+  padding-left: 0px;
 }
 
 a {
   text-decoration: none;
   color: #1f1f1f;
+}
+
+// Bootstrap overrides
+.offcanvas-end {
+  max-width: 50%
 }

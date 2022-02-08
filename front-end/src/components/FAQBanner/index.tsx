@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 export default function FAQBanner() : JSX.Element{
   return(
     <div className={css(styles.wrapper)}>
-      <h2>{STRINGS.faq}</h2>
+      <h2>{STRINGS.frequentlyAskedQuestions}</h2>
       <div className={css(styles.container)}>
         {faqItems.map((item, id) =>{
           return <FAQCard key={id} question={item.question} answer={item.answer} />
