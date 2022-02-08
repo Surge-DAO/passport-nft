@@ -1,4 +1,5 @@
 export const STRINGS = {
+  about: 'About',
   aboutDescription:
   `In September, 2021 a group of women came together and decided to take it upon themselves to balance the gender inequality within crypto.
 
@@ -22,10 +23,15 @@ export const STRINGS = {
   `,
   clickToMint: 'CLICK TO MINT',
   connectWallet: 'Connect Wallet',
+  faq: 'FAQ',
   learnMoreAboutSurge: 'LEARN MORE ABOUT SURGE',
   minting: 'minting?',
   roadmap: 'Roadmap',
   roadmapUpdate: 'Get the latest updates on our roadmap',
+  perks: 'Perks',
+  roadmap: 'Roadmap',
   securingWomen: 'Securing women’s place in Web3',
+  surgeURL: 'https://surgewomen.io',
+  team: 'Team',
   whatIs: 'Wait, what is',
 };

@@ -5,19 +5,20 @@ import CircleButton from '../CircleButton';
 import footerBackground  from '../../images/footer-background.svg'
 import { socialMedia } from "../../data/surgePlatforms";
 
+
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    justifyContent: 'space-between', 
+    justifyContent: 'space-between',
     padding: '24px',
     backgroundImage: `url(${footerBackground})`,
     '@media (max-width: 768px)': {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    } 
-  },  
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }
+  },
   image: {
     verticalAlign: 'middle',
   },
@@ -26,9 +27,9 @@ const styles = StyleSheet.create({
     display: 'inline',
     '@media (max-width: 379px)': {
       display: 'block',
-        padding: '0 0 20px 0',
-        textAlign: 'center'
-    } 
+      padding: '0 0 20px 0',
+      textAlign: 'center'
+    }
   },
   socials: {
     display: 'flex',

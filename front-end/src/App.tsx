@@ -5,6 +5,7 @@ import AboutSurgeBanner from './components/AboutSurgeBanner';
 import Footer from './components/Footer';
 import InitialBanner from './components/InitialBanner';
 import PartnersBanner from './components/PartnersBanner';
+import TeamMembersBanner from './components/TeamMembersBanner';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -20,6 +21,7 @@ function App() {
       <AboutCollectionBanner/>
       <RoadMapBanner/>
       <AboutSurgeBanner/>
+      <TeamMembersBanner />
       <Footer/>
     </div>
   );

@@ -6,34 +6,33 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     justifyContent: 'space-between',
-    width : '80%',
-    margin: 'auto',
+    width : '80vw',
+    margin: '70px auto',
     '@media (max-width: 1100px)': {
-        display: 'flex',
-        flexDirection: 'column-reverse',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingBottom: '50px'
+      display: 'flex',
+      flexDirection: 'column-reverse',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingBottom: '50px'
     }
   },
   image: {
-    width: '371px',
-    padding : '7%',
+    width: '290px',
     '@media (max-width: 768px)': {
       width: '270px',
     }
   },
   title: {
     textAlign: 'left',
-    padding: '60px 0 20px 0',
     '@media (max-width: 768px)': {
-        padding: '0 0 20px 0',
-        textAlign: 'center'
+      padding: '0 0 20px 0',
+      textAlign: 'center'
     }
   },
   description: {
     fontSize: '18px',
-    textAlign : 'left'
+    textAlign : 'left',
+    width: '85%'
   },
   text: {
     width: '85%'
