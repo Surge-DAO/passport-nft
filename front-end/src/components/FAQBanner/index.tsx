@@ -13,12 +13,12 @@ const styles = StyleSheet.create({
     margin: 'auto',
     padding: '24px',
     '@media (max-width: 768px)': {
-      width: '100%',
+      width: '100%'
     }
   },
 })
 
-export default function FAQBanner() : JSX.Element{
+export default function FAQBanner(): JSX.Element {
   return(
     <div className={css(styles.wrapper)}>
       <h2>{STRINGS.frequentlyAskedQuestions}</h2>

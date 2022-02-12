@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { socialMedia } from '../../data/SocialMedia';
+import { socialMedia } from '../../data/surgePlatforms';
 
 const styles = StyleSheet.create({
   flex: {

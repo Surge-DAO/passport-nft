@@ -1,4 +1,4 @@
-import {FAQParams} from '../components/FAQCard'
+import { FAQParams } from '../components/FAQCard';
 
 export const faqItems: FAQParams[] = [{
     question: 'How do I mint my NFT?',

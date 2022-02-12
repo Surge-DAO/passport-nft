@@ -27,6 +27,8 @@ export const STRINGS = {
   faq: 'FAQ',
   learnMoreAboutSurge: 'LEARN MORE ABOUT SURGE',
   minting: 'minting?',
+  roadmap: 'Roadmap',
+  roadmapUpdate: 'Get the latest updates on our roadmap',
   perks: 'Perks',
   roadmap: 'Roadmap',
   securingWomen: 'Securing women’s place in Web3',

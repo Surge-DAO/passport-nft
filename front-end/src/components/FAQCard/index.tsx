@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { StyleSheet, css } from 'aphrodite'
+import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
 const styles = StyleSheet.create({
   card: {
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     border: `1px solid  ${themeVariables.thirdColor}`,
     borderRadius: '8px',
     margin: '24px',
-    backgroundColor: themeVariables.whiteColor,
+    backgroundColor: themeVariables.whiteColor
   },
   questionSection: {
     display: 'flex',
@@ -23,16 +23,16 @@ const styles = StyleSheet.create({
     transition: '0.5s'    
   },
   line: {
-    border: `1px solid  ${themeVariables.secondaryColor}`,
+    border: `1px solid  ${themeVariables.secondaryColor}`
   },
   answer:{
     marginLeft: '24px',
     textAlign: 'left',
-    padding: '10px',
+    padding: '10px'
   },
   icon: {
-    marginTop: '20px',
-  }, 
+    marginTop: '20px'
+  } 
 })
 
 export interface FAQParams {
@@ -41,11 +41,11 @@ export interface FAQParams {
 	active?: boolean;
 }
   
-export default function FAQCard(params: FAQParams) : JSX.Element{
+export default function FAQCard(params: FAQParams): JSX.Element {
   const [open, setOpen] = useState<boolean>(false);
 
   return(
-    <div className={css(styles.card )} onClick={() => setOpen(!open)}>
+    <div className={css(styles.card)} onClick={() => setOpen(!open)}>
       <div className={css(styles.questionSection)}>
         <h5 >{params.question}</h5>
         {!open && <FontAwesomeIcon className={css(styles.icon)} icon={faAngleDown} size="lg" onClick={() => setOpen(!open)}/>}
@@ -53,10 +53,10 @@ export default function FAQCard(params: FAQParams) : JSX.Element{
       </div>
       <div> 
         {open && (
-            <div className={css(styles.answerSection)}> 
+          <div className={css(styles.answerSection)}> 
             <hr className={css(styles.line)} />
             <p className={css(styles.answer)} dangerouslySetInnerHTML={{ __html: `${params.answer}`.replace(/\n/g, '<br/>')}}></p> 
-            </div>
+          </div>
         )}              
       </div> 
     </div>  
