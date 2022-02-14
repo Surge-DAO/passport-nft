@@ -2,36 +2,28 @@ import { FAQParams } from '../components/FAQCard';
 
 export const faqItems: FAQParams[] = [{
     question: 'How do I mint my NFT?',
-    answer: `New to NFTs? No worries, here are some steps on what you need to do to get
-     your Roboto.
+    answer: `When we say “mint” we mean buying the NFT.
 
-    Download the <b>metamask.io</b> extension for the Chrome/Brave browser or app on 
-    mobile. This will allow you to make purchases with Ethereum and can be found in 
-    the extensions tab. If you are on mobile, you must use the Metamask App
-    Browser
-    
-    You can purchase Ethereum through the Metamask Wallet using Wyre or Send 
-    Ethereum from an exchange like <b>Coinbase</b>.
-    
-    Click on Connect at the top of the page and connect your Metamask. Once joined,
-    you will be able to purchase the NFTs in the mint section. You will be prompted to
-    sign your transaction. FYI, there will be a fee associated with every transaction
-    related to gas prices.
-    
-    Once you have made your purchase, your Roboto NFTs will be viewable in your
-    wallet and on <b>OpenSea</>.`
+    Using generative algorithms to generate these NFTs means that we have attributes that will automagically get paired together through our algorithm.
+    When you mint, this calls on the algorithm to start generating its next creation.`
   }, 
   {
     question: 'What happens if I miss the mint date? Or it sells out?',
-    answer: '#'
+    answer: `Don’t you worry! When the mint closes, it just means the generative algorithm won’t generate 
+    new NFTs, but it doesn’t mean you can’t buy a Surge Passport. 
+
+    You can always purchase one through secondary sales on [Open Sea](https://opensea.io) or Coinbase.`
   }, 
   {
     question: 'What NFT platforms can I view my NFT on?',
-    answer: '#'
+    answer: `Currently, we’re only on OpenSea and Coinbase. However, we’re opening up to other
+    platforms soon.`
   },  
   {
     question: 'Can I sell my NFT?',
-    answer: '#'
+    answer: `Of course. Just keep in mind that when you sell the NFT, you also loose access to the perks.
+
+    You can resell through one of the marketplaces the NFT is hosted on: Open Sea, Coinbase, etc.`
   },  
   {
     question: 'How do I make sure my NFT is protected?',
@@ -39,13 +31,13 @@ export const faqItems: FAQParams[] = [{
   }, 
   {
     question: 'What happens to my perks when I sell my NFT?',
-    answer: '#'
+    answer: `You lose them unfortunately. Only token holders have access to the Surge Passport perks.`
   }, 
    {
     question: 'How do I claim my perks?',
-    answer: '#'
+    answer: `You go to your Perks Dashboard.`
   },  
   {
     question: 'How do I check my NFT rarity?',
-    answer: '#'
+    answer: `You go in Rarible.`
   },];
