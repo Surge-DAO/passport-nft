@@ -9,6 +9,7 @@ import TeamMembersBanner from './components/TeamMembersBanner';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import FAQBanner from './components/FAQBanner';
 import RoadMapBanner from './components/RoadMapBanner';
 
 library.add(fab, faBars, faTimes);
@@ -21,6 +22,7 @@ function App() {
       <AboutCollectionBanner/>
       <RoadMapBanner/>
       <AboutSurgeBanner/>
+      <FAQBanner/>
       <TeamMembersBanner />
       <Footer/>
     </div>

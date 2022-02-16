@@ -23,6 +23,7 @@ export const STRINGS = {
   `,
   clickToMint: 'CLICK TO MINT',
   connectWallet: 'Connect Wallet',
+  frequentlyAskedQuestions: 'Frequently Asked Questions',
   faq: 'FAQ',
   learnMoreAboutSurge: 'LEARN MORE ABOUT SURGE',
   minting: 'minting?',

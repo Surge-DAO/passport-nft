@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   listStyle: {
     listStyleType: 'circle',
     textAlign: 'left',
-    margin: '10px',
+    margin: '10px 48px',
     fontSize: '18px'
   }
 })

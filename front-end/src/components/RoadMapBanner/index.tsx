@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     margin: 'auto',
     '@media (max-width: 768px)': {
       width: '100%',
-      margin: '24px',
+      margin: '24px'
     } 
   },
   socials: {
@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
     } 
   },
   update: {
-    marginTop: '36px',
+    marginTop: '36px'
   }
 })
 
-export default function RoadMapBanner() : JSX.Element{
+export default function RoadMapBanner(): JSX.Element {
   return(
       <div className={css(styles.wrapper)}>
         <h2>{STRINGS.roadmap}</h2>
