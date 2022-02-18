@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, css } from 'aphrodite'
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     lineHeight: '24px'
   },
   listStyle: {
-    listStyleType: 'circle',
+    listStyleType: 'disc',
+    listStylePosition: 'inside',
     textAlign: 'left',
     margin: '10px',
     fontSize: '18px'
