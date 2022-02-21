@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
   },
   imgLogo: {
     maxWidth: '120px'
+  },
+  socialMediaIcons: {
+    margin: 'auto'
   }
 })
 
@@ -62,6 +65,12 @@ export default function NavBar(): JSX.Element {
                 </Nav.Item>
               )
             })}
+          </Nav>
+          <Nav className={css(styles.socialMediaIcons)}>
+            <SocialMediaIcons />
+            <div className={css(styles.connectBtn)}>
+              <MainButton callToAction={STRINGS.connectWallet.toUpperCase()} primary />
+            </div>
           </Nav>
         </Navbar.Collapse>
         <Navbar.Toggle aria-controls="offcanvasNavbar">
