@@ -22,7 +22,9 @@ const styles = StyleSheet.create({
     }
   },
   flex: {
-    display: 'flex'
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'space-between'
   },
   navMobile: {
     backgroundColor: themeVariables.thirdColor
@@ -36,15 +38,15 @@ const styles = StyleSheet.create({
   paddingTop30: {
     paddingTop: '30px'
   },
+  paddingTop20: {
+    paddingTop: '20px'
+  },
   displayBlock: {
     display: 'block'
   },
   imgLogo: {
     maxWidth: '120px'
   },
-  socialMediaIcons: {
-    margin: 'auto'
-  }
 })
 
 export default function NavBar(): JSX.Element {
@@ -55,23 +57,27 @@ export default function NavBar(): JSX.Element {
           <Image src={require('../../images/surge-logo.png')} className={css(styles.imgLogo)} />
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">
-          <Nav>
-            {navBarItems.map((item, idx) => {
-              return (
-                <Nav.Item>
-                  <Nav.Link eventKey={idx} key={idx} href={item.link} className={css(styles.navLinks)}>
-                    {item.name}
-                  </Nav.Link>
-                </Nav.Item>
-              )
-            })}
-          </Nav>
-          <Nav className={css(styles.socialMediaIcons)}>
-            <SocialMediaIcons />
-            <div className={css(styles.connectBtn)}>
-              <MainButton callToAction={STRINGS.connectWallet.toUpperCase()} primary />
-            </div>
-          </Nav>
+          <div className={css(styles.flex)}>
+            <Nav>
+              {navBarItems.map((item, idx) => {
+                return (
+                  <Nav.Item>
+                    <Nav.Link eventKey={idx} key={idx} href={item.link} className={css(styles.navLinks)}>
+                      {item.name}
+                    </Nav.Link>
+                  </Nav.Item>
+                )
+              })}
+            </Nav>
+            <Nav>
+              <div className={css(styles.paddingTop20)}>
+                <SocialMediaIcons />
+              </div>
+              <div className={css(styles.connectBtn)}>
+                <MainButton callToAction={STRINGS.connectWallet.toUpperCase()} primary />
+              </div>
+            </Nav>
+          </div>
         </Navbar.Collapse>
         <Navbar.Toggle aria-controls="offcanvasNavbar">
           <FontAwesomeIcon icon="bars" />
