@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
   paddingTop30: {
     paddingTop: '30px'
   },
+  paddingTop10: {
+    paddingTop: '10px'
+  },
   paddingTop20: {
     paddingTop: '20px'
   },
@@ -58,7 +61,7 @@ export default function NavBar(): JSX.Element {
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">
           <div className={css(styles.flex)}>
-            <Nav>
+            <Nav className={css(styles.paddingTop10)}>
               {navBarItems.map((item, idx) => {
                 return (
                   <Nav.Item>
