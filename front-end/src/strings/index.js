@@ -30,7 +30,6 @@ export const STRINGS = {
   roadmap: 'Roadmap',
   roadmapUpdate: 'Get the latest updates on our roadmap',
   perks: 'Perks',
-  roadmap: 'Roadmap',
   securingWomen: 'Securing women’s place in Web3',
   surgeURL: 'https://surgewomen.io',
   team: 'Team',
