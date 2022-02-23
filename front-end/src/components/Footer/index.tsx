@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, css } from "aphrodite";
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
 import CircleButton from '../CircleButton';
-import footerBackground  from '../../images/footer-background.svg'
-import { socialMedia } from "../../data/surgePlatforms";
+import footerBackground  from '../../images/footer-background.svg';
+import { socialMedia } from '../../data/surgePlatforms';
 
 
 const styles = StyleSheet.create({
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   tagline: {
     marginLeft: '18px',
     display: 'inline',
+    paddingTop: '20px',
     '@media (max-width: 379px)': {
       display: 'block',
       padding: '0 0 20px 0',
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
  export default function Footer(): JSX.Element {
     return (
       <div className={css(styles.container)}>
-          <div>
+          <div className={css(styles.container)}>
             <img className={css(styles.image)} src={require('../../images/surge-logo.svg').default} width='100px' height='60px'  alt='logo'/>
             <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
           </div>
