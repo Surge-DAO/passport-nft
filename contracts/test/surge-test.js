@@ -282,6 +282,98 @@ describe('Surge', function () {
     });
   });
 
+  describe('Presale Mint', function () {
+    it('Should not allow an address to presale mint tokens if presale is not active', async function () {
+      let amountOfTokens = 1;
+
+      const pausePresaleTx = await surge.connect(owner).pausePresale();
+      await pausePresaleTx.wait();
+
+      expect(await surge.presaleIsActive()).to.equal(false);
+
+      expect(surge.connect(addr1).presaleMint(amountOfTokens)).to.be.revertedWith('Presale is currently not active');
+
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
+
+    it('Should not allow an address to presale mint more than 5 tokens per wallet', async function () {
+      let amountOfTokens = 5;
+
+      const startPresaleTx = await surge.connect(owner).startPresale();
+      await startPresaleTx.wait();
+
+      expect(await surge.presaleIsActive()).to.equal(true);
+
+      const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
+      await addToPresaleTx.wait();
+
+      let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals;
+
+      const presaleMintTx = await surge.connect(addr1).presaleMint(amountOfTokens, {
+        value: ethers.utils.parseEther(price.toString()),
+      });
+      await presaleMintTx.wait();
+
+      expect(await surge.balanceOf(addr1.address)).to.equal(5);
+
+      expect(surge.connect(addr1).presaleMint(1)).to.be.revertedWith('You already have maximum number of tokens allowed per wallet');
+
+      expect(await surge.balanceOf(addr1.address)).to.equal(5);
+    });
+
+    it('Should not allow an address to presale mint tokens if not enough ETH', async function () {
+      let amountOfTokens = 1;
+
+      const startPresaleTx = await surge.connect(owner).startPresale();
+      await startPresaleTx.wait();
+
+      expect(await surge.presaleIsActive()).to.equal(true);
+
+      const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
+      await addToPresaleTx.wait();
+
+      expect(surge.connect(addr1).presaleMint(1, {value: ethers.utils.parseEther('0')})).to.be.revertedWith('Incorrect ETH value');
+
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
+
+    it('Should not allow an address to presale mint tokens if not presale approved', async function () {
+      let amountOfTokens = 1;
+
+      const startPresaleTx = await surge.connect(owner).startPresale();
+      await startPresaleTx.wait();
+
+      expect(await surge.presaleIsActive()).to.equal(true);
+
+      let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals;
+
+      expect(surge.connect(addr1).presaleMint(1, {value: ethers.utils.parseEther(price.toString())})).to.be.revertedWith('You are not in the pre-sale');
+
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
+
+    it('Should allow an address to presale mint a token if address is approved', async function () {
+      let amountOfTokens = 1;
+
+      const startPresaleTx = await surge.connect(owner).startPresale();
+      await startPresaleTx.wait();
+
+      expect(await surge.presaleIsActive()).to.equal(true);
+
+      const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
+      await addToPresaleTx.wait();
+
+      let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals;
+
+      const presaleMintTx = await surge.connect(addr1).presaleMint(amountOfTokens, {
+        value: ethers.utils.parseEther(price.toString()),
+      });
+      await presaleMintTx.wait();
+
+      expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+    });
+  });
+
   describe('Gift Mint', function () {
     it('Should not allow any address to gift mint tokens', async function () {
       let receivers = [addr1.address];
@@ -337,4 +429,5 @@ describe('Surge', function () {
       expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith('No available tokens for gifting');
     });
   });
+
 });
