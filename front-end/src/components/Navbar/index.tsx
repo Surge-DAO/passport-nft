@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   imgLogo: {
     maxWidth: '120px'
-  },
+  }
 })
 
 export default function NavBar(): JSX.Element {
