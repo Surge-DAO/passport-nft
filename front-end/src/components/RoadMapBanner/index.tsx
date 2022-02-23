@@ -31,7 +31,7 @@ export default function RoadMapBanner() : JSX.Element{
       <div className={css(styles.wrapper)}>
         <h2>{STRINGS.roadmap}</h2>
         {roadMapItems.map((item, idx) =>{
-          return <RoadMapCard key={idx} title={item.title} stepNo={item.stepNo} active={false} description={item.description} 
+          return <RoadMapCard key={idx} title={item.title} stepNo={item.stepNo} description={item.description} 
           additionalSteps={item.additionalSteps}/>
         })}
         <p className={css(styles.update)}>{STRINGS.roadmapUpdate}</p>
