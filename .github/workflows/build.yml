@@ -26,7 +26,7 @@ jobs:
       - name: Build image
         id: build-image
         env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY-NAME }}
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY_NAME }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
