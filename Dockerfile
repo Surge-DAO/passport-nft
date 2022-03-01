@@ -1,8 +1,8 @@
 # Pull Node 16 base image
 FROM node:16-alpine
 
-# Install Python 2 - latest
-RUN apk update || : && apk add --no-cache python2
+# Install Python 3 - latest
+RUN apk update || : && apk add --no-cache python3
 
 # Set working directory
 WORKDIR /app
