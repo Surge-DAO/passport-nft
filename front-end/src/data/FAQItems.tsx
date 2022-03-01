@@ -40,4 +40,5 @@ export const faqItems: FAQParams[] = [{
   {
     question: 'How do I check my NFT rarity?',
     answer: `You go in Rarible.`
-  },];
+  }];
+  

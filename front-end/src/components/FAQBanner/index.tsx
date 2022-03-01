@@ -26,7 +26,7 @@ export default function FAQBanner(): JSX.Element {
         {faqItems.map((item, id) =>{
           return <FAQCard key={id} question={item.question} answer={item.answer} />
         })}   
-    </div>
+      </div>
     </div>
   )
 }
