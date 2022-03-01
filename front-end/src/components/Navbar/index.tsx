@@ -22,7 +22,9 @@ const styles = StyleSheet.create({
     }
   },
   flex: {
-    display: 'flex'
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'space-between'
   },
   navMobile: {
     backgroundColor: themeVariables.thirdColor
@@ -35,6 +37,12 @@ const styles = StyleSheet.create({
   },
   paddingTop30: {
     paddingTop: '30px'
+  },
+  paddingTop10: {
+    paddingTop: '10px'
+  },
+  paddingTop20: {
+    paddingTop: '20px'
   },
   displayBlock: {
     display: 'block'
@@ -52,17 +60,27 @@ export default function NavBar(): JSX.Element {
           <Image src={require('../../images/surge-logo.png')} className={css(styles.imgLogo)} />
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">
-          <Nav>
-            {navBarItems.map((item, idx) => {
-              return (
-                <Nav.Item>
-                  <Nav.Link eventKey={idx} key={idx} href={item.link} className={css(styles.navLinks)}>
-                    {item.name}
-                  </Nav.Link>
-                </Nav.Item>
-              )
-            })}
-          </Nav>
+          <div className={css(styles.flex)}>
+            <Nav className={css(styles.paddingTop10)}>
+              {navBarItems.map((item, idx) => {
+                return (
+                  <Nav.Item>
+                    <Nav.Link eventKey={idx} key={idx} href={item.link} className={css(styles.navLinks)}>
+                      {item.name}
+                    </Nav.Link>
+                  </Nav.Item>
+                )
+              })}
+            </Nav>
+            <Nav>
+              <div className={css(styles.paddingTop20)}>
+                <SocialMediaIcons />
+              </div>
+              <div className={css(styles.connectBtn)}>
+                <MainButton callToAction={STRINGS.connectWallet.toUpperCase()} primary />
+              </div>
+            </Nav>
+          </div>
         </Navbar.Collapse>
         <Navbar.Toggle aria-controls="offcanvasNavbar">
           <FontAwesomeIcon icon="bars" />
