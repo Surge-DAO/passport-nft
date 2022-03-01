@@ -36,3 +36,14 @@ npm run start   # start the front end
 npm run test    # run tests on contracts and front end
 npm run format  # run prettier
 ```
+
+
+## Deployment
+
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
+```
