@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, css } from 'aphrodite'
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 import RoadMapCard from '../RoadMapCard';
 import { roadMapItems } from '../../data/RoadMapItems';
 import { STRINGS } from '../../strings';
@@ -31,7 +31,7 @@ export default function RoadMapBanner(): JSX.Element {
       <div className={css(styles.wrapper)}>
         <h2>{STRINGS.roadmap}</h2>
         {roadMapItems.map((item, idx) =>{
-          return <RoadMapCard key={idx} title={item.title} stepNo={item.stepNo} active={true} description={item.description} 
+          return <RoadMapCard key={idx} title={item.title} stepNo={item.stepNo} description={item.description} 
           additionalSteps={item.additionalSteps}/>
         })}
         <p className={css(styles.update)}>{STRINGS.roadmapUpdate}</p>
