@@ -2,9 +2,8 @@ import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
 import CircleButton from '../CircleButton';
-import footerBackground  from '../../images/footer-background.svg';
+import footerBackground from '../../images/footer-background.svg';
 import { socialMedia } from '../../data/surgePlatforms';
-
 
 const styles = StyleSheet.create({
   container: {
@@ -20,7 +19,7 @@ const styles = StyleSheet.create({
     }
   },
   image: {
-    verticalAlign: 'middle',
+    verticalAlign: 'middle'
   },
   tagline: {
     marginLeft: '18px',
@@ -36,22 +35,26 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row'
   }
-})
+});
 
- export default function Footer(): JSX.Element {
-    return (
+export default function Footer(): JSX.Element {
+  return (
+    <div className={css(styles.container)}>
       <div className={css(styles.container)}>
-          <div className={css(styles.container)}>
-            <img className={css(styles.image)} src={require('../../images/surge-logo.svg').default} width='100px' height='60px'  alt='logo'/>
-            <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
-          </div>
-          <div className={css(styles.socials)}>
-          {socialMedia.map((platform, idx) => {
-            return (
-              <CircleButton link={platform.link} key={idx} img={platform.name} />
-            )
-          })}
-          </div>      
+        <img
+          className={css(styles.image)}
+          src={require('../../images/surge-logo.svg').default}
+          width="100px"
+          height="60px"
+          alt="logo"
+        />
+        <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
       </div>
-  )
- }
+      <div className={css(styles.socials)}>
+        {socialMedia.map((platform, idx) => {
+          return <CircleButton link={platform.link} key={idx} img={platform.name} />;
+        })}
+      </div>
+    </div>
+  );
+}

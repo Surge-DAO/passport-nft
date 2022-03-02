@@ -5,19 +5,25 @@ interface LinkItemsParams {
   link: string;
 }
 
-export const navBarItems: LinkItemsParams[] = [{
-  name: STRINGS.about,
-  link: '#'
-}, {
-  name: STRINGS.perks,
-  link: '#'
-}, {
-  name: STRINGS.roadmap,
-  link: '#'
-}, {
-  name: STRINGS.team,
-  link: '#'
-}, {
-  name: STRINGS.faq,
-  link: '#'
-}];
+export const navBarItems: LinkItemsParams[] = [
+  {
+    name: STRINGS.about,
+    link: '#'
+  },
+  {
+    name: STRINGS.perks,
+    link: '#'
+  },
+  {
+    name: STRINGS.roadmap,
+    link: '#'
+  },
+  {
+    name: STRINGS.team,
+    link: '#'
+  },
+  {
+    name: STRINGS.faq,
+    link: '#'
+  }
+];

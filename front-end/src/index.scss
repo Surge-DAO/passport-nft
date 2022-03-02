@@ -20,7 +20,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-family: 'Mattone';
   padding: 0px;
   margin: 0px;
@@ -60,5 +64,5 @@ h3 {
 
 // Bootstrap overrides
 .offcanvas-end {
-  max-width: 50%
+  max-width: 50%;
 }

@@ -1,14 +1,14 @@
-import React from "react";
-import { StyleSheet, css } from "aphrodite";
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
 import themeVariables from '../../themeVariables.module.scss';
-import MainButton from "../MainButton";
+import MainButton from '../MainButton';
 
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
     justifyContent: 'space-between',
-    width : '80%',
+    width: '80%',
     margin: 'auto',
     '@media (max-width: 768px)': {
       display: 'flex',
@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '335px',
-    padding : '40px 0',
+    padding: '40px 0',
     '@media (max-width: 768px)': {
-      width: '230px',
+      width: '230px'
     }
   },
   title: {
@@ -55,21 +55,24 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     width: '90%'
   }
-})
+});
 
- export default function AboutSurgeBanner(): JSX.Element {
-    return (
-      <div className={css(styles.wrapper)}>
-        <div className={css(styles.container)}>
+export default function AboutSurgeBanner(): JSX.Element {
+  return (
+    <div className={css(styles.wrapper)}>
+      <div className={css(styles.container)}>
         <div>
           <h2 className={css(styles.title)}>{STRINGS.aboutSurge}</h2>
-          <p className={css(styles.description)} dangerouslySetInnerHTML={{ __html: STRINGS.aboutSurgeDescription.replace(/\n/g, '<br/>')}}></p>
+          <p
+            className={css(styles.description)}
+            dangerouslySetInnerHTML={{ __html: STRINGS.aboutSurgeDescription.replace(/\n/g, '<br/>') }}
+          ></p>
           <div className={css(styles.button)}>
-            <MainButton callToAction={STRINGS.learnMoreAboutSurge} primary/>
+            <MainButton callToAction={STRINGS.learnMoreAboutSurge} primary />
           </div>
         </div>
-        <img className={css(styles.image)} src={require('../../images/Logo.png')} alt='logo'/>
+        <img className={css(styles.image)} src={require('../../images/Logo.png')} alt="logo" />
       </div>
-      </div>
-  )
- }
+    </div>
+  );
+}

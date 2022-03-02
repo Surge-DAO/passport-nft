@@ -10,14 +10,14 @@ const styles = StyleSheet.create({
   logos: {
     margin: '0 auto'
   }
-})
+});
 
 export default function PartnersBanner(): JSX.Element {
   return (
     <div className={css(styles.container)}>
-      <div className={css(styles.logos)} >
+      <div className={css(styles.logos)}>
         <p>Partner logos go here</p>
       </div>
     </div>
-  )
+  );
 }

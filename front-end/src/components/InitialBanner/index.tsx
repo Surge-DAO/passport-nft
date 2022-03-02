@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
     paddingTop: '5%',
     paddingBottom: '5%',
     paddingLeft: '10%',
-    paddingRight: '10%',
+    paddingRight: '10%'
   },
   bannerFooter: {
     paddingTop: '3%',
-    paddingBottom: '5%',
+    paddingBottom: '5%'
   },
   mintingText: {
     paddingTop: '5%'
@@ -47,5 +47,5 @@ export default function InitialComponent(): JSX.Element {
         </div>
       </div>
     </div>
-  )
+  );
 }
