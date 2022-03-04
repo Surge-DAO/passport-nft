@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, css } from 'aphrodite'
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
@@ -8,25 +8,20 @@ const styles = StyleSheet.create({
     border: `1px solid ${themeVariables.secondaryColor}`,
     borderRadius: '8px',
     padding: '10px',
-    margin: '24px', 
-  },
-  active: {
-    ':hover': {
-      border: `3px solid ${themeVariables.thirdColor}`
-    }
+    margin: '24px' 
   },
   container: {
     display: 'flex',
     justifyContent: 'flex-start',
-    padding: '24px',
+    padding: '24px'
   },
   title: {
     display: 'inline',
-    marginLeft: '24px',
+    marginLeft: '24px'
   },
   stepNo: {
     display: 'inline',
-    color: themeVariables.primaryColor,
+    color: themeVariables.primaryColor
   },
   description: {
     textAlign: 'left',
@@ -35,7 +30,8 @@ const styles = StyleSheet.create({
     lineHeight: '24px'
   },
   listStyle: {
-    listStyleType: 'circle',
+    listStyleType: 'disc',
+    listStylePosition: 'inside',
     textAlign: 'left',
     margin: '10px 48px',
     fontSize: '18px'
@@ -45,16 +41,13 @@ const styles = StyleSheet.create({
 export interface CardParams {
 	title: string,
 	stepNo: number,
-	active?: boolean,
 	description: string,
 	additionalSteps: string[]
 }
 
 export default function RoadMapCard(params: CardParams) : JSX.Element{
-  const style = params.active ? css(styles.active) : css(styles.card);
-
   return(
-    <div className={`${css(styles.card)} ${style}`}>
+    <div className={css(styles.card)}>
       <div className={css(styles.container)}>
         <h3 className={css(styles.stepNo)}>{params.stepNo}.</h3>
         <h3 className={css(styles.title)}>{params.title}</h3>

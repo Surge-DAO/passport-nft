@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
     border: `2px solid ${themeVariables.thirdColor}`,
     boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.32)',
     color: themeVariables.darkColor,
-  },
+    margin: '0 0 20px 20px',
+  }
 });
 
 interface Params {
