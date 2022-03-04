@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  Serial:
+    Type: Number
+    Description: Increment this to rotate credentials
+  AccessRoleArn:
+    Type: String
+    Description: Arn for IAM role to access the ECR image and run App Runner
+    Default: "arn:aws:iam::222432677463:role/app-runner-service-role"
+
+Resources:
+  IamUser:
+    Type: AWS::IAM::User
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
+      Policies:
+        - PolicyName: EcrForAppRunnerPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "ecr:*"
+                Resource: "*"
+        - PolicyName: AssumeIamRolePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "iam:PassRole"
+                  - "iam:CreateServiceLinkedRole"
+                  - "iam:GetRole"
+                  - "iam:CreateRole"
+                  - "iam:DeleteRole"
+                  - "iam:CreateRolePolicy"
+                  - "iam:AttachRolePolicy"
+                  - "iam:DetachRolePolicy"
+                  - "iam:UpdateAssumeRolePolicy"
+                Resource: "*"
+        - PolicyName: AppRunnerPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "apprunner:ListServices"
+                  - "apprunner:DescribeService"
+                  - "apprunner:CreateService"
+                  - "apprunner:UpdateService"
+                  - "apprunner:DeleteService"
+                Resource: "*"
+        - PolicyName: AssumeAppRunnerRolePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "sts:AssumeRole"
+                Resource: !Ref AccessRoleArn
+
+  AccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      Serial: !Ref Serial
+      Status: Active
+      UserName: !Ref IamUser
+  AccessKeySecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: !Sub "These are the credentials for the IAM User ${IamUser}"
+      SecretString: !Join
+        - ""
+        - - '{"AccessKeyId":"'
+          - !Ref AccessKey
+          - '","SecretAccessKey":"'
+          - !GetAtt AccessKey.SecretAccessKey
+          - '","AccessRoleArn":"'
+          - !Ref AccessRoleArn
+          - '"}'
