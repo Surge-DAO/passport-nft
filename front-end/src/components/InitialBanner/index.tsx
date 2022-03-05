@@ -1,9 +1,11 @@
+import React, {useState} from 'react';
 import MainButton from '../MainButton';
 import { StyleSheet, css } from 'aphrodite';
 import gradientBackground from '../../images/gradient-background.png';
 import { STRINGS } from '../../strings';
 import Image from 'react-bootstrap/Image';
 import Navbar from '../Navbar';
+import MintingModal from '../MintingModal';
 
 const styles = StyleSheet.create({
   banner: {
@@ -30,13 +32,19 @@ const styles = StyleSheet.create({
 });
 
 export default function InitialComponent(): JSX.Element {
+  const [showModal, setShowModal] = useState(false)
+
+  const openModalHandler = () =>  setShowModal(true)
+  const hideModalHandler = () => setShowModal(false)
+  
   return (
     <div className={css(styles.banner)}>
       <Navbar />
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
       <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" />
       <div className={css(styles.bannerFooter)}>
-        <MainButton callToAction={STRINGS.clickToMint} primary />
+        <MainButton callToAction={STRINGS.clickToMint} primary action={openModalHandler} />
+        <MintingModal show={showModal} hide={hideModalHandler}/>
         <div className={css(styles.mintingText)}>
           <p>
             {STRINGS.whatIs}

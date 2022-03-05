@@ -2,6 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
+import { FunctionExpression } from 'typescript';
 
 const styles = StyleSheet.create({
   button: {
@@ -25,10 +26,11 @@ const styles = StyleSheet.create({
   }
 });
 
-interface Params {
+export interface Params {
   callToAction: string;
   primary?: boolean;
   link?: string;
+  action?: () => void;
 }
 
 export default function MainButton(params: Params): JSX.Element {
@@ -36,7 +38,7 @@ export default function MainButton(params: Params): JSX.Element {
 
   return (
     <a href={params.link} target='_blank' rel='noreferrer'>
-      <Button variant="primary" className={`${css(styles.button)} ${style}`}>
+      <Button variant="primary" className={`${css(styles.button)} ${style}`} onClick={params.action}>
         {params.callToAction}
       </Button>
     </a>  
