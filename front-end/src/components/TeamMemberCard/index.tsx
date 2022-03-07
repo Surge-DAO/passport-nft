@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   card: {
     marginBottom: '20px',
     boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.16)',
-    border: '2px solid #F7C2CA',
+    border: '2px solid #F7C2CA'
   },
   cardText: {
     alignSelf: 'flex-end'
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     fontSize: '16px',
     lineHeight: '19px'
   }
-})
+});
 
 interface TeamMemberProps {
   member: TeamMember;
@@ -39,11 +39,9 @@ export default function TeamMemberCard(props: TeamMemberProps): JSX.Element {
       <Card.ImgOverlay className={css(styles.imgOverlay)}>
         <Card.Body className={css(styles.cardText)}>
           <Card.Title>{member.name}</Card.Title>
-          <Card.Text className={css(styles.role)}>
-            {member.role}
-          </Card.Text>
+          <Card.Text className={css(styles.role)}>{member.role}</Card.Text>
         </Card.Body>
       </Card.ImgOverlay>
     </Card>
-  )
+  );
 }
