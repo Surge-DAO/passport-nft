@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   flex: {
     display: 'flex'
   }
-})
+});
 
 export default function MenuItems(params: MenuItemsParams): JSX.Element {
   const { containerStyle, listStyle, textStyle = '' } = params;
@@ -35,9 +35,9 @@ export default function MenuItems(params: MenuItemsParams): JSX.Element {
                 <p className={`${textStyle} ${css(styles.itemText)}`}>{item.name}</p>
               </a>
             </li>
-          )
+          );
         })}
       </ul>
     </div>
-  )
+  );
 }

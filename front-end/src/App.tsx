@@ -11,6 +11,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import FAQBanner from './components/FAQBanner';
 import RoadMapBanner from './components/RoadMapBanner';
+import PerkBanner from './components/PerkBanner';
 
 library.add(fab, faBars, faTimes);
 
@@ -19,12 +20,13 @@ function App() {
     <div className="App">
       <InitialBanner />
       <PartnersBanner />
-      <AboutCollectionBanner/>
-      <RoadMapBanner/>
-      <AboutSurgeBanner/>
-      <FAQBanner/>
+      <AboutCollectionBanner />
+      <PerkBanner />
+      <RoadMapBanner />
+      <AboutSurgeBanner />
+      <FAQBanner />
       <TeamMembersBanner />
-      <Footer/>
+      <Footer />
     </div>
   );
 }

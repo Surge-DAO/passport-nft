@@ -228,14 +228,14 @@ describe('Surge', function () {
       let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals;
 
       const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
-        value: ethers.utils.parseEther(price.toString()),
+        value: ethers.utils.parseEther(price.toString())
       });
       await mintTx.wait();
 
       expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
 
       expect(surge.connect(addr1).mint(1)).to.be.revertedWith(
-        'You already have maximum number of tokens allowed per wallet',
+        'You already have maximum number of tokens allowed per wallet'
       );
 
       expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
@@ -263,7 +263,7 @@ describe('Surge', function () {
       let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals;
 
       const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
-        value: ethers.utils.parseEther(price.toString()),
+        value: ethers.utils.parseEther(price.toString())
       });
       await mintTx.wait();
 
@@ -310,13 +310,15 @@ describe('Surge', function () {
       let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals;
 
       const presaleMintTx = await surge.connect(addr1).presaleMint(amountOfTokens, {
-        value: ethers.utils.parseEther(price.toString()),
+        value: ethers.utils.parseEther(price.toString())
       });
       await presaleMintTx.wait();
 
       expect(await surge.balanceOf(addr1.address)).to.equal(5);
 
-      expect(surge.connect(addr1).presaleMint(1)).to.be.revertedWith('You already have maximum number of tokens allowed per wallet');
+      expect(surge.connect(addr1).presaleMint(1)).to.be.revertedWith(
+        'You already have maximum number of tokens allowed per wallet'
+      );
 
       expect(await surge.balanceOf(addr1.address)).to.equal(5);
     });
@@ -332,7 +334,9 @@ describe('Surge', function () {
       const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
       await addToPresaleTx.wait();
 
-      expect(surge.connect(addr1).presaleMint(1, {value: ethers.utils.parseEther('0')})).to.be.revertedWith('Incorrect ETH value');
+      expect(surge.connect(addr1).presaleMint(1, { value: ethers.utils.parseEther('0') })).to.be.revertedWith(
+        'Incorrect ETH value'
+      );
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
@@ -347,7 +351,9 @@ describe('Surge', function () {
 
       let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals;
 
-      expect(surge.connect(addr1).presaleMint(1, {value: ethers.utils.parseEther(price.toString())})).to.be.revertedWith('You are not in the pre-sale');
+      expect(
+        surge.connect(addr1).presaleMint(1, { value: ethers.utils.parseEther(price.toString()) })
+      ).to.be.revertedWith('You are not in the pre-sale');
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
@@ -366,7 +372,7 @@ describe('Surge', function () {
       let price = ((await surge.TOKEN_PRICE()) * amountOfTokens) / decimals;
 
       const presaleMintTx = await surge.connect(addr1).presaleMint(amountOfTokens, {
-        value: ethers.utils.parseEther(price.toString()),
+        value: ethers.utils.parseEther(price.toString())
       });
       await presaleMintTx.wait();
 
@@ -407,7 +413,7 @@ describe('Surge', function () {
       expect(await surge.balanceOf(addr1.address)).to.equal(MAX_PER_USER);
 
       expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith(
-        'Wallet has max number of tokens allowed',
+        'Wallet has max number of tokens allowed'
       );
 
       expect(await surge.balanceOf(addr1.address)).to.equal(MAX_PER_USER);
@@ -429,5 +435,4 @@ describe('Surge', function () {
       expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith('No available tokens for gifting');
     });
   });
-
 });

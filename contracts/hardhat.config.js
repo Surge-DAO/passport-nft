@@ -22,6 +22,6 @@ module.exports = {
     sources: './src',
     tests: './test',
     cache: './cache',
-    artifacts: './artifacts',
-  },
+    artifacts: './artifacts'
+  }
 };
