@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   imgLogo: {
     maxWidth: '120px'
   }
-})
+});
 
 export default function NavBar(): JSX.Element {
   return (
@@ -69,7 +69,7 @@ export default function NavBar(): JSX.Element {
                       {item.name}
                     </Nav.Link>
                   </Nav.Item>
-                )
+                );
               })}
             </Nav>
             <Nav>
@@ -103,7 +103,7 @@ export default function NavBar(): JSX.Element {
                       {item.name}
                     </Nav.Link>
                   </Nav.Item>
-                )
+                );
               })}
             </Nav>
             <div className={css(styles.paddingTop30)}>
@@ -116,5 +116,5 @@ export default function NavBar(): JSX.Element {
         </Navbar.Offcanvas>
       </Container>
     </Navbar>
-  )
+  );
 }

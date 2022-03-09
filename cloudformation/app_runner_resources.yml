@@ -1,10 +1,10 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 
 Parameters:
   EcrRepositoryName:
     Type: String
     Description: Name for the ECR Repository
-    Default: "passport-nft-ecr-repository"
+    Default: 'passport-nft-ecr-repository'
 
 Resources:
   PassportNftEcrRepository:
@@ -12,15 +12,15 @@ Resources:
     Properties:
       RepositoryName: !Ref EcrRepositoryName
       RepositoryPolicyText:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
-        - Sid: AllowAll
-          Effect: Allow
-          Principal:
-            AWS:
-              - "arn:aws:iam::222432677463:role/app-runner-service-role"
-          Action:
-            - "ecr:*"
+          - Sid: AllowAll
+            Effect: Allow
+            Principal:
+              AWS:
+                - 'arn:aws:iam::222432677463:role/app-runner-service-role'
+            Action:
+              - 'ecr:*'
       LifecyclePolicy:
         LifecyclePolicyText: |
           {
@@ -42,15 +42,14 @@ Resources:
     Properties:
       RoleName: app-runner-service-role
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
           - Effect: Allow
             Principal:
               Service:
                 - build.apprunner.amazonaws.com
             Action:
-              - "sts:AssumeRole"
+              - 'sts:AssumeRole'
       Path: /
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess
-

@@ -1,7 +1,6 @@
 export const STRINGS = {
   about: 'About',
-  aboutDescription:
-  `In September, 2021 a group of women came together and decided to take it upon themselves to balance the gender inequality within crypto.
+  aboutDescription: `In September, 2021 a group of women came together and decided to take it upon themselves to balance the gender inequality within crypto.
 
   Your Surge Passport will serve as both your point of entry, as well as a Web3
   speedboat.
@@ -29,11 +28,14 @@ export const STRINGS = {
   learnMoreAboutSurge: 'LEARN MORE ABOUT SURGE',
   minting: 'minting?',
   mintPassport: 'Mint Passport',
+  passportPerks: 'Passport Perks',
+  passportPerksDescription: 'Here are some of the amazing goodies you get when owning a Surge NFT',
+  perks: 'Perks',
   roadmap: 'Roadmap',
   roadmapUpdate: 'Get the latest updates on our roadmap',
-  perks: 'Perks',
   securingWomen: 'Securing women’s place in Web3',
+  seePerks: 'SEE PERKS',
   surgeURL: 'https://surgewomen.io',
   team: 'Team',
-  whatIs: 'Wait, what is',
+  whatIs: 'Wait, what is'
 };

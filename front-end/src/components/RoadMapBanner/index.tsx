@@ -13,35 +13,42 @@ const styles = StyleSheet.create({
     '@media (max-width: 768px)': {
       width: '100%',
       margin: '24px'
-    } 
+    }
   },
   socials: {
     margin: '24px',
     '@media (max-width: 375px) ': {
-      width: '100%',
-    } 
+      width: '100%'
+    }
   },
   update: {
     marginTop: '36px'
   }
-})
+});
 
 export default function RoadMapBanner(): JSX.Element {
-  return(
-      <div className={css(styles.wrapper)}>
-        <h2>{STRINGS.roadmap}</h2>
-        {roadMapItems.map((item, idx) =>{
-          return <RoadMapCard key={idx} title={item.title} stepNo={item.stepNo} description={item.description} 
-          additionalSteps={item.additionalSteps}/>
-        })}
-        <p className={css(styles.update)}>{STRINGS.roadmapUpdate}</p>
-        <div className={css(styles.socials)}>
+  return (
+    <div className={css(styles.wrapper)}>
+      <h2>{STRINGS.roadmap}</h2>
+      {roadMapItems.map((item, idx) => {
+        return (
+          <RoadMapCard
+            key={idx}
+            title={item.title}
+            stepNo={item.stepNo}
+            description={item.description}
+            additionalSteps={item.additionalSteps}
+          />
+        );
+      })}
+      <p className={css(styles.update)}>{STRINGS.roadmapUpdate}</p>
+      <div className={css(styles.socials)}>
         {socialMedia.map((platform, idx) => {
-            return (
-              <MainButton key={idx} callToAction={platform.name.toUpperCase()} primary={false} link={platform.link}/>
-              )
-          })}
-        </div>
-      </div>    
-  )
+          return (
+            <MainButton key={idx} callToAction={platform.name.toUpperCase()} primary={false} link={platform.link} />
+          );
+        })}
+      </div>
+    </div>
+  );
 }

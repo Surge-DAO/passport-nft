@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     margin: '10px 48px',
     fontSize: '18px'
   }
-})
+});
 
 export interface CardParams {
 	title: string,
@@ -52,12 +52,16 @@ export default function RoadMapCard(params: CardParams) : JSX.Element{
         <h3 className={css(styles.stepNo)}>{params.stepNo}.</h3>
         <h3 className={css(styles.title)}>{params.title}</h3>
       </div>
-        <p className={css(styles.description)}>{params.description}</p>     
-        <ul>
-          {params.additionalSteps.map((item, id) =>{
-            return <li key={id} className={css(styles.listStyle)}>{item}</li>
-          })}
-        </ul>
-    </div>  
-  )
+      <p className={css(styles.description)}>{params.description}</p>
+      <ul>
+        {params.additionalSteps.map((item, id) => {
+          return (
+            <li key={id} className={css(styles.listStyle)}>
+              {item}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 }

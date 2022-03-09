@@ -2,7 +2,7 @@ name: Run Unit Tests and Build
 
 on:
   push:
-    branches-ignore: [ develop, main ]
+    branches-ignore: [develop, main]
 
   pull_request:
     branches:
