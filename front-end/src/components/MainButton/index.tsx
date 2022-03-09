@@ -2,7 +2,6 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
-import { FunctionExpression } from 'typescript';
 
 const styles = StyleSheet.create({
   button: {
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export interface Params {
+ interface Params {
   callToAction: string;
   primary?: boolean;
   link?: string;

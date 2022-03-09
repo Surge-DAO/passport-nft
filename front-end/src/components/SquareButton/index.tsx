@@ -29,7 +29,7 @@ interface SquareParams {
 	value: number;
 }
 
-export default function SquareButton(params: SquareParams) : JSX.Element {
+export default function SquareButton(params: SquareParams): JSX.Element {
   return (
     <div className={css(styles.square)}>
       <h4 className={css(styles.value)}>{params.value}</h4>

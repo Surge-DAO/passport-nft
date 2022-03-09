@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
-import {Button} from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 const styles = StyleSheet.create({
   circle: {
@@ -25,7 +25,7 @@ interface OperatorParams {
   action?: () => void;
 }
 
-export default function Operator(params: OperatorParams) : JSX.Element {
+export default function Operator (params: OperatorParams): JSX.Element {
   return (
     <Button className={css(styles.circle)} onClick={params.action}>
       {params.text}

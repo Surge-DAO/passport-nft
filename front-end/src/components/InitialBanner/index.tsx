@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import MainButton from '../MainButton';
 import { StyleSheet, css } from 'aphrodite';
 import gradientBackground from '../../images/gradient-background.png';
@@ -33,9 +33,6 @@ const styles = StyleSheet.create({
 
 export default function InitialComponent(): JSX.Element {
   const [showModal, setShowModal] = useState(false)
-
-  const openModalHandler = () =>  setShowModal(true)
-  const hideModalHandler = () => setShowModal(false)
   
   return (
     <div className={css(styles.banner)}>
@@ -43,8 +40,8 @@ export default function InitialComponent(): JSX.Element {
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
       <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" />
       <div className={css(styles.bannerFooter)}>
-        <MainButton callToAction={STRINGS.clickToMint} primary action={openModalHandler} />
-        <MintingModal show={showModal} hide={hideModalHandler}/>
+        <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
+        <MintingModal show={showModal} hide={() => setShowModal(false)}/>
         <div className={css(styles.mintingText)}>
           <p>
             {STRINGS.whatIs}
