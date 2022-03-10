@@ -41,7 +41,7 @@ export default function InitialComponent(): JSX.Element {
       <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" />
       <div className={css(styles.bannerFooter)}>
         <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
-        <MintingModal show={showModal} hide={() => setShowModal(false)}/>
+        <MintingModal show={showModal} hide={() => setShowModal(false)} />
         <div className={css(styles.mintingText)}>
           <p>
             {STRINGS.whatIs}

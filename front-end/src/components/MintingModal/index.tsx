@@ -31,8 +31,8 @@ interface MintingParams {
   hide?: () => void;
 }
 
-export default function MintingModal(params : MintingParams): JSX.Element {
-  const [mintNumber, setMintNumber] = useState(1) 
+export default function MintingModal(params: MintingParams): JSX.Element {
+  const [mintNumber, setMintNumber] = useState<number>(1) 
   const increaseMint = () => mintNumber <= 4 ? setMintNumber(mintNumber + 1) : null
   const decreaseMint = () => mintNumber === 1 ? null : setMintNumber(mintNumber - 1)
  
