@@ -9,19 +9,19 @@ const styles = StyleSheet.create({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     padding: '48px'
   },
-  operatorContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    width: '60%',
-    margin: 'auto',
-    padding: '24px',
-    '@media (max-width: 768px)': {
-      width: '100%'
-    }
+  buttonContainer: {
+    marginTop: '12px',
+    marginBottom: '12px',
+  },
+  whatIsMintingTitle: {
+    paddingLeft: '48px'
+  },
+  externalLink: {
+
   }
 })
 
@@ -40,19 +40,21 @@ export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Ele
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      {/* <Modal.Header closeButton>
+      <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          
+          <h4 className={css(styles.whatIsMintingTitle)}>{STRINGS.whatIsMinting}</h4>
         </Modal.Title>
-      </Modal.Header> */}
+      </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>
-        <h4>{STRINGS.whatIsMinting}</h4>
         <p>{STRINGS.mintingMeans}</p>
         <h4>{STRINGS.howToMint}</h4>
         { whatIsMinting.map((item, id) => {
-            return <p key={id}> {id + 1}. {item.title}
+            return <div key={id} >
+              <div dangerouslySetInnerHTML={{__html: item.title}}></div>
+              <div className={css(styles.buttonContainer)}>
                 <MainButton callToAction={item.buttonTitle}/>
-            </p>;
+              </div>
+            </div>;
         }) }
       </Modal.Body>
     </Modal>
