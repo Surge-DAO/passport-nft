@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    padding: '48px'
+    padding: '48px',
+    textAlign: 'justify'
   },
   buttonContainer: {
     marginTop: '12px',
@@ -19,9 +20,6 @@ const styles = StyleSheet.create({
   },
   whatIsMintingTitle: {
     paddingLeft: '48px'
-  },
-  externalLink: {
-
   }
 })
 

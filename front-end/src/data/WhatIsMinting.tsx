@@ -6,7 +6,7 @@ export interface WhatIsMinting {
   
   export const whatIsMinting: WhatIsMinting[] = [
     {
-      title: 'Make sure your digital wallet (<a href="https://metamask.io/"> Metamask</a>, <a href="https://www.coinbase.com/"> Coinbase</a>) is set up',
+      title: 'Make sure your digital wallet (<a href="https://metamask.io/" style="color: #f86464; text-decoration: underline; font-weight: bold" target=”_blank”>Metamask</a>, <a href="https://www.coinbase.com/" <a href="https://metamask.io/" style="color: #f86464; text-decoration: underline; font-weight: bold" target=”_blank”> Coinbase</a>) is set up',
       buttonTitle: 'Step-by-step guide to Metamask',
       buttonURL: 'https://www.surgewomen.io/learn-about-web3/set-up-metamask-wallet'
     },
