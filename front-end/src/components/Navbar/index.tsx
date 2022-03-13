@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 export default function NavBar(): JSX.Element {
   return (
     <Navbar bg="transparent" expand="sm" collapseOnSelect>
-      <Container fluid>
+      <Container>
         <Navbar.Brand href={STRINGS.surgeURL}>
           <Image src={require('../../images/surge-logo.png')} className={css(styles.imgLogo)} />
         </Navbar.Brand>
