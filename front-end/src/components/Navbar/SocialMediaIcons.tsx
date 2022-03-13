@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: '25px',
-    color: 'black'
+    color: 'black',
+    paddingTop: '10px'
   }
 });
 

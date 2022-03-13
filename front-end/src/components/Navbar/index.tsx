@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     color: themeVariables.darkColor,
     lineHeight: '30px',
     textTransform: 'uppercase',
-    fontWeight: 500
+    fontWeight: 500,
+    paddingTop: '12px'
   },
   paddingTop30: {
     paddingTop: '30px'
