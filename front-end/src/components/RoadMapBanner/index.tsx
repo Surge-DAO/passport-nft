@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 export default function RoadMapBanner(): JSX.Element {
   return (
-    <div className={css(styles.wrapper)}>
+    <div className={css(styles.wrapper)} id={STRINGS.roadmap}>
       <h2>{STRINGS.roadmap}</h2>
       {roadMapItems.map((item, idx) => {
         return (

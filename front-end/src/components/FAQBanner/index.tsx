@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 export default function FAQBanner(): JSX.Element {
   return (
-    <div className={css(styles.wrapper)}>
+    <div className={css(styles.wrapper)} id={STRINGS.faq}>
       <h2>{STRINGS.frequentlyAskedQuestions}</h2>
       <div className={css(styles.container)}>
         {faqItems.map((item, id) => {

@@ -8,22 +8,22 @@ interface LinkItemsParams {
 export const navBarItems: LinkItemsParams[] = [
   {
     name: STRINGS.about,
-    link: '#'
+    link: '#About Surge'
   },
   {
     name: STRINGS.perks,
-    link: '#'
+    link: '#Perks'
   },
   {
     name: STRINGS.roadmap,
-    link: '#'
+    link: '#Roadmap'
   },
   {
     name: STRINGS.team,
-    link: '#'
+    link: '#Team'
   },
   {
     name: STRINGS.faq,
-    link: '#'
+    link: '#FAQ'
   }
 ];

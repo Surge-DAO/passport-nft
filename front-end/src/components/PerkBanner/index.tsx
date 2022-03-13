@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 
 export default function PerkBanner(): JSX.Element {
   return (
-    <div className={css(styles.wrapper)}>
+    <div className={css(styles.wrapper)} id={STRINGS.perks}>
       <h2 className={css(styles.header)}>{STRINGS.passportPerks}</h2>
       <p>{STRINGS.passportPerksDescription}</p>
 
