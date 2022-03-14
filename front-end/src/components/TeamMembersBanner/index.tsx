@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     paddingTop: '5%',
     paddingBottom: '5%'
   }
-})
+});
 
 export default function TeamMembersBanner(): JSX.Element {
   return (
@@ -33,5 +33,5 @@ export default function TeamMembersBanner(): JSX.Element {
         ))}
       </Row>
     </Container>
-  )
+  );
 }

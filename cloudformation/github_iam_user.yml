@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 
 Parameters:
   Serial:
@@ -7,7 +7,7 @@ Parameters:
   AccessRoleArn:
     Type: String
     Description: Arn for IAM role to access the ECR image and run App Runner
-    Default: "arn:aws:iam::222432677463:role/app-runner-service-role"
+    Default: 'arn:aws:iam::222432677463:role/app-runner-service-role'
 
 Resources:
   IamUser:
@@ -18,47 +18,47 @@ Resources:
       Policies:
         - PolicyName: EcrForAppRunnerPolicy
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action:
-                  - "ecr:*"
-                Resource: "*"
+                  - 'ecr:*'
+                Resource: '*'
         - PolicyName: AssumeIamRolePolicy
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action:
-                  - "iam:PassRole"
-                  - "iam:CreateServiceLinkedRole"
-                  - "iam:GetRole"
-                  - "iam:CreateRole"
-                  - "iam:DeleteRole"
-                  - "iam:CreateRolePolicy"
-                  - "iam:AttachRolePolicy"
-                  - "iam:DetachRolePolicy"
-                  - "iam:UpdateAssumeRolePolicy"
-                Resource: "*"
+                  - 'iam:PassRole'
+                  - 'iam:CreateServiceLinkedRole'
+                  - 'iam:GetRole'
+                  - 'iam:CreateRole'
+                  - 'iam:DeleteRole'
+                  - 'iam:CreateRolePolicy'
+                  - 'iam:AttachRolePolicy'
+                  - 'iam:DetachRolePolicy'
+                  - 'iam:UpdateAssumeRolePolicy'
+                Resource: '*'
         - PolicyName: AppRunnerPolicy
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action:
-                  - "apprunner:ListServices"
-                  - "apprunner:DescribeService"
-                  - "apprunner:CreateService"
-                  - "apprunner:UpdateService"
-                  - "apprunner:DeleteService"
-                Resource: "*"
+                  - 'apprunner:ListServices'
+                  - 'apprunner:DescribeService'
+                  - 'apprunner:CreateService'
+                  - 'apprunner:UpdateService'
+                  - 'apprunner:DeleteService'
+                Resource: '*'
         - PolicyName: AssumeAppRunnerRolePolicy
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action:
-                  - "sts:AssumeRole"
+                  - 'sts:AssumeRole'
                 Resource: !Ref AccessRoleArn
 
   AccessKey:
@@ -70,9 +70,9 @@ Resources:
   AccessKeySecret:
     Type: AWS::SecretsManager::Secret
     Properties:
-      Description: !Sub "These are the credentials for the IAM User ${IamUser}"
+      Description: !Sub 'These are the credentials for the IAM User ${IamUser}'
       SecretString: !Join
-        - ""
+        - ''
         - - '{"AccessKeyId":"'
           - !Ref AccessKey
           - '","SecretAccessKey":"'

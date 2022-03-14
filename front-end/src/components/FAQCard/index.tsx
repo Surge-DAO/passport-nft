@@ -20,45 +20,52 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   answerSection: {
-    transition: '0.5s'    
+    transition: '0.5s'
   },
   line: {
     border: `1px solid  ${themeVariables.secondaryColor}`
   },
-  answer:{
+  answer: {
     marginLeft: '24px',
     textAlign: 'left',
     padding: '10px'
   },
   icon: {
     marginTop: '20px'
-  } 
-})
+  }
+});
 
 export interface FAQParams {
-	question: string;
-	answer: string;
-	active?: boolean;
+  question: string;
+  answer: string;
+  active?: boolean;
 }
-  
+
 export default function FAQCard(params: FAQParams): JSX.Element {
   const [open, setOpen] = useState<boolean>(false);
 
-  return(
+  return (
     <div className={css(styles.card)} onClick={() => setOpen(!open)}>
       <div className={css(styles.questionSection)}>
-        <h5 >{params.question}</h5>
-        {!open && <FontAwesomeIcon className={css(styles.icon)} icon={faAngleDown} size="lg" onClick={() => setOpen(!open)}/>}
-        {open && <FontAwesomeIcon className={css(styles.icon)} icon={faAngleUp} size="lg" onClick={() => setOpen(!open)}/>}
-      </div>
-      <div> 
+        <h5>{params.question}</h5>
+        {!open && (
+          <FontAwesomeIcon className={css(styles.icon)} icon={faAngleDown} size="lg" onClick={() => setOpen(!open)} />
+        )}
         {open && (
-          <div className={css(styles.answerSection)}> 
+          <FontAwesomeIcon className={css(styles.icon)} icon={faAngleUp} size="lg" onClick={() => setOpen(!open)} />
+        )}
+      </div>
+      <div>
+        {open && (
+          <div className={css(styles.answerSection)}>
             <hr className={css(styles.line)} />
-            <p className={css(styles.answer)} dangerouslySetInnerHTML={{ __html: `${params.answer}`.replace(/\n/g, '<br/>')}}></p> 
+            <p
+              className={css(styles.answer)}
+              dangerouslySetInnerHTML={{ __html: `${params.answer}`.replace(/\n/g, '<br/>') }}
+            ></p>
           </div>
-        )}              
-      </div> 
-    </div>  
-  )
+        )}
+      </div>
+    </div>
+  );
 }

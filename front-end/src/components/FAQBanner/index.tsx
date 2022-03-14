@@ -1,4 +1,4 @@
-import { StyleSheet, css } from 'aphrodite'
+import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
 import FAQCard from '../FAQCard';
 import { faqItems } from '../../data/FAQItems';
@@ -15,18 +15,18 @@ const styles = StyleSheet.create({
     '@media (max-width: 768px)': {
       width: '100%'
     }
-  },
-})
+  }
+});
 
 export default function FAQBanner(): JSX.Element {
-  return(
+  return (
     <div className={css(styles.wrapper)}>
       <h2>{STRINGS.frequentlyAskedQuestions}</h2>
       <div className={css(styles.container)}>
-        {faqItems.map((item, id) =>{
-          return <FAQCard key={id} question={item.question} answer={item.answer} />
-        })}   
+        {faqItems.map((item, id) => {
+          return <FAQCard key={id} question={item.question} answer={item.answer} />;
+        })}
+      </div>
     </div>
-    </div>
-  )
+  );
 }

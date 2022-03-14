@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     marginRight: '25px',
     color: 'black'
   }
-})
+});
 
 export default function SocialMediaIcons(): JSX.Element {
   return (
@@ -23,8 +23,8 @@ export default function SocialMediaIcons(): JSX.Element {
               <FontAwesomeIcon icon={['fab', platform.name]} />
             </a>
           </li>
-        )
+        );
       })}
     </ul>
-  )
+  );
 }
