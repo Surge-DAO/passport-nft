@@ -7,7 +7,8 @@ import { PerkBannerItems } from '../../data/PerkBannerItems';
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: themeVariables.lightGreyColor
+    backgroundColor: themeVariables.lightGreyColor,
+    paddingTop: '20px'
   },
   header: {
     padding: '25px 0px'

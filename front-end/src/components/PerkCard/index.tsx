@@ -37,17 +37,17 @@ const styles = StyleSheet.create({
 const getIcon = (title: string) => {
   switch (title) {
     case 'Education':
-      return <EducationIcon height={120} width={120} />;
+      return <EducationIcon height={80} width={80} />;
     case 'DAOs':
-      return <DAOsIcon height={120} width={120} />;
+      return <DAOsIcon height={80} width={80} />;
     case 'NFTs':
-      return <NFTsIcon height={120} width={120} />;
+      return <NFTsIcon height={80} width={80} />;
     case 'DeFi':
-      return <DeFiIcon height={120} width={120} />;
+      return <DeFiIcon height={80} width={80} />;
     case 'Gaming':
-      return <GamingIcon height={120} width={120} />;
+      return <GamingIcon height={80} width={80} />;
     case 'IRL':
-      return <IRLIcon height={120} width={120} />;
+      return <IRLIcon height={80} width={80} />;
   }
 };
 
@@ -56,7 +56,7 @@ export default function PerkCard(props: Props): JSX.Element {
   return (
     <div className={css(styles.container)}>
       <div className={css(styles.iconContainer)}>{getIcon(perk.title)}</div>
-      <h2>{perk.title}</h2>
+      <h4>{perk.title}</h4>
       <div className={css(styles.buttonContainer)}>
         <MainButton callToAction={STRINGS.seePerks} fullWidth />
       </div>
