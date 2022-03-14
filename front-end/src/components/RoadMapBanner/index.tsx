@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   wrapper: {
     width: '60%',
     margin: 'auto',
+    paddingTop: '40px',
     '@media (max-width: 768px)': {
       width: '100%',
       margin: '24px'
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
   },
   socials: {
     margin: '24px',
-    '@media (max-width: 375px) ': {
+    '@media (max-width: 375px)': {
       width: '100%'
     }
   },

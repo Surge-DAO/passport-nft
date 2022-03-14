@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
     borderRadius: '24px',
     fontFamily: themeVariables.secondaryFont,
     fontWeight: 800,
-    padding: '16px 24px'
+    padding: '16px 24px',
+    marginRight: '18px'
   },
   primaryButton: {
     background: themeVariables.primaryColor,

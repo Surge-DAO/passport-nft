@@ -15,13 +15,16 @@ const styles = StyleSheet.create({
     '@media (max-width: 768px)': {
       width: '100%'
     }
+  },
+  title: {
+    paddingTop: '48px'
   }
 });
 
 export default function FAQBanner(): JSX.Element {
   return (
     <div className={css(styles.wrapper)} id={STRINGS.faq}>
-      <h2>{STRINGS.frequentlyAskedQuestions}</h2>
+      <h2 className={css(styles.title)}>{STRINGS.frequentlyAskedQuestions}</h2>
       <div className={css(styles.container)}>
         {faqItems.map((item, id) => {
           return <FAQCard key={id} question={item.question} answer={item.answer} />;
