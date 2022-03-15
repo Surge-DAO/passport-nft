@@ -1,6 +1,10 @@
 # Pull Node 16 base image
 FROM node:16-alpine
 
+# Install Python 3 - latest
+RUN apk update || : && apk add --no-cache python3
+RUN apk add g++ make
+
 # Set working directory
 WORKDIR /app
 
