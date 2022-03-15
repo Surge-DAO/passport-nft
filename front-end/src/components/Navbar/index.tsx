@@ -14,11 +14,11 @@ import { navBarItems } from '../../data/NavBarItems';
 
 const styles = StyleSheet.create({
   connectBtn: {
+    paddingTop: '20px',
     paddingLeft: '30px',
     margin: 'auto',
     '@media (min-width: 375px) and (max-width: 768px)': {
-      paddingTop: '30px',
-      paddingLeft: '0px'
+      paddingTop: '20px'
     }
   },
   flex: {
@@ -34,7 +34,9 @@ const styles = StyleSheet.create({
     lineHeight: '30px',
     textTransform: 'uppercase',
     fontWeight: 500,
-    paddingTop: '12px'
+    '@media (min-width: 375px) and (max-width: 952px)': {
+      paddingTop: '20px'
+    }
   },
   paddingTop30: {
     paddingTop: '30px'
@@ -57,12 +59,12 @@ export default function NavBar(): JSX.Element {
   return (
     <Navbar bg="transparent" expand="sm" collapseOnSelect>
       <Container>
-        <Navbar.Brand href={STRINGS.surgeURL}>
+        <Navbar.Brand href={STRINGS.surgeURL} className={css(styles.paddingTop30)}> 
           <Image src={require('../../images/surge-logo.png')} className={css(styles.imgLogo)} />
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">
           <div className={css(styles.flex)}>
-            <Nav className={css(styles.paddingTop10)}>
+            <Nav className={css(styles.paddingTop30)}>
               {navBarItems.map((item, idx) => {
                 return (
                   <Nav.Item>
