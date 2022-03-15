@@ -53,9 +53,9 @@ export default function MintingModal(params: MintingParams): JSX.Element {
       <Modal.Body className={css(styles.wrapper)}>
         <p>{STRINGS.howManyPassport}</p>
         <div className={css(styles.operatorContainer)}>
-          <Operator text='-' action={() => decreaseMint()} />
+          <Operator text='-' action={decreaseMint} />
           <SquareButton value={mintNumber} />
-          <Operator text='+' action={() => increaseMint()} />
+          <Operator text='+' action={increaseMint} />
         </div>
         <MainButton callToAction={STRINGS.clickToMint} primary action={() =>{console.log("call the minting function from the smart contracts")}}/>
       </Modal.Body>

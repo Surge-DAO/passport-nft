@@ -40,10 +40,8 @@ export default function MainButton(params: Params): JSX.Element {
   const fullWidth = params.fullWidth ? css(styles.fullWidth) : undefined;
 
   return (
-    <a href={params.link} target="_blank" rel="noreferrer">
-      <Button variant="primary" className={`${css(styles.button)} ${style} ${fullWidth}`} onClick={params.action}>
+      <Button variant="primary" className={`${css(styles.button)} ${style} ${fullWidth}`} onClick={params.link ? () => window.open(params.link) : params.action}>
         {params.callToAction}
       </Button>
-    </a>
   );
 }

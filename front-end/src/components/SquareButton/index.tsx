@@ -21,12 +21,11 @@ const styles = StyleSheet.create({
   value : {
     textAlign: 'center',
     marginTop: '4px'
-  }
-  
+  } 
 })
 
 interface SquareParams {
-	value: number;
+  value: number;
 }
 
 export default function SquareButton(params: SquareParams): JSX.Element {
