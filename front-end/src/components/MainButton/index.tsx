@@ -21,6 +21,10 @@ const styles = StyleSheet.create({
     border: `2px solid ${themeVariables.thirdColor}`,
     boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.32)',
     color: themeVariables.darkColor,
+    ':hover': {
+      background: themeVariables.primaryColor,
+      color: themeVariables.lightColor
+    }
   },
   fullWidth: {
     width: '100%'
@@ -32,6 +36,8 @@ interface Params {
   primary?: boolean;
   link?: string;
   fullWidth?: boolean;
+  onMouseEnter?: void;
+  onMouseLeave?: void;
 }
 
 export default function MainButton(params: Params): JSX.Element {

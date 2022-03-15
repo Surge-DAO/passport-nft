@@ -1,5 +1,4 @@
-// import React, {useState} from 'react';
-import { StyleSheet, css } from 'aphrodite'
+import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
 import { Modal } from 'react-bootstrap';
 import MainButton from '../MainButton';
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: '12px',
-    marginBottom: '12px',
+    marginBottom: '12px'
   },
   whatIsMintingTitle: {
     paddingLeft: '48px'
@@ -32,8 +31,8 @@ export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Ele
   return(
     <div>
       <Modal
-      show= {params.show}
-      onHide= {params.hide}
+      show={params.show}
+      onHide={params.hide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -46,14 +45,14 @@ export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Ele
       <Modal.Body className={css(styles.wrapper)}>
         <p>{STRINGS.mintingMeans}</p>
         <h4>{STRINGS.howToMint}</h4>
-        { whatIsMinting.map((item, id) => {
-            return <div key={id} >
-              <div dangerouslySetInnerHTML={{__html: item.title}}></div>
+        {whatIsMinting.map((item, id) => {
+            return <div key={id}>
+              <div dangerouslySetInnerHTML={{__html: item.title}} />
               <div className={css(styles.buttonContainer)}>
                 <MainButton callToAction={item.buttonTitle}/>
               </div>
             </div>;
-        }) }
+        })}
       </Modal.Body>
     </Modal>
     </div>

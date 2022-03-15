@@ -6,12 +6,12 @@ export interface WhatIsMinting {
   
   export const whatIsMinting: WhatIsMinting[] = [
     {
-      title: 'Make sure your digital wallet (<a href="https://metamask.io/" style="color: #f86464; text-decoration: underline; font-weight: bold" target=”_blank”>Metamask</a>, <a href="https://www.coinbase.com/" <a href="https://metamask.io/" style="color: #f86464; text-decoration: underline; font-weight: bold" target=”_blank”> Coinbase</a>) is set up',
+      title: 'Make sure your digital wallet (<a href="https://metamask.io/" style="color: #f86464; text-decoration: underline; font-weight: bold" target=”_blank”>Metamask</a>, <a href="https://www.coinbase.com/" style="color: #f86464; text-decoration: underline; font-weight: bold" target=”_blank”> Coinbase</a>) is set up',
       buttonTitle: 'Step-by-step guide to Metamask',
       buttonURL: 'https://www.surgewomen.io/learn-about-web3/set-up-metamask-wallet'
     },
     {
-      title: 'Check your wallet has 0.08 ETH (Ethereum cryptocurrency) to mint, or “purchase” the NFT.',
+      title: 'Check your wallet has 0.08 ETH (<a href="https://www.surgewomen.io/learn-about-web3/what-is-ethereum" style="color: #f86464; text-decoration: underline; font-weight: bold" target=”_blank”>Ethereum cryptocurrency</a>) to mint, or “purchase” the NFT.',
       buttonTitle: 'Step-by-step guide to purchasing ETH',
       buttonURL: 'https://www.surgewomen.io/learn-about-web3/how-to-purchase-cryptocurrency'
     },
