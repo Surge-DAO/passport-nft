@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
   },
   socials: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginTop: '24px'
   }
 });
 

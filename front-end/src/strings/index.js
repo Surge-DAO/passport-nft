@@ -1,13 +1,10 @@
 export const STRINGS = {
   about: 'About',
-  aboutDescription: `In September, 2021 a group of women came together and decided to take it upon themselves to balance the gender inequality within crypto.
+  aboutDescription: `6 months ago, a group of women came together and decided to work on balancing gender inequality within crypto.
 
-  Your Surge Passport will serve as both your point of entry, as well as a Web3
-  speedboat.
-
-  You’ll get access to educational platforms, indulge in Web3 organizations,
-  receive mentorships from experts in the industry, get whitelisted for new innovative
-  NFT projects, as well as other perks and discounts within the crypto space.
+  Today, the Surge Passport is your golden ticket to Web3. It is designed strategically to serve both as a point of entry and an accelerator to your Web3 development. And a beautiful art collection piece of course!
+  
+  With the Passport, you get access to educational courses, scholarships, mentorships, discounts, digital tools, presale lists, IRL experiences… and this is just the beginning.
   `,
   aboutCollection: 'About the Collection',
   aboutSurge: 'About Surge',

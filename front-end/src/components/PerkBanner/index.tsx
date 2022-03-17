@@ -7,7 +7,8 @@ import { PerkBannerItems } from '../../data/PerkBannerItems';
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: themeVariables.lightGreyColor
+    backgroundColor: themeVariables.lightGreyColor,
+    paddingTop: '20px'
   },
   header: {
     padding: '25px 0px'
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
 
 export default function PerkBanner(): JSX.Element {
   return (
-    <div className={css(styles.wrapper)}>
+    <div className={css(styles.wrapper)} id={STRINGS.perks}>
       <h2 className={css(styles.header)}>{STRINGS.passportPerks}</h2>
       <p>{STRINGS.passportPerksDescription}</p>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
+import { STRINGS } from '../../strings';
 
 const styles = StyleSheet.create({
   container: {
