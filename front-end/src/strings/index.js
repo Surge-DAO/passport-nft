@@ -37,5 +37,8 @@ export const STRINGS = {
   seePerks: 'SEE PERKS',
   surgeURL: 'https://surgewomen.io',
   team: 'Team',
-  whatIs: 'Wait, what is'
+  whatIs: 'Wait, what is',
+  whatIsMinting: 'What is minting?',
+  mintingMeans: 'Minting means generating the NFT. The Surge Passport is a collection of 5,000 NFTs built through our generative art algorithm. The moment you click “mint” we generate one for you and transfer it to your address so you´re the owner and can start accessing all the perks',
+  howToMint: 'How to mint?',
 };

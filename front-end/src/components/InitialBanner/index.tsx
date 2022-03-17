@@ -6,6 +6,7 @@ import { STRINGS } from '../../strings';
 import Image from 'react-bootstrap/Image';
 import Navbar from '../Navbar';
 import MintingModal from '../MintingModal';
+import WhatIsMintingModal from '../WhatIsMintingModal';
 
 const styles = StyleSheet.create({
   banner: {
@@ -28,12 +29,23 @@ const styles = StyleSheet.create({
   },
   mintingText: {
     paddingTop: '5%'
+  },
+  whatIsMintingModalButton: {
+    background: 'none',
+    color: 'inherit',
+    border: 'none',
+    padding: 0,
+    font: 'inherit',
+    cursor: 'pointer',
+    outline: 'inherit',
   }
 });
 
 export default function InitialComponent(): JSX.Element {
   const [showModal, setShowModal] = useState(false)
-  
+
+  const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState(false);
+
   return (
     <div className={css(styles.banner)}>
       <Navbar />
@@ -43,12 +55,13 @@ export default function InitialComponent(): JSX.Element {
         <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         <MintingModal show={showModal} hide={() => setShowModal(false)} />
         <div className={css(styles.mintingText)}>
-          <p>
+          <button className={css(styles.whatIsMintingModalButton)} onClick={() => setShowWhatIsMintingModal(!showWhatIsMintingModal)}>
             {STRINGS.whatIs}
             <span>
               <strong> {STRINGS.minting}</strong>
             </span>
-          </p>
+          </button>
+          <WhatIsMintingModal show={showWhatIsMintingModal} hide={() => setShowWhatIsMintingModal(false)}/>
         </div>
       </div>
     </div>
