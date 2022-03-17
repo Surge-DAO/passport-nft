@@ -49,7 +49,7 @@ export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Ele
             return <div key={id}>
               <div dangerouslySetInnerHTML={{__html: item.title}} />
               <div className={css(styles.buttonContainer)}>
-                <MainButton callToAction={item.buttonTitle}/>
+                <MainButton callToAction={item.buttonTitle} link={item.buttonURL}/>
               </div>
             </div>;
         })}

@@ -56,8 +56,8 @@ export default function RoadMapCard(params: CardParams) : JSX.Element{
       <ul>
         {params.additionalSteps.map((item, id) => {
           return (
-            <li key={id} className={css(styles.listStyle)}>
-              {item}
+            <li key={id} className={css(styles.listStyle)} dangerouslySetInnerHTML={{ __html: item.replace(/\n/g, '<br/>') }}>
+              {/* {item} */}
             </li>
           );
         })}
