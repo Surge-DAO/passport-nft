@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   wrapper: {
     width: '60%',
     margin: 'auto',
+    paddingTop: '40px',
     '@media (max-width: 768px)': {
       width: '100%',
       margin: '24px'
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
   },
   socials: {
     margin: '24px',
-    '@media (max-width: 375px) ': {
+    '@media (max-width: 375px)': {
       width: '100%'
     }
   },
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 
 export default function RoadMapBanner(): JSX.Element {
   return (
-    <div className={css(styles.wrapper)}>
+    <div className={css(styles.wrapper)} id={STRINGS.roadmap}>
       <h2>{STRINGS.roadmap}</h2>
       {roadMapItems.map((item, idx) => {
         return (

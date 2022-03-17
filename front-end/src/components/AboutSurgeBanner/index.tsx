@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 
 export default function AboutSurgeBanner(): JSX.Element {
   return (
-    <div className={css(styles.wrapper)}>
+    <div className={css(styles.wrapper)} id={STRINGS.aboutSurge}>
       <div className={css(styles.container)}>
         <div>
           <h2 className={css(styles.title)}>{STRINGS.aboutSurge}</h2>
