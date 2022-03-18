@@ -9,13 +9,7 @@ const styles = StyleSheet.create({
     marginBottom: '20px',
     boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.16)',
     border: '2px solid #F7C2CA',
-    // width: '250px',
-    display: 'flex',
-    // '@media (min-width: 375px) and (max-width: 768px)': {
-    //   marginRight: '20px',
-    //   display: 'flex',
-    //   flexDirection: 'column'
-    // }
+    display: 'flex'
   },
   cardText: {
     alignSelf: 'flex-end'
