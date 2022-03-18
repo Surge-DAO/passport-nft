@@ -8,7 +8,14 @@ const styles = StyleSheet.create({
   card: {
     marginBottom: '20px',
     boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.16)',
-    border: '2px solid #F7C2CA'
+    border: '2px solid #F7C2CA',
+    // width: '250px',
+    display: 'flex',
+    // '@media (min-width: 375px) and (max-width: 768px)': {
+    //   marginRight: '20px',
+    //   display: 'flex',
+    //   flexDirection: 'column'
+    // }
   },
   cardText: {
     alignSelf: 'flex-end'
@@ -34,8 +41,8 @@ export default function TeamMemberCard(props: TeamMemberProps): JSX.Element {
   const { member } = props;
 
   return (
-    <Card className={css(styles.card)}>
-      <Card.Img src={process.env.PUBLIC_URL + member.image} />
+    <Card className={css(styles.card)} onClick={() => window.open(member.link)}>
+      <Card.Img src={process.env.PUBLIC_URL + member.image}/>
       <Card.ImgOverlay className={css(styles.imgOverlay)}>
         <Card.Body className={css(styles.cardText)}>
           <Card.Title>{member.name}</Card.Title>
