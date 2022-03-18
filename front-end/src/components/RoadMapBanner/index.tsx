@@ -12,12 +12,16 @@ const styles = StyleSheet.create({
     margin: 'auto',
     paddingTop: '40px',
     '@media (max-width: 768px)': {
-      width: '100%',
-      margin: '24px'
+      width: '100%'
     }
   },
   socials: {
-    margin: '24px',
+    marginTop: '34px',
+    marginBottom: '60px',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
     '@media (max-width: 375px)': {
       width: '100%'
     }
@@ -39,6 +43,7 @@ export default function RoadMapBanner(): JSX.Element {
             stepNo={item.stepNo}
             description={item.description}
             additionalSteps={item.additionalSteps}
+            active={item.active}
           />
         );
       })}
@@ -46,7 +51,7 @@ export default function RoadMapBanner(): JSX.Element {
       <div className={css(styles.socials)}>
         {socialMedia.map((platform, idx) => {
           return (
-            <MainButton key={idx} callToAction={platform.name.toUpperCase()} primary={false} link={platform.link} />
+            <MainButton key={idx} callToAction={platform.name.toUpperCase()} link={platform.link} />
           );
         })}
       </div>

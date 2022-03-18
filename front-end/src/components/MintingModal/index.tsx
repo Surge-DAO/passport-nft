@@ -32,10 +32,16 @@ interface MintingParams {
 }
 
 export default function MintingModal(params: MintingParams): JSX.Element {
-  const [mintNumber, setMintNumber] = useState<number>(1) 
-  const increaseMint = () => mintNumber <= 4 ? setMintNumber(mintNumber + 1) : null
-  const decreaseMint = () => mintNumber === 1 ? null : setMintNumber(mintNumber - 1)
- 
+  const [mintNumber, setMintNumber] = useState<number>(1)
+
+  function increaseMint() {
+    return mintNumber <= 4 ? setMintNumber(mintNumber + 1) : null;
+  }
+
+  function decreaseMint() {
+    return mintNumber === 1 ? null : setMintNumber(mintNumber - 1);
+  }
+
   return(
     <div>
       <Modal
@@ -47,7 +53,7 @@ export default function MintingModal(params: MintingParams): JSX.Element {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {STRINGS.mintPassport}
+          <h4>{STRINGS.mintPassport}</h4>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>

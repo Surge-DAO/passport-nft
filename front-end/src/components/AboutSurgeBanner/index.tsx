@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     backgroundColor: themeVariables.lightGreyColor,
-    paddingBottom: '40px',
+    paddingBottom: '60px',
     '@media (max-width: 768px)': {
       display: 'flex',
       flexDirection: 'column-reverse',

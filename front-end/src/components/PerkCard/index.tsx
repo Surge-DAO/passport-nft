@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
-
-import MainButton from '../MainButton';
-import { EducationIcon, IRLIcon, DAOsIcon, NFTsIcon, DeFiIcon, GamingIcon } from '../icons';
 import { STRINGS } from '../../strings';
+import { EducationIcon, IRLIcon, DAOsIcon, NFTsIcon, DeFiIcon } from '../icons';
+import MainButton from '../MainButton';
 
 export interface Perk {
   title: string;
@@ -22,8 +21,10 @@ const styles = StyleSheet.create({
     border: `2px solid ${themeVariables.thirdColor}`,
     borderRadius: '8px',
     boxShadow: `1px 1px 10px 1px rgba(43, 43, 43, 0.3)`,
-    flex: 1,
-    margin: '0 16px'
+    paddingLeft: '15px',
+    paddingRight: '15px',
+    marginTop: '10px',
+    marginBottom: '15px'
   },
   iconContainer: {
     marginTop: '12px'
@@ -38,14 +39,12 @@ const getIcon = (title: string) => {
   switch (title) {
     case 'Education':
       return <EducationIcon height={80} width={80} />;
-    case 'DAOs':
+    case 'Web3 Tooling':
       return <DAOsIcon height={80} width={80} />;
     case 'NFTs':
       return <NFTsIcon height={80} width={80} />;
-    case 'DeFi':
+    case 'Finance':
       return <DeFiIcon height={80} width={80} />;
-    case 'Gaming':
-      return <GamingIcon height={80} width={80} />;
     case 'IRL':
       return <IRLIcon height={80} width={80} />;
   }
@@ -53,6 +52,7 @@ const getIcon = (title: string) => {
 
 export default function PerkCard(props: Props): JSX.Element {
   const { perk } = props;
+
   return (
     <div className={css(styles.container)}>
       <div className={css(styles.iconContainer)}>{getIcon(perk.title)}</div>

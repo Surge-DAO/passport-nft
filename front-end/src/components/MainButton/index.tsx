@@ -10,12 +10,16 @@ const styles = StyleSheet.create({
     borderRadius: '24px',
     fontFamily: themeVariables.secondaryFont,
     fontWeight: 800,
-    padding: '16px 24px',
-    marginRight: '18px'
+    padding: '16px 24px'
   },
   primaryButton: {
     background: themeVariables.primaryColor,
-    color: themeVariables.lightColor
+    border: `2px solid ${themeVariables.thirdColor}`,
+    color: themeVariables.lightColor,
+    ':hover': {
+      background: themeVariables.whiteColor,
+      color: themeVariables.darkColor,
+    }
   },
   secondaryButton: {
     background: themeVariables.whiteColor,

@@ -2,12 +2,12 @@ import { Perk } from '../../src/components/PerkCard';
 
 export const PerkBannerItems: Perk[] = [
   {
-    title: 'Education',
+    title: 'IRL',
     description: '',
     benefits: []
   },
   {
-    title: 'DAOs',
+    title: 'Web3 Tooling',
     description: '',
     benefits: []
   },
@@ -17,17 +17,17 @@ export const PerkBannerItems: Perk[] = [
     benefits: []
   },
   {
-    title: 'DeFi',
+    title: 'Finance',
     description: '',
     benefits: []
   },
+  // {
+  //   title: 'Gaming',
+  //   description: '',
+  //   benefits: []
+  // },
   {
-    title: 'Gaming',
-    description: '',
-    benefits: []
-  },
-  {
-    title: 'IRL',
+    title: 'Education',
     description: '',
     benefits: []
   }

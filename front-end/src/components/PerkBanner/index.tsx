@@ -8,39 +8,41 @@ import { PerkBannerItems } from '../../data/PerkBannerItems';
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: themeVariables.lightGreyColor,
-    paddingTop: '20px'
+    paddingTop: '20px',
+    paddingBottom: '40px'
   },
   header: {
-    padding: '25px 0px'
+    padding: '25px 10px'
   },
   perkContainer: {
-    padding: '25px 50px 50px 50px'
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    '@media (max-width: 768px)': {
+      flexWrap: 'wrap'
+    }
   },
   perkRow: {
     display: 'flex',
-    flexDirection: 'row',
-    margin: '2% 10%'
+    flexDirection: 'row'
   }
 });
 
 export default function PerkBanner(): JSX.Element {
   return (
     <div className={css(styles.wrapper)} id={STRINGS.perks}>
-      <h2 className={css(styles.header)}>{STRINGS.passportPerks}</h2>
-      <p>{STRINGS.passportPerksDescription}</p>
 
-      <div className={css(styles.perkContainer)}>
-        <div className={css(styles.perkRow)}>
-          <PerkCard perk={PerkBannerItems[0]} />
-          <PerkCard perk={PerkBannerItems[1]} />
-          <PerkCard perk={PerkBannerItems[2]} />
-        </div>
-        <div className={css(styles.perkRow)}>
-          <PerkCard perk={PerkBannerItems[3]} />
-          <PerkCard perk={PerkBannerItems[4]} />
-          <PerkCard perk={PerkBannerItems[5]} />
-        </div>
+      <div className={css(styles.header)}>
+        <h2 className={css(styles.header)}>{STRINGS.passportPerks}</h2>
+        <p>{STRINGS.passportPerksDescription}</p>
       </div>
+
+      <div className={`${css(styles.perkContainer)} container`}>
+        {PerkBannerItems.map((perk) => {
+          return <PerkCard perk={perk} />;
+        })}
+      </div>
+
     </div>
   );
 }

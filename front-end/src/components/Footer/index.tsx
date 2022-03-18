@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   socials: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: '24px'
+    padding: '24px'
   }
 });
 
