@@ -12,18 +12,28 @@ const styles = StyleSheet.create({
     display: 'flex'
   },
   cardText: {
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
+    paddingBottom: '0'
   },
   imgOverlay: {
     display: 'flex',
-    background: `linear-gradient(180deg, rgba(251, 246, 249, 0) 35%, ${themeVariables.whiteColor} 90%)`
+    background: `linear-gradient(180deg, rgba(251, 246, 249, 0) 35%, ${themeVariables.whiteColor} 90%)`,
+    cursor: 'pointer'
   },
   role: {
     textTransform: 'uppercase',
     color: themeVariables.primaryColor,
     fontWeight: 700,
     fontSize: '16px',
-    lineHeight: '19px'
+    lineHeight: '19px',
+    '@media (max-width: 1199px)': {
+      fontSize: '14px'
+    }
+  },
+  name: {
+    '@media (max-width: 1199px)': {
+      fontSize: '18px'
+    }
   }
 });
 
@@ -39,7 +49,7 @@ export default function TeamMemberCard(props: TeamMemberProps): JSX.Element {
       <Card.Img src={process.env.PUBLIC_URL + member.image}/>
       <Card.ImgOverlay className={css(styles.imgOverlay)}>
         <Card.Body className={css(styles.cardText)}>
-          <Card.Title>{member.name}</Card.Title>
+          <Card.Title className={css(styles.name)}>{member.name}</Card.Title>
           <Card.Text className={css(styles.role)}>{member.role}</Card.Text>
         </Card.Body>
       </Card.ImgOverlay>
