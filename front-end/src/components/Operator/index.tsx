@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 })
 
 interface OperatorParams {
-	text: string;
+  text: string;
   action?: () => void;
 }
 

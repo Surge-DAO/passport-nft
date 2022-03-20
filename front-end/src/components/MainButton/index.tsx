@@ -14,7 +14,12 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     background: themeVariables.primaryColor,
-    color: themeVariables.lightColor
+    border: `2px solid ${themeVariables.thirdColor}`,
+    color: themeVariables.lightColor,
+    ':hover': {
+      background: themeVariables.whiteColor,
+      color: themeVariables.darkColor,
+    }
   },
   secondaryButton: {
     background: themeVariables.whiteColor,

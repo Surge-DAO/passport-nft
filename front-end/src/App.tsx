@@ -24,8 +24,8 @@ function App() {
       <PerkBanner />
       <RoadMapBanner />
       <AboutSurgeBanner />
-      <FAQBanner />
       <TeamMembersBanner />
+      <FAQBanner />
       <Footer />
     </div>
   );

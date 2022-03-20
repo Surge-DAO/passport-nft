@@ -10,15 +10,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    padding: '48px',
+    paddingLeft: '48px',
+    paddingRight: '48px',
     textAlign: 'justify'
   },
   buttonContainer: {
     marginTop: '12px',
     marginBottom: '12px'
-  },
-  whatIsMintingTitle: {
-    paddingLeft: '48px'
   }
 })
 
@@ -39,19 +37,21 @@ export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Ele
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          <h4 className={css(styles.whatIsMintingTitle)}>{STRINGS.whatIsMinting}</h4>
+          <h4>{STRINGS.whatIsMinting}</h4>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>
         <p>{STRINGS.mintingMeans}</p>
-        <h4>{STRINGS.howToMint}</h4>
+        <h5>{STRINGS.howToMint}</h5>
         {whatIsMinting.map((item, id) => {
-            return <div key={id}>
-              <div dangerouslySetInnerHTML={{__html: item.title}} />
+          return (
+            <div key={id}>
+              <div dangerouslySetInnerHTML={{__html: `${id + 1}. ${item.title}`}} />
               <div className={css(styles.buttonContainer)}>
-                <MainButton callToAction={item.buttonTitle}/>
+                <MainButton callToAction={item.buttonTitle} link={item.buttonURL}/>
               </div>
-            </div>;
+            </div>
+          );
         })}
       </Modal.Body>
     </Modal>

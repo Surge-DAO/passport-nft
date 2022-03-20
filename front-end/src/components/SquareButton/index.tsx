@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
-import {Button} from 'react-bootstrap'
 
 const styles = StyleSheet.create({
   square: {
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
   value : {
     textAlign: 'center',
     marginTop: '4px'
-  } 
+  }
 })
 
 interface SquareParams {

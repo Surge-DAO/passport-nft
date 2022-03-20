@@ -4,11 +4,17 @@ import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
   card: {
-    boxShadow: `1px 1px 8px ${themeVariables.secondaryColor}`,
-    border: `1px solid ${themeVariables.secondaryColor}`,
     borderRadius: '8px',
     padding: '10px',
-    margin: '24px' 
+    margin: '24px'
+  },
+  cardActive: {
+    boxShadow: `1px 1px 8px ${themeVariables.primaryColor}`,
+    border: `1px solid ${themeVariables.primaryColor}`,
+  },
+  cardInactive: {
+    boxShadow: `1px 1px 8px ${themeVariables.secondaryColor}`,
+    border: `1px solid ${themeVariables.secondaryColor}`,
   },
   container: {
     display: 'flex',
@@ -39,26 +45,27 @@ const styles = StyleSheet.create({
 });
 
 export interface CardParams {
-	title: string,
-	stepNo: number,
-	description: string,
-	additionalSteps: string[]
+	title: string;
+	stepNo: number;
+	description: string;
+	additionalSteps: string[];
+  active: boolean;
 }
 
-export default function RoadMapCard(params: CardParams) : JSX.Element{
-  return(
-    <div className={css(styles.card)}>
+export default function RoadMapCard(params: CardParams): JSX.Element {
+  const cardStyle = params.active ? css(styles.cardActive) : css(styles.cardInactive);
+
+  return (
+    <div className={`${css(styles.card)} ${cardStyle}`}>
       <div className={css(styles.container)}>
-        <h3 className={css(styles.stepNo)}>{params.stepNo}.</h3>
-        <h3 className={css(styles.title)}>{params.title}</h3>
+        <h5 className={css(styles.stepNo)}>{params.stepNo}.</h5>
+        <h5 className={css(styles.title)}>{params.title}</h5>
       </div>
       <p className={css(styles.description)}>{params.description}</p>
       <ul>
         {params.additionalSteps.map((item, id) => {
           return (
-            <li key={id} className={css(styles.listStyle)}>
-              {item}
-            </li>
+            <li key={id} className={css(styles.listStyle)} dangerouslySetInnerHTML={{ __html: item.replace(/\n/g, '<br/>') }} />
           );
         })}
       </ul>
