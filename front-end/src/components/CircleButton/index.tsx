@@ -10,7 +10,13 @@ const styles = StyleSheet.create({
     borderRadius: '50%',
     backgroundColor: themeVariables.whiteColor,
     display: 'block',
-    margin: '8px'
+    margin: '8px',
+    border: `2px solid ${themeVariables.thirdColor}`,
+    color: themeVariables.darkColor,
+    ':hover': {
+      background: themeVariables.secondaryColor,
+      color: themeVariables.lightColor
+    }
   },
   img: {
     position: 'absolute',

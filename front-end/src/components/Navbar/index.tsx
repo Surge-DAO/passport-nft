@@ -39,7 +39,10 @@ const styles = StyleSheet.create({
     }
   },
   paddingTop30: {
-    paddingTop: '30px'
+    paddingTop: '30px',
+    '@media (min-width: 375px) and (max-width: 952px)': {
+      paddingTop: '10px'
+    }
   },
   paddingTop10: {
     paddingTop: '10px'
@@ -52,14 +55,18 @@ const styles = StyleSheet.create({
   },
   imgLogo: {
     maxWidth: '120px'
+  },
+  containerOverride: {
+    paddingRight: '40px',
+    paddingLeft: '40px'
   }
 });
 
 export default function NavBar(): JSX.Element {
   return (
     <Navbar bg="transparent" expand="sm" collapseOnSelect>
-      <Container>
-        <Navbar.Brand href={STRINGS.surgeURL} className={css(styles.paddingTop30)}> 
+      <Container fluid className={css(styles.containerOverride)}>
+        <Navbar.Brand href={STRINGS.surgeURL} className={css(styles.paddingTop30)}>
           <Image src={require('../../images/surge-logo.png')} className={css(styles.imgLogo)} />
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">

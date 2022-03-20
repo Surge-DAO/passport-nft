@@ -10,12 +10,16 @@ const styles = StyleSheet.create({
     borderRadius: '24px',
     fontFamily: themeVariables.secondaryFont,
     fontWeight: 800,
-    padding: '16px 24px',
-    marginRight: '18px'
+    padding: '16px 24px'
   },
   primaryButton: {
     background: themeVariables.primaryColor,
-    color: themeVariables.lightColor
+    border: `2px solid ${themeVariables.thirdColor}`,
+    color: themeVariables.lightColor,
+    ':hover': {
+      background: themeVariables.whiteColor,
+      color: themeVariables.darkColor,
+    }
   },
   secondaryButton: {
     background: themeVariables.whiteColor,
@@ -32,10 +36,11 @@ const styles = StyleSheet.create({
   }
 });
 
-interface Params {
+ interface Params {
   callToAction: string;
   primary?: boolean;
   link?: string;
+  action?: () => void;
   fullWidth?: boolean;
   onMouseEnter?: void;
   onMouseLeave?: void;
@@ -46,10 +51,8 @@ export default function MainButton(params: Params): JSX.Element {
   const fullWidth = params.fullWidth ? css(styles.fullWidth) : undefined;
 
   return (
-    <a href={params.link} target="_blank" rel="noreferrer">
-      <Button variant="primary" className={`${css(styles.button)} ${style} ${fullWidth}`}>
+      <Button variant="primary" className={`${css(styles.button)} ${style} ${fullWidth}`} onClick={params.link ? () => window.open(params.link) : params.action}>
         {params.callToAction}
       </Button>
-    </a>
   );
 }
