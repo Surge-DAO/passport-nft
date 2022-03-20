@@ -31,13 +31,13 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable, PaymentSpl
     Counters.Counter private _tokenIds;
 
     uint8 public constant MAX_PER_USER = 5;
-    uint8 public constant MAX_RESERVED_TOKENS = 120;
+    uint8 public constant MAX_RESERVED_TOKENS = 200;
     uint8 public totalGiftMints = 0;
     bool public saleIsActive;
     bool public presaleIsActive;
 
-    uint16 public constant MAX_TOKENS = 2500;
-    uint256 public constant TOKEN_PRICE = 50000000000000000; //0.05ETH
+    uint16 public constant MAX_TOKENS = 5000;
+    uint256 public constant TOKEN_PRICE = 80000000000000000; //0.08ETH
 
     string public baseTokenURI;
 
