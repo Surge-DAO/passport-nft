@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     display: 'flex'
   },
   cardText: {
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-end'
   },
   imgOverlay: {
     display: 'flex',
