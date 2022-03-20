@@ -15,11 +15,12 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
+contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable, PaymentSplitter {
     using Counters for Counters.Counter;
     using Address for address;
     using SafeMath for uint256;
@@ -86,8 +87,10 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
     constructor(
         string memory _name,
         string memory _symbol,
-        string memory _baseTokenURI
-    ) ERC721(_name, _symbol) {
+        string memory _baseTokenURI,
+        address[] memory _payees,
+        uint256[] memory _shares
+    ) ERC721(_name, _symbol) PaymentSplitter(_payees, _shares) {
         setBaseURI(_baseTokenURI);
         //REMINDER: Delete Later
         console.log("Testing test deploy", _name, _symbol);
