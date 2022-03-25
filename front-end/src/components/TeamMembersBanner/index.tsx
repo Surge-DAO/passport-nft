@@ -25,7 +25,7 @@ export default function TeamMembersBanner(): JSX.Element {
   return (
     <Container id={STRINGS.team}>
       <h2 className={css(styles.title)}>{STRINGS.team}</h2>
-      <Row className={css(styles.cards)} xs="auto" sm={4} md={5}>
+      <Row className={css(styles.cards)} xs="auto" sm={2} md={3} lg={4}>
         {teamMembers.map((member, idx) => (
           <Col key={idx}>
             <TeamMemberCard member={member} />
