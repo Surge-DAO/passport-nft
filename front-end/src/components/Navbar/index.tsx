@@ -15,11 +15,22 @@ import { navBarItems } from '../../data/NavBarItems';
 const styles = StyleSheet.create({
   connectBtn: {
     paddingTop: '20px',
-    paddingLeft: '30px',
+    display: 'flex',
+    justifyContent: 'center',
     margin: 'auto',
     '@media (min-width: 375px) and (max-width: 768px)': {
       paddingTop: '20px'
     }
+  },
+  hideSm: {
+    '@media (max-width: 575px)': {
+      display: 'none'
+    }
+  },
+  closeBtn: {
+    position: 'absolute',
+    top: '15px',
+    right: '20px'
   },
   flex: {
     display: 'flex',
@@ -70,7 +81,7 @@ export default function NavBar(): JSX.Element {
           <Image src={require('../../images/surge-logo.png')} className={css(styles.imgLogo)} />
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">
-          <div className={css(styles.flex)}>
+          <div className={`${css(styles.flex)} ${css(styles.hideSm)}`}>
             <Nav className={css(styles.paddingTop30)}>
               {navBarItems.map((item, idx) => {
                 return (
@@ -93,15 +104,15 @@ export default function NavBar(): JSX.Element {
           </div>
         </Navbar.Collapse>
         <Navbar.Toggle aria-controls="offcanvasNavbar">
-          <FontAwesomeIcon icon="bars" />
+          <FontAwesomeIcon icon="bars"/>
         </Navbar.Toggle>
         <Navbar.Offcanvas
           id="offcanvasNavbar"
           aria-labelledby="offcanvasNavbarLabel"
           placement="end"
-          className={css(styles.navMobile)}
+          className={`${css(styles.navMobile)}`}
         >
-          <Offcanvas.Header closeButton>
+          <Offcanvas.Header closeButton className={css(styles.closeBtn)}>
             <Offcanvas.Title id="offcanvasNavbarLabel"></Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
