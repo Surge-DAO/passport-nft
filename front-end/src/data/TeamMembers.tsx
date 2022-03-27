@@ -2,57 +2,68 @@ export interface TeamMember {
   name: string;
   role: string;
   image: string;
+  link: string;
 }
 
 export const teamMembers: TeamMember[] = [
   {
-    name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    name: 'Denise Schaefer',
+    role: 'Co-Founder & Project Lead',
+    image: 'assets/images/teamMembers/Denise.png',
+    link: 'https://twitter.com/deeeniseS'
   },
   {
     name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    role: 'Co-Founder & Engineering Lead',
+    image: 'assets/images/teamMembers/jules.png',
+    link: 'https://twitter.com/_juliettech'
   },
   {
-    name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    name: 'Jackie B',
+    role: 'Partnerships Lead',
+    image: 'assets/images/teamMembers/Jackie.jpeg',
+    link: 'https://twitter.com/jackieberardo'
   },
   {
-    name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    name: 'lonilush',
+    role: 'Content Lead',
+    image: 'assets/images/teamMembers/duasnka.jpeg',
+    link: ''
   },
   {
-    name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    name: 'Kim Chen',
+    role: 'Operations Queen',
+    image: 'assets/images/teamMembers/Kim.jpeg',
+    link: 'https://twitter.com/chimmyken'
   },
   {
-    name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    name: 'Kiri',
+    role: 'NFT Artist',
+    image: 'assets/images/teamMembers/kels.png',
+    link: 'https://twitter.com/kiri_xyz'
   },
   {
-    name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    name: 'ringaile.eth',
+    role: 'Blockchain Developer',
+    image: 'assets/images/teamMembers/Ringaile.jpeg',
+    link: ' https://twitter.com/ringaile_v'
   },
   {
-    name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    name: 'Courtney Jensen',
+    role: 'Blockchain Developer',
+    image: 'assets/images/teamMembers/Courtney.jpeg',
+    link: 'https://twitter.com/Explorer_Geek'
   },
   {
-    name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    name: 'Glory Agatevure',
+    role: 'Blockchain Engineer',
+    image: 'assets/images/teamMembers/Glory.jpeg',
+    link: 'https://twitter.com/agatevureglory'
   },
   {
-    name: 'Juliette Chevalier',
-    role: 'Engineering Lead',
-    image: 'assets/images/teamMembers/jules.png'
+    name: 'Angelica Turla',
+    role: 'Smart Contract Developer',
+    image: 'assets/images/teamMembers/Gel.jpeg',
+    link: 'https://twitter.com/0xgel'
   }
 ];

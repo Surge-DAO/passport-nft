@@ -6,10 +6,12 @@ import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
   flex: {
-    display: 'flex'
+    display: 'flex',
+    justifyContent: 'center'
   },
   icon: {
     marginRight: '25px',
+    color: 'black',
     paddingTop: '20px',
     '@media (min-width: 375px) and (max-width: 952px)': {
       paddingTop: '35px'

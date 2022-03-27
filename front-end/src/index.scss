@@ -72,5 +72,14 @@ h3 {
 
 // Bootstrap overrides
 .offcanvas-end {
-  max-width: 50%;
+  max-width: 70%;
+}
+
+.navbar-toggler {
+  position: absolute;
+  right: 25px;
+}
+
+.navbar-nav {
+  margin-left: 20px
 }
