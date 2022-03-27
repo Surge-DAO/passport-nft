@@ -3,6 +3,7 @@ import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
 import themeVariables from '../../themeVariables.module.scss';
 import MainButton from '../MainButton';
+import aboutCollectionImg from '../../images/Logo.png';
 
 const styles = StyleSheet.create({
   container: {
@@ -71,7 +72,7 @@ export default function AboutSurgeBanner(): JSX.Element {
             <MainButton callToAction={STRINGS.learnMoreAboutSurge} primary />
           </div>
         </div>
-        <img className={css(styles.image)} src={require('../../images/Logo.png')} alt="logo" />
+        <img className={css(styles.image)} src={aboutCollectionImg} alt="logo" />
       </div>
     </div>
   );

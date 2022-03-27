@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { STRINGS } from '../../strings';
 import { StyleSheet, css } from 'aphrodite';
@@ -11,6 +12,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import SocialMediaIcons from './SocialMediaIcons';
 import { navBarItems } from '../../data/NavBarItems';
+import ConnectWalletModal from '../ConnectWalletModal';
+import logo from '../../images/surge-logo.png';
 
 const styles = StyleSheet.create({
   connectBtn: {
@@ -35,7 +38,11 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: 500,
     '@media (min-width: 375px) and (max-width: 952px)': {
-      paddingTop: '20px'
+      paddingTop: '20px',
+    },
+    ':hover': {
+      color: themeVariables.primaryColor,
+      fontWeight: 'bold'
     }
   },
   paddingTop30: {
@@ -63,11 +70,20 @@ const styles = StyleSheet.create({
 });
 
 export default function NavBar(): JSX.Element {
+  const [showConnectWalletModal, setShowConnectWalletModal] = useState<boolean>(false);
+  const [walletStatus, setWalletStatus] = useState<string>(STRINGS.connectWallet.toUpperCase());
+
+  const { account } = useWeb3React();
+
+  useEffect(() => {
+    account ? setWalletStatus(`Connected ${account.substring(0, 10)}..`) : setWalletStatus(walletStatus);
+  }, [account, walletStatus])
+
   return (
     <Navbar bg="transparent" expand="sm" collapseOnSelect>
       <Container fluid className={css(styles.containerOverride)}>
         <Navbar.Brand href={STRINGS.surgeURL} className={css(styles.paddingTop30)}>
-          <Image src={require('../../images/surge-logo.png')} className={css(styles.imgLogo)} />
+          <Image src={logo} className={css(styles.imgLogo)} />
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">
           <div className={css(styles.flex)}>
@@ -87,7 +103,8 @@ export default function NavBar(): JSX.Element {
                 <SocialMediaIcons />
               </div>
               <div className={css(styles.connectBtn)}>
-                <MainButton callToAction={STRINGS.connectWallet.toUpperCase()} primary />
+                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary />
+                <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
               </div>
             </Nav>
           </div>
@@ -119,7 +136,8 @@ export default function NavBar(): JSX.Element {
             <div className={css(styles.paddingTop30)}>
               <SocialMediaIcons />
               <div className={css(styles.connectBtn)}>
-                <MainButton callToAction={STRINGS.connectWallet.toUpperCase()} primary />
+                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary />
+                <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
               </div>
             </div>
           </Offcanvas.Body>
