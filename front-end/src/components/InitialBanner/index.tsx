@@ -7,6 +7,7 @@ import Image from 'react-bootstrap/Image';
 import Navbar from '../Navbar';
 import MintingModal from '../MintingModal';
 import WhatIsMintingModal from '../WhatIsMintingModal';
+import PassportBanner from '../PassportBanner';
 
 const styles = StyleSheet.create({
   banner: {
@@ -50,7 +51,8 @@ export default function InitialComponent(): JSX.Element {
     <div className={css(styles.banner)}>
       <Navbar />
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
-      <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" />
+      {/* <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" /> */}
+      <PassportBanner/>
       <div className={css(styles.bannerFooter)}>
         <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         <MintingModal show={showModal} hide={() => setShowModal(false)} />
