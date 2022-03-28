@@ -30,4 +30,3 @@ export const Partners: PartnersParams[] = [
     link: 'https://www.surgewomen.io/'
   }
 ];
-
