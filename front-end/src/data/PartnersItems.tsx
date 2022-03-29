@@ -7,26 +7,30 @@ export interface PartnersParams {
 export const Partners: PartnersParams[] = [
   {
     logo: 'assets/images/partners/consensys.png',
-    link: 'https://www.surgewomen.io/'
+    link: 'https://consensys.net/'
   },
   {
     logo: 'assets/images/partners/CTC.svg',
-    link: 'https://www.surgewomen.io/'
+    link: 'https://cryptotaxcalculator.io/en/'
   },
   {
     logo: 'assets/images/partners/Decentology.png',
-    link: 'https://www.surgewomen.io/'
+    link: 'https://www.decentology.com/'
   },
   {
     logo: 'assets/images/partners/eve.png',
-    link: 'https://www.surgewomen.io/'
+    link: 'https://www.evewealth.com/'
   },
   {
     logo: 'assets/images/partners/kernel.png',
-    link: 'https://www.surgewomen.io/'
+    link: 'https://kernel.community/en/'
   },
   {
     logo: 'assets/images/partners/UnstoppableDomains.png',
-    link: 'https://www.surgewomen.io/'
+    link: 'https://unstoppabledomains.com/auth'
+  },
+  {
+    logo: 'assets/images/partners/juno.png',
+    link: 'https://www.yourjuno.co/'
   }
 ];
