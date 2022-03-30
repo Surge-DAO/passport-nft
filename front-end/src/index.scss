@@ -50,8 +50,12 @@ ul {
 }
 
 a {
-  text-decoration: none;
-  color: #1f1f1f;
+  color: #f86464;
+}
+
+a:hover {
+  color: #f86464;
+  font-weight: bold;
 }
 
 h2 {
