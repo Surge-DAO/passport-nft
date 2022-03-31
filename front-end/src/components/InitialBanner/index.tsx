@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Image from 'react-bootstrap/Image';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
 import gradientBackground from '../../images/gradient-background.png';
@@ -8,6 +7,7 @@ import MainButton from '../MainButton';
 import Navbar from '../Navbar';
 import MintingModal from '../MintingModal';
 import WhatIsMintingModal from '../WhatIsMintingModal';
+import PassportBanner from '../PassportBanner';
 
 const styles = StyleSheet.create({
   banner: {
@@ -52,8 +52,8 @@ export default function InitialComponent(): JSX.Element {
   return (
     <div className={css(styles.banner)}>
       <Navbar />
-      <h1 className={css(styles.title)}>{STRINGS.surgePassportNFT}</h1>
-      <Image src={require('../../images/nft-carousel.png').default} alt="nft-sneak-peek" />
+      <h1 className={css(styles.title)}>Surge Passport NFT</h1>
+      <PassportBanner />
       <div className={css(styles.bannerFooter)}>
         <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         <MintingModal show={showModal} hide={() => setShowModal(false)} />
