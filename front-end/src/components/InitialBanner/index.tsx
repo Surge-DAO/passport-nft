@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Image from 'react-bootstrap/Image';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
 import gradientBackground from '../../images/gradient-background.png';
@@ -54,7 +53,7 @@ export default function InitialComponent(): JSX.Element {
     <div className={css(styles.banner)}>
       <Navbar />
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
-      <PassportBanner/>
+      <PassportBanner />
       <div className={css(styles.bannerFooter)}>
         <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         <MintingModal show={showModal} hide={() => setShowModal(false)} />

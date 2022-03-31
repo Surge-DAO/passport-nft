@@ -1,13 +1,15 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import {Row, Col} from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap';
 import { Partners } from '../../data/PassportItems';
 
 const styles = StyleSheet.create({
   image: {
     width: '272px',
-    height: '272px',
-    marginTop: '20px'
+    marginTop: '20px',
+    '@media (max-width: 375px)': {
+      width: '200px'
+    }
   }
 });
 
