@@ -3,6 +3,7 @@ import { STRINGS } from '../../strings';
 import { Modal } from 'react-bootstrap';
 import MainButton from '../MainButton';
 import { whatIsMinting } from '../../data/WhatIsMinting';
+import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -17,6 +18,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: '12px',
     marginBottom: '12px'
+  },
+  link: {
+    color: themeVariables.primaryColor,
+    ':hover': {
+      fontWeight: 'bold'
+    }
   }
 })
 
@@ -26,11 +33,13 @@ interface WhatIsMintingParams {
 }
 
 export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Element {
-  return(
+  const { show, hide } = params;
+
+  return (
     <div>
       <Modal
-      show={params.show}
-      onHide={params.hide}
+      show={show}
+      onHide={hide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -46,10 +55,12 @@ export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Ele
         {whatIsMinting.map((item, id) => {
           return (
             <div key={id}>
-              <div dangerouslySetInnerHTML={{__html: `${id + 1}. ${item.title}`}} />
-              <div className={css(styles.buttonContainer)}>
-                <MainButton callToAction={item.buttonTitle} link={item.buttonURL}/>
-              </div>
+              <div dangerouslySetInnerHTML={{__html: `${id + 1}. ${item.title}: ${item.description}`}} />
+              {item.buttonURL && (
+                <div className={css(styles.buttonContainer)}>
+                  <MainButton callToAction={item.buttonTitle} link={item.buttonURL}/>
+                </div>
+              )}
             </div>
           );
         })}

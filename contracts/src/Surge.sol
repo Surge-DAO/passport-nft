@@ -8,6 +8,7 @@ pragma solidity ^0.8.0;
 // ▄█ █▄█ █▀▄ █▄█ ██▄   ▀▄▀▄▀ █▄█ █░▀░█ ██▄ █░▀█
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
@@ -210,5 +211,10 @@ contract Surge is ERC721, ReentrancyGuard, Ownable, ERC721Enumerable {
 
     function withdrawAll() public payable onlyOwner {
         require(payable(msg.sender).send(address(this).balance));
+    }
+
+    function withdrawTokens(IERC20 token) public onlyOwner {
+        uint256 balance = token.balanceOf(address(this));
+        token.transfer(msg.sender, balance);
     }
 }

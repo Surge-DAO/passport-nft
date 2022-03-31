@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import MainButton from '../MainButton';
+import Image from 'react-bootstrap/Image';
 import { StyleSheet, css } from 'aphrodite';
+import themeVariables from '../../themeVariables.module.scss';
 import gradientBackground from '../../images/gradient-background.png';
 import { STRINGS } from '../../strings';
-import Image from 'react-bootstrap/Image';
+import MainButton from '../MainButton';
 import Navbar from '../Navbar';
 import MintingModal from '../MintingModal';
 import WhatIsMintingModal from '../WhatIsMintingModal';
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     paddingBottom: '5%'
   },
   mintingText: {
-    paddingTop: '5%'
+    paddingTop: '1%'
   },
   whatIsMintingModalButton: {
     background: 'none',
@@ -39,19 +40,20 @@ const styles = StyleSheet.create({
     font: 'inherit',
     cursor: 'pointer',
     outline: 'inherit',
+    ':hover': {
+      color: themeVariables.primaryColor
+    }
   }
 });
 
 export default function InitialComponent(): JSX.Element {
-  const [showModal, setShowModal] = useState(false)
-
-  const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState<boolean>(false);
 
   return (
     <div className={css(styles.banner)}>
       <Navbar />
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
-      {/* <Image src={require('../../images/nft-carousel.png')} alt="nft-sneak-peek" /> */}
       <PassportBanner/>
       <div className={css(styles.bannerFooter)}>
         <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
