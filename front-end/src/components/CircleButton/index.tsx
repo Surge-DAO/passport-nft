@@ -34,7 +34,7 @@ interface CircleParams {
 export default function CircleButton(params: CircleParams): JSX.Element {
   return (
     <a href={params.link} target="_blank" rel="noreferrer" className={css(styles.circle)}>
-      <img className={css(styles.img)} src={require(`../../images/${params.img}.svg`)} alt="social-icons" />
+      <img className={css(styles.img)} src={require(`../../images/${params.img}.svg`).default} alt="social-icons" />
     </a>
   );
 }

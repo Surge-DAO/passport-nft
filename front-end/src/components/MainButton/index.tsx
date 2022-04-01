@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     color: themeVariables.lightColor,
     ':hover': {
       background: themeVariables.whiteColor,
-      color: themeVariables.darkColor,
+      color: themeVariables.primaryColor
     }
   },
   secondaryButton: {
@@ -33,26 +33,33 @@ const styles = StyleSheet.create({
   },
   fullWidth: {
     width: '100%'
+  },
+  img: {
+    width: '25px',
+    paddingRight: '5px'
   }
 });
 
  interface Params {
-  callToAction: string;
-  primary?: boolean;
-  link?: string;
   action?: () => void;
+  callToAction: string;
+  customStyle?: string;
+  disable?: boolean;
   fullWidth?: boolean;
-  onMouseEnter?: void;
-  onMouseLeave?: void;
+  primary?: boolean;
+  img?: string;
+  link?: string;
 }
 
 export default function MainButton(params: Params): JSX.Element {
-  const style = params.primary ? css(styles.primaryButton) : css(styles.secondaryButton);
-  const fullWidth = params.fullWidth ? css(styles.fullWidth) : undefined;
+  const { action, callToAction, customStyle, disable, fullWidth, primary, img, link } = params;
+  const btnType = primary ? css(styles.primaryButton) : css(styles.secondaryButton);
+  const width = fullWidth ? css(styles.fullWidth) : undefined;
 
   return (
-      <Button variant="primary" className={`${css(styles.button)} ${style} ${fullWidth}`} onClick={params.link ? () => window.open(params.link) : params.action}>
-        {params.callToAction}
-      </Button>
+    <Button disabled={disable} variant="primary" className={`${css(styles.button)} ${btnType} ${width} ${customStyle}`} onClick={link ? () => window.open(link) : action}>
+      {img && <img src={img} alt={callToAction.toUpperCase()} className={css(styles.img)} />}
+      {callToAction.toUpperCase()}
+    </Button>
   );
 }
