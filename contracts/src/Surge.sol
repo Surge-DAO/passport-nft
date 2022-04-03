@@ -27,9 +27,11 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     /*--------------------------------------------*/
     Counters.Counter private _tokenIds;
 
+    bytes32 public merkleRoot;
+
     uint256 public totalGiftMints = 0;
-    bool public saleIsActive;
-    bool public presaleIsActive;
+    bool public saleIsActive = false;
+    bool public presaleIsActive = false;
 
     uint256 public price = 0.08 ether; //$250
     uint256 public maxSupply = 5000;
@@ -63,12 +65,11 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
 
     modifier verifyMint(uint256 _amountOfTokens) {
         require(balanceOf(msg.sender) + _amountOfTokens <= maxPerUser, "You already have maximum number of tokens allowed per wallet");
-        require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
         _;
     }
 
     modifier isEnoughEth(uint256 _amountOfTokens) {
-        require(msg.value >= _amountOfTokens * price, "Incorrect ETH value");
+        require(msg.value == _amountOfTokens * price, "Incorrect ETH value");
         _;
     }
 
@@ -87,14 +88,16 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
-    //add a wallet to give them access to the presale
-    function addToPresale(address _wallet) external onlyOwner {
-        require(!_presaleApproved[_wallet], "Wallet is already in the presale");
-        _presaleApproved[_wallet] = true;
+    //add wallets to give them access to the presale
+    function addToPresale(address[] calldata _wallet) external onlyOwner {        
+        for (uint256 i = 0; i < _wallet.length; i++) {
+            require(!_presaleApproved[_wallet[i]], "Wallet is already in the presale");
+            _presaleApproved[_wallet[i]] = true;
+        }
     }
 
     //presale minting
-    function presaleMint(uint256 _amountOfTokens)
+    function presaleMint(uint256 _amountOfTokens, bytes32[] calldata _merkleProof)
         external
         payable
         nonReentrant
@@ -103,6 +106,10 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     {
         require(presaleIsActive, "Presale is currently not active");
         require(_presaleApproved[msg.sender], "You are not in the pre-sale");
+        require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
+        bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
+        require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), 'Invalid proof!');
+
         _safeMint(msg.sender, _amountOfTokens);
         if (balanceOf(msg.sender) == maxPerUser) {
             _presaleMinted[msg.sender] = true;
@@ -122,6 +129,18 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
             _tokenIds.increment();
         }
     }
+
+    //getter for tokens owned by a user
+    // function getTokens(address _owner) external view returns (uint256[] memory) {
+    //     uint256 totalCount = balanceOf(_owner);
+    //     uint256[] memory tokenIds = new uint256[](totalCount);
+
+    //     for (uint256 i = 0; i < totalCount; i++) {
+    //         tokenIds[i] = tokenOfOwnerByIndex(_owner, i);
+    //     }
+
+    //     return tokenIds;
+    // }
 
     /**************ADMIN BASE FUNCTIONS *************/
     function _baseURI() internal view virtual override returns (string memory) {
@@ -148,11 +167,18 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         presaleIsActive = false;
     }
 
-    function getTokensMinted() public view returns (uint256) {
-        return _tokenIds.current() + 1;
+    function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
+        merkleRoot = _merkleRoot;
     }
 
     function withdrawAll() public payable onlyOwner nonReentrant {
-        require(payable(msg.sender).send(address(this).balance));
+        (bool success, ) = payable(msg.sender).call{value: address(this).balance}('');
+        require(success);
     }
+
+    // // Allows us to recover ERC20 tokens sent to contract
+    // function withdrawAllERC20() public payable onlyOwner nonReentrant {
+    //     (bool success, ) = _erc20Token.call(payable(msg.sender).call{value: address(this).balance}(''));
+    //     require(success);
+    // }
 }
