@@ -14,8 +14,9 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 
-contract Surge is ERC721A, ReentrancyGuard, Ownable {
+contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     using Counters for Counters.Counter;
     using Address for address;
     using SafeMath for uint256;
@@ -26,19 +27,17 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable {
     /*--------------------------------------------*/
     Counters.Counter private _tokenIds;
 
-    uint8 public constant MAX_PER_USER = 5;
-    uint8 public constant MAX_RESERVED_TOKENS = 199; //Zero based Index
-    uint8 public totalGiftMints = 0;
+    uint256 public totalGiftMints = 0;
     bool public saleIsActive;
     bool public presaleIsActive;
 
-    uint16 public constant MAX_TOKENS = 5000;
-    uint256 public constant TOKEN_PRICE = 80000000000000000; //0.08ETH
-
+    uint256 public price = 0.08 ether; //$250
+    uint256 public maxSupply = 5000;
+    uint256 public maxPerUser = 5;
+    uint256 public maxReserved = 199; // Zero based index
     string public baseTokenURI;
 
-    mapping(address => bool) internal _presaleApproved;
-    mapping(address => bool) internal _presaleMinted;
+
 
     /**
      * @dev it will not be ready to start sale upon deploy
@@ -46,25 +45,30 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable {
     constructor(
         string memory _name,
         string memory _symbol,
-        string memory _baseTokenURI
-    ) ERC721A(_name, _symbol) {
+        string memory _baseTokenURI,
+        address[] memory _payees,
+        uint256[] memory _shares
+    ) ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares){
         setBaseURI(_baseTokenURI);
         //REMINDER: Delete Later
         console.log("Testing test deploy", _name, _symbol);
     }
+
+    mapping(address => bool) internal _presaleApproved;
+    mapping(address => bool) internal _presaleMinted;
 
     /*----------------------------------------------*/
     /*                  MODIFIERS                  */
     /*--------------------------------------------*/
 
     modifier verifyMint(uint256 _amountOfTokens) {
-        require(balanceOf(msg.sender) + _amountOfTokens <= MAX_PER_USER, "You already have maximum number of tokens allowed per wallet");
+        require(balanceOf(msg.sender) + _amountOfTokens <= maxPerUser, "You already have maximum number of tokens allowed per wallet");
         require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
         _;
     }
 
     modifier isEnoughEth(uint256 _amountOfTokens) {
-        require(msg.value >= _amountOfTokens * TOKEN_PRICE, "Incorrect ETH value");
+        require(msg.value >= _amountOfTokens * price, "Incorrect ETH value");
         _;
     }
 
@@ -100,7 +104,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable {
         require(presaleIsActive, "Presale is currently not active");
         require(_presaleApproved[msg.sender], "You are not in the pre-sale");
         _safeMint(msg.sender, _amountOfTokens);
-        if (balanceOf(msg.sender) == MAX_PER_USER) {
+        if (balanceOf(msg.sender) == maxPerUser) {
             _presaleMinted[msg.sender] = true;
         }
     }
@@ -110,8 +114,8 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable {
         uint256 totalReceivers = _receivers.length;
         for (uint256 i = 0; i < totalReceivers; i++) {
             //checks if there is enough reserved token for gifting left
-            require(totalGiftMints <= MAX_RESERVED_TOKENS, "No available tokens for gifting");
-            require(balanceOf(_receivers[i]) + 1 <= MAX_PER_USER, "Wallet has max number of tokens allowed");
+            require(totalGiftMints <= maxReserved, "No available tokens for gifting");
+            require(balanceOf(_receivers[i]) + 1 <= maxPerUser, "Wallet has max number of tokens allowed");
             totalGiftMints++;
             uint256 newTokenId = _tokenIds.current() + 1;
             _safeMint(_receivers[i], newTokenId);
