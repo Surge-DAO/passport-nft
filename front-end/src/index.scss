@@ -64,6 +64,7 @@ h2 {
   margin: 0px;
   font-weight: 600;
   line-height: 58px;
+  color: #f86464;
 }
 
 h3 {
@@ -81,5 +82,8 @@ h3 {
 }
 
 .navbar-nav {
-  margin-left: 20px
+  margin-left: 20px;
+}
+.modal-content{
+  border-radius: 20px;
 }
