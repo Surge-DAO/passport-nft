@@ -110,6 +110,20 @@ describe('Surge', function () {
       expect(await surge.saleIsActive()).to.equal(false);
     });
 
+    describe('Withdraw ERC Tokens', function () {
+      it('Should not allow any address to withdraw ERC20 Tokens', async function () {
+        expect(surge.connect(addr1).withdrawTokens("0xdAC17F958D2ee523a2206206994597C13D831ec7")).to.be.revertedWith('Ownable: caller is not the owner');
+      });
+  
+      it('Should allow only owner to withdraw ERC20 tokens', async function () {
+        Token = await ethers.getContractFactory('ERC20TestToken');
+        token = await Token.deploy();
+        await token.deployed();
+        const withdrawTokensTx = await surge.connect(owner).withdrawTokens(token.address);
+        await withdrawTokensTx.wait();
+      });
+    });
+
     it('Should allow only owner to pause sale', async function () {
       const startSaleTx = await surge.connect(owner).startSale();
       await startSaleTx.wait();

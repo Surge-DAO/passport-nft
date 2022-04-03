@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
+import aboutCollectionImg from '../../images/about-collection.png';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +50,7 @@ export default function AboutCollectionBanner(): JSX.Element {
           dangerouslySetInnerHTML={{ __html: STRINGS.aboutDescription.replace(/\n/g, '<br/>') }}
         ></p>
       </div>
-      <img className={css(styles.image)} src={require('../../images/about-collection.png')} alt="collection" />
+      <img className={css(styles.image)} src={aboutCollectionImg} alt="collection" />
     </div>
   );
 }

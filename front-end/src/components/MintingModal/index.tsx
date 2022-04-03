@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import { STRINGS } from '../../strings';
 import { Modal } from 'react-bootstrap';
 import MainButton from '../MainButton';
 import Operator from '../Operator';
 import SquareButton from '../SquareButton';
+import { useWeb3React } from '@web3-react/core';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -23,6 +24,10 @@ const styles = StyleSheet.create({
     '@media (max-width: 768px)': {
       width: '100%'
     }
+  },
+  bottomPadding: {
+    paddingBottom: '3%',
+    fontWeight: 'bold'
   }
 })
 
@@ -32,7 +37,10 @@ interface MintingParams {
 }
 
 export default function MintingModal(params: MintingParams): JSX.Element {
-  const [mintNumber, setMintNumber] = useState<number>(1)
+  const { show, hide } = params;
+  const [mintNumber, setMintNumber] = useState<number>(1);
+
+  const { active } = useWeb3React();
 
   function increaseMint() {
     return mintNumber <= 4 ? setMintNumber(mintNumber + 1) : null;
@@ -43,10 +51,9 @@ export default function MintingModal(params: MintingParams): JSX.Element {
   }
 
   return(
-    <div>
-      <Modal
-      show= {params.show}
-      onHide= {params.hide}
+    <Modal
+      show={show}
+      onHide={hide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -63,9 +70,9 @@ export default function MintingModal(params: MintingParams): JSX.Element {
           <SquareButton value={mintNumber} />
           <Operator text='+' action={increaseMint} />
         </div>
-        <MainButton callToAction={STRINGS.clickToMint} primary action={() =>{console.log("call the minting function from the smart contracts")}}/>
+        {!active && <p className={css(styles.bottomPadding)}>{STRINGS.pleaseConnectWallet}</p>}
+        <MainButton disable={!active} callToAction={STRINGS.clickToMint} primary action={() =>{console.log("call the minting function from the smart contracts")}}/>
       </Modal.Body>
     </Modal>
-    </div>
   )
 }

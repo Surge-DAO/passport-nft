@@ -177,8 +177,8 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     }
 
     // // Allows us to recover ERC20 tokens sent to contract
-    // function withdrawAllERC20() public payable onlyOwner nonReentrant {
-    //     (bool success, ) = _erc20Token.call(payable(msg.sender).call{value: address(this).balance}(''));
-    //     require(success);
-    // }
+    function withdrawTokens(IERC20 token) public onlyOwner {
+        uint256 balance = token.balanceOf(address(this));
+        token.transfer(msg.sender, balance);
+    }
 }

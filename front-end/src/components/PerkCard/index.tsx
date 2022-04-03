@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
 import { STRINGS } from '../../strings';
-import { EducationIcon, IRLIcon, DAOsIcon, NFTsIcon, DeFiIcon } from '../icons';
+import { EducationIcon, IRLIcon, DAOsIcon, NFTsIcon, DeFiIcon } from '../Icons';
 import MainButton from '../MainButton';
 
 export interface Perk {
