@@ -8,24 +8,13 @@ pragma solidity ^0.8.0;
 // ▄█ █▄█ █▀▄ █▄█ ██▄   ▀▄▀▄▀ █▄█ █░▀░█ ██▄ █░▀█
 import "hardhat/console.sol";
 import "erc721a/contracts/ERC721A.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/Context.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 
 contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
-    using Counters for Counters.Counter;
-    using Address for address;
-    using SafeMath for uint256;
     using Strings for uint256;
-
-    /*----------------------------------------------*/
-    /*                    STATE                    */
-    /*--------------------------------------------*/
-    Counters.Counter private _tokenIds;
 
     bytes32 public merkleRoot;
 
@@ -116,31 +105,12 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         }
     }
 
-    //gift minting
-    function giftMint(address[] calldata _receivers) external nonReentrant onlyOwner {
-        uint256 totalReceivers = _receivers.length;
-        for (uint256 i = 0; i < totalReceivers; i++) {
-            //checks if there is enough reserved token for gifting left
-            require(totalGiftMints <= maxReserved, "No available tokens for gifting");
-            require(balanceOf(_receivers[i]) + 1 <= maxPerUser, "Wallet has max number of tokens allowed");
-            totalGiftMints++;
-            uint256 newTokenId = _tokenIds.current() + 1;
-            _safeMint(_receivers[i], newTokenId);
-            _tokenIds.increment();
-        }
+    // premint function allows the owner to mint maxReserved amount
+    function preMint(uint256 _amountOfTokens) external nonReentrant onlyOwner {
+        require(_amountOfTokens <= maxReserved, "No available tokens for gifting");
+        require(balanceOf(msg.sender) <= maxReserved, "Wallet has max number of tokens allowed");
+        _safeMint(msg.sender, _amountOfTokens);        
     }
-
-    //getter for tokens owned by a user
-    // function getTokens(address _owner) external view returns (uint256[] memory) {
-    //     uint256 totalCount = balanceOf(_owner);
-    //     uint256[] memory tokenIds = new uint256[](totalCount);
-
-    //     for (uint256 i = 0; i < totalCount; i++) {
-    //         tokenIds[i] = tokenOfOwnerByIndex(_owner, i);
-    //     }
-
-    //     return tokenIds;
-    // }
 
     /**************ADMIN BASE FUNCTIONS *************/
     function _baseURI() internal view virtual override returns (string memory) {
