@@ -14,9 +14,9 @@ describe('Surge', function () {
   let symbol = 'SRG';
   let uri = 'https://surgewomen.io';
   let MAX_PER_USER = 5;
-  let MAX_RESERVED_TOKENS = 120;
-  let MAX_TOKENS = 2500;
-  let TOKEN_PRICE = 50000000000000000n;
+  let MAX_RESERVED_TOKENS = 199;
+  let MAX_TOKENS = 5000;
+  let TOKEN_PRICE = 80000000000000000n;
   let decimals = 1000000000000000000;
 
   beforeEach(async function () {
@@ -32,19 +32,19 @@ describe('Surge', function () {
   });
 
   describe('Deployment', function () {
-    it('Should set the right owner', async function () {
+    it('Should set the correct owner', async function () {
       expect(await surge.owner()).to.equal(owner.address);
     });
 
-    it('Should return the right max tokens per user', async function () {
+    it('Should return the correct max tokens per user', async function () {
       expect(await surge.MAX_PER_USER()).to.equal(MAX_PER_USER);
     });
 
-    it('Should return the right max reserved tokens', async function () {
+    it('Should return the correct max reserved tokens', async function () {
       expect(await surge.MAX_RESERVED_TOKENS()).to.equal(MAX_RESERVED_TOKENS);
     });
 
-    it('Should return the right total Gift Mints', async function () {
+    it('Should return the correct total Gift Mints', async function () {
       expect(await surge.totalGiftMints()).to.equal(0);
     });
 
