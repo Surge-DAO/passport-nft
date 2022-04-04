@@ -21,13 +21,16 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     '@media (max-width: 375px)': {
       width: '100%'
     }
   },
   update: {
     marginTop: '36px'
+  },
+  socialItem: {
+    margin: '10px'
   }
 });
 
@@ -51,7 +54,9 @@ export default function RoadMapBanner(): JSX.Element {
       <div className={css(styles.socials)}>
         {socialMedia.map((platform, idx) => {
           return (
-            <MainButton key={idx} callToAction={platform.name.toUpperCase()} link={platform.link} />
+            <div className={css(styles.socialItem)}>
+              <MainButton key={idx} callToAction={platform.name.toUpperCase()} action={() => window.open(platform.link)} primary />
+            </div>
           );
         })}
       </div>
