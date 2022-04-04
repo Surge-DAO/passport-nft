@@ -39,7 +39,7 @@ const getIcon = (title: string) => {
   switch (title) {
     case 'Education':
       return <EducationIcon height={80} width={80} />;
-    case 'Web3 Tooling':
+    case 'Tools':
       return <DAOsIcon height={80} width={80} />;
     case 'NFTs':
       return <NFTsIcon height={80} width={80} />;

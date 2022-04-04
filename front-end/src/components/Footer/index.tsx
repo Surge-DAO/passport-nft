@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
     }
   },
   image: {
-    verticalAlign: 'middle'
+    verticalAlign: 'middle',
+    cursor: 'pointer'
   },
   tagline: {
     marginLeft: '18px',
@@ -48,6 +49,7 @@ export default function Footer(): JSX.Element {
           width="100px"
           height="60px"
           alt="logo"
+          onClick={() => window.open(STRINGS.surgeURL)}
         />
         <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
       </div>
