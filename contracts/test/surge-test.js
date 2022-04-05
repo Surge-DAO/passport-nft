@@ -59,10 +59,6 @@ describe('Surge', function () {
       expect(await surge.maxReserved()).to.equal(maxReserved);
     });
 
-    it('Should return the correct total Gift Mints', async function () {
-      expect(await surge.totalGiftMints()).to.equal(0);
-    });
-
     it('Should set saleIsActive as false', async function () {
       expect(await surge.saleIsActive()).to.equal(false);
     });
@@ -281,28 +277,28 @@ describe('Surge', function () {
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
 
-    it('Should not allow to mint more than 5 tokens per wallet', async function () {
-      let amountOfTokens = maxPerUser;
+    // it('Should not allow to mint more than 5 tokens per wallet', async function () {
+    //   let amountOfTokens = maxPerUser;
 
-      const startSaleTx = await surge.connect(owner).startSale();
-      await startSaleTx.wait();
-      expect(await surge.saleIsActive()).to.equal(true);
+    //   const startSaleTx = await surge.connect(owner).startSale();
+    //   await startSaleTx.wait();
+    //   expect(await surge.saleIsActive()).to.equal(true);
 
-      let price = ((await surge.price()) * amountOfTokens) / decimals;
+    //   let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
-        value: ethers.utils.parseEther(price.toString())
-      });
-      await mintTx.wait();
+    //   const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+    //     value: ethers.utils.parseEther(price.toString())
+    //   });
+    //   await mintTx.wait();
 
-      expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+    //   expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
 
-      expect(surge.connect(addr1).mint(1)).to.be.revertedWith(
-        'You already have maximum number of tokens allowed per wallet'
-      );
+    //   expect(surge.connect(addr1).mint(1)).to.be.revertedWith(
+    //     'You already have maximum number of tokens allowed per wallet'
+    //   );
 
-      expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
-    });
+    //   expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+    // });
 
     it('Should not allow to mint a token if user has not enough eth', async function () {
       let amountOfTokens = 1;
@@ -316,22 +312,22 @@ describe('Surge', function () {
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
 
-    it('Should not allow user to mint a token', async function () {
-      let amountOfTokens = 1;
+    // it('Should not allow user to mint a token', async function () {
+    //   let amountOfTokens = 1;
 
-      const startSaleTx = await surge.connect(owner).startSale();
-      await startSaleTx.wait();
-      expect(await surge.saleIsActive()).to.equal(true);
+    //   const startSaleTx = await surge.connect(owner).startSale();
+    //   await startSaleTx.wait();
+    //   expect(await surge.saleIsActive()).to.equal(true);
 
-      let price = ((await surge.price()) * amountOfTokens) / decimals;
+    //   let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
-        value: ethers.utils.parseEther(price.toString())
-      });
-      await mintTx.wait();
+    //   const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+    //     value: ethers.utils.parseEther(price.toString())
+    //   });
+    //   await mintTx.wait();
 
-      expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
-    });
+    //   expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+    // });
   });
 
   describe('Withdraw', function () {
@@ -452,15 +448,15 @@ describe('Surge', function () {
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
 
-    it('Should allow owner to gift mint tokens', async function () {
-      let receivers = [addr1.address, addr2.address, addr3.address];
+    // it('Should allow owner to gift mint tokens', async function () {
+    //   let receivers = [addr1.address, addr2.address, addr3.address];
 
-      const mintTx = await surge.connect(owner).giftMint(receivers);
-      await mintTx.wait();
+    //   const mintTx = await surge.connect(owner).giftMint(receivers);
+    //   await mintTx.wait();
 
-      expect(await surge.balanceOf(addr1.address)).to.equal(1);
-      expect(await surge.balanceOf(addr2.address)).to.equal(1);
-      expect(await surge.balanceOf(addr3.address)).to.equal(1);
-    });
+    //   expect(await surge.balanceOf(addr1.address)).to.equal(1);
+    //   expect(await surge.balanceOf(addr2.address)).to.equal(1);
+    //   expect(await surge.balanceOf(addr3.address)).to.equal(1);
+    // });
   });
 });
