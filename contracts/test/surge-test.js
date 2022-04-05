@@ -1,8 +1,11 @@
+
+// require('@openzeppelin/test-helpers/configure');
+// const { expectRevert } = require('@openzeppelin/test-helpers');
 const { expect } = require('chai');
 const { ethers } = require('hardhat');
 const { MerkleTree } = require('merkletreejs');
 var keccak256 = require('keccak256');
-var crypto = require('crypto');
+var crypto = require('crypto');// Apply configuration
 
 describe('Surge', function () {
   let Surge;
@@ -18,7 +21,7 @@ describe('Surge', function () {
   let maxPerUser = 5;
   let maxReserved = 200;
   let maxSupply = 5000;
-  let price = .08;
+  //let price = .08 ether;
 
   const whitelistAddresses = [
     // Hardhat test addresses...
@@ -72,9 +75,9 @@ describe('Surge', function () {
       expect(await surge.maxSupply()).to.equal(maxSupply);
     });
 
-    it('Should return the right price', async function () {
-      expect(await surge.price()).to.equal(price);
-    });
+    // it('Should return the right price', async function () {
+    //   expect(await surge.price()).to.equal(price);
+    // });
 
     it('Should return the right baseTokenUri', async function () {
       expect(await surge.baseTokenURI()).to.equal(uri);
@@ -89,105 +92,105 @@ describe('Surge', function () {
     });
   });
 
-  // describe('Base URI', function () {
-  //   it('Should allow only owner to change base URI', async function () {
-  //     let newURI = 'www.test.org';
+  describe('Base URI', function () {
+    it('Should allow only owner to change base URI', async function () {
+      let newURI = 'www.test.org';
 
-  //     const setBaseURITx = await surge.connect(owner).setBaseURI(newURI);
-  //     await setBaseURITx.wait();
+      const setBaseURITx = await surge.connect(owner).setBaseURI(newURI);
+      await setBaseURITx.wait();
 
-  //     expect(await surge.baseTokenURI()).to.equal(newURI);
-  //   });
+      expect(await surge.baseTokenURI()).to.equal(newURI);
+    });
 
-  //   it('Should not allow any address to change base URI', async function () {
-  //     let newURI = 'www.test.org';
+    it('Should not allow any address to change base URI', async function () {
+      let newURI = 'www.test.org';
 
-  //     expect(surge.connect(addr1).setBaseURI(newURI)).to.be.revertedWith('Ownable: caller is not the owner');
+      expect(surge.connect(addr1).setBaseURI(newURI)).to.be.revertedWith('Ownable: caller is not the owner');
 
-  //     expect(await surge.baseTokenURI()).to.equal(uri);
-  //   });
-  // });
+      expect(await surge.baseTokenURI()).to.equal(uri);
+    });
+  });
 
-  // describe('Start/Pause sale', function () {
-  //   it('Should allow only owner to start sale', async function () {
-  //     const startSaleTx = await surge.connect(owner).startSale();
-  //     await startSaleTx.wait();
+  describe('Start/Pause sale', function () {
+    it('Should allow only owner to start sale', async function () {
+      const startSaleTx = await surge.connect(owner).startSale();
+      await startSaleTx.wait();
 
-  //     expect(await surge.saleIsActive()).to.equal(true);
-  //   });
+      expect(await surge.saleIsActive()).to.equal(true);
+    });
 
-  //   it('Should not allow any address to start sale', async function () {
-  //     expect(surge.connect(addr1).startSale()).to.be.revertedWith('Ownable: caller is not the owner');
+    it('Should not allow any address to start sale', async function () {
+      expect(surge.connect(addr1).startSale()).to.be.revertedWith('Ownable: caller is not the owner');
 
-  //     expect(await surge.saleIsActive()).to.equal(false);
-  //   });
+      expect(await surge.saleIsActive()).to.equal(false);
+    });
 
-  //   describe('Withdraw ERC Tokens', function () {
-  //     it('Should not allow any address to withdraw ERC20 Tokens', async function () {
-  //       expect(surge.connect(addr1).withdrawTokens("0xdAC17F958D2ee523a2206206994597C13D831ec7")).to.be.revertedWith('Ownable: caller is not the owner');
-  //     });
+    describe('Withdraw ERC Tokens', function () {
+      it('Should not allow any address to withdraw ERC20 Tokens', async function () {
+        expect(surge.connect(addr1).withdrawTokens("0xdAC17F958D2ee523a2206206994597C13D831ec7")).to.be.revertedWith('Ownable: caller is not the owner');
+      });
   
-  //     it('Should allow only owner to withdraw ERC20 tokens', async function () {
-  //       Token = await ethers.getContractFactory('ERC20TestToken');
-  //       token = await Token.deploy();
-  //       await token.deployed();
-  //       const withdrawTokensTx = await surge.connect(owner).withdrawTokens(token.address);
-  //       await withdrawTokensTx.wait();
-  //     });
-  //   });
+      it('Should allow only owner to withdraw ERC20 tokens', async function () {
+        Token = await ethers.getContractFactory('ERC20TestToken');
+        token = await Token.deploy();
+        await token.deployed();
+        const withdrawTokensTx = await surge.connect(owner).withdrawTokens(token.address);
+        await withdrawTokensTx.wait();
+      });
+    });
 
-  //   it('Should allow only owner to pause sale', async function () {
-  //     const startSaleTx = await surge.connect(owner).startSale();
-  //     await startSaleTx.wait();
+    it('Should allow only owner to pause sale', async function () {
+      const startSaleTx = await surge.connect(owner).startSale();
+      await startSaleTx.wait();
 
-  //     expect(await surge.saleIsActive()).to.equal(true);
+      expect(await surge.saleIsActive()).to.equal(true);
 
-  //     const pauseSaleTx = await surge.connect(owner).pauseSale();
-  //     await pauseSaleTx.wait();
+      const pauseSaleTx = await surge.connect(owner).pauseSale();
+      await pauseSaleTx.wait();
 
-  //     expect(await surge.saleIsActive()).to.equal(false);
-  //   });
+      expect(await surge.saleIsActive()).to.equal(false);
+    });
 
-  //   it('Should not allow any address to pause sale', async function () {
-  //     expect(surge.connect(addr1).pauseSale()).to.be.revertedWith('Ownable: caller is not the owner');
+    it('Should not allow any address to pause sale', async function () {
+      expect(surge.connect(addr1).pauseSale()).to.be.revertedWith('Ownable: caller is not the owner');
 
-  //     expect(await surge.saleIsActive()).to.equal(false);
-  //   });
-  // });
+      expect(await surge.saleIsActive()).to.equal(false);
+    });
+  });
 
-  // describe('Start/Pause presale', function () {
-  //   it('Should allow only owner to start presale', async function () {
-  //     const startPresaleTx = await surge.connect(owner).startPresale();
-  //     await startPresaleTx.wait();
+  describe('Start/Pause presale', function () {
+    it('Should allow only owner to start presale', async function () {
+      const startPresaleTx = await surge.connect(owner).startPresale();
+      await startPresaleTx.wait();
 
-  //     expect(await surge.presaleIsActive()).to.equal(true);
-  //   });
+      expect(await surge.presaleIsActive()).to.equal(true);
+    });
 
-  //   it('Should not allow any address to start presale', async function () {
-  //     expect(surge.connect(addr1).startPresale()).to.be.revertedWith('Ownable: caller is not the owner');
+    it('Should not allow any address to start presale', async function () {
+      expect(surge.connect(addr1).startPresale()).to.be.revertedWith('Ownable: caller is not the owner');
 
-  //     expect(await surge.presaleIsActive()).to.equal(false);
-  //   });
+      expect(await surge.presaleIsActive()).to.equal(false);
+    });
 
-  //   it('Should allow only owner to pause presale', async function () {
-  //     const startPresaleTx = await surge.connect(owner).startPresale();
-  //     await startPresaleTx.wait();
+    it('Should allow only owner to pause presale', async function () {
+      const startPresaleTx = await surge.connect(owner).startPresale();
+      await startPresaleTx.wait();
 
-  //     expect(await surge.presaleIsActive()).to.equal(true);
+      expect(await surge.presaleIsActive()).to.equal(true);
 
-  //     const pausePresaleTx = await surge.connect(owner).pausePresale();
-  //     await pausePresaleTx.wait();
+      const pausePresaleTx = await surge.connect(owner).pausePresale();
+      await pausePresaleTx.wait();
 
-  //     expect(await surge.presaleIsActive()).to.equal(false);
-  //   });
+      expect(await surge.presaleIsActive()).to.equal(false);
+    });
 
-  //   it('Should not allow any address to pause presale', async function () {
-  //     expect(surge.connect(addr1).pausePresale()).to.be.revertedWith('Ownable: caller is not the owner');
+    it('Should not allow any address to pause presale', async function () {
+      expect(surge.connect(addr1).pausePresale()).to.be.revertedWith('Ownable: caller is not the owner');
 
-  //     expect(await surge.presaleIsActive()).to.equal(false);
-  //   });
-  // });
-  // it('Premint sale', async function () {
+      expect(await surge.presaleIsActive()).to.equal(false);
+    });
+  });
+  // it('PreSaleMint sale', async function () {
   //   // Build MerkleTree
   //   const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
   //   const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true });
@@ -249,125 +252,98 @@ describe('Surge', function () {
   //   expect(await contract.balanceOf(await holder.getAddress())).to.equal(0);
   //   expect(await contract.balanceOf(await externalUser.getAddress())).to.equal(0);
   // });
-  // describe('Presale whitelisting', function () {
-  //   it('Should allow only owner to add address to presale', async function () {
-  //     const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
-  //     await addToPresaleTx.wait();
-  //   });
+  describe('Presale whitelisting', function () {
+    // it('Should allow only owner to add address to presale', async function () {
+    //   const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
+    //   await addToPresaleTx.wait();
+    // });
 
-  //   it('Should not allow to add address to presale twice', async function () {
-  //     const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
-  //     await addToPresaleTx.wait();
+    // it('Should not allow to add address to presale twice', async function () {
+    //   const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
+    //   await addToPresaleTx.wait();
 
-  //     expect(surge.connect(owner).addToPresale(addr1.address)).to.be.revertedWith('Wallet is already in the presale');
-  //   });
+    //   expect(surge.connect(owner).addToPresale(addr1.address)).to.be.revertedWith('Wallet is already in the presale');
+    // });
 
-  //   it('Should not allow any address to add address to presale', async function () {
-  //     expect(surge.connect(addr1).addToPresale(addr1.address)).to.be.revertedWith('Ownable: caller is not the owner');
-  //   });
-  // });
+    it('Should not allow any address to add address to presale', async function () {
+      expect(surge.connect(addr1).addToPresale(addr1.address)).to.be.revertedWith('Ownable: caller is not the owner');
+    });
+  });
 
-  // describe('Get Tokens', function () {
-  //   it('Should allow to get tokens owned by given account before minting', async function () {
-  //     const getTokensTx = await surge.connect(owner).getTokens(owner.address);
-  //     expect(getTokensTx.length).to.equal(0);
-  //   });
+  describe('Mint', function () {
+    it('Should not allow to mint tokens is sale is not active', async function () {
+      let amountOfTokens = 1;
 
-  //   it('Should allow to get tokens owned by given account after minting', async function () {
-  //     let receivers = [addr1.address, addr1.address];
+      expect(await surge.saleIsActive()).to.equal(false);
 
-  //     const mintTx = await surge.connect(owner).giftMint(receivers);
-  //     await mintTx.wait();
+      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Sale is currently not active');
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(2);
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
 
-  //     var getTokensTx = await surge.connect(owner).getTokens(addr1.address);
-  //     const result = Object.values(getTokensTx);
-  //     result.forEach((element, index) => (result[index] = element.toNumber()));
+    it('Should not allow to mint more than 5 tokens per wallet', async function () {
+      let amountOfTokens = maxPerUser;
 
-  //     expect(JSON.stringify(result)).to.equal(JSON.stringify([1, 2]));
-  //   });
+      const startSaleTx = await surge.connect(owner).startSale();
+      await startSaleTx.wait();
+      expect(await surge.saleIsActive()).to.equal(true);
 
-  //   it('Should allow to get tokens owned by given account from a different account', async function () {
-  //     const getTokensTx = await surge.connect(addr1).getTokens(owner.address);
-  //     expect(getTokensTx.length).to.equal(0);
-  //   });
-  // });
+      let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-  // describe('Mint', function () {
-  //   it('Should not allow to mint tokens is sale is not active', async function () {
-  //     let amountOfTokens = 1;
+      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+        value: ethers.utils.parseEther(price.toString())
+      });
+      await mintTx.wait();
 
-  //     expect(await surge.saleIsActive()).to.equal(false);
+      expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
 
-  //     expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Sale is currently not active');
+      expect(surge.connect(addr1).mint(1)).to.be.revertedWith(
+        'You already have maximum number of tokens allowed per wallet'
+      );
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(0);
-  //   });
+      expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+    });
 
-  //   it('Should not allow to mint more than 5 tokens per wallet', async function () {
-  //     let amountOfTokens = maxPerUser;
+    it('Should not allow to mint a token if user has not enough eth', async function () {
+      let amountOfTokens = 1;
 
-  //     const startSaleTx = await surge.connect(owner).startSale();
-  //     await startSaleTx.wait();
-  //     expect(await surge.saleIsActive()).to.equal(true);
+      const startSaleTx = await surge.connect(owner).startSale();
+      await startSaleTx.wait();
+      expect(await surge.saleIsActive()).to.equal(true);
 
-  //     let price = ((await surge.price()) * amountOfTokens) / decimals;
+      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Incorrect ETH value');
 
-  //     const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
-  //       value: ethers.utils.parseEther(price.toString())
-  //     });
-  //     await mintTx.wait();
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+    it('Should not allow user to mint a token', async function () {
+      let amountOfTokens = 1;
 
-  //     expect(surge.connect(addr1).mint(1)).to.be.revertedWith(
-  //       'You already have maximum number of tokens allowed per wallet'
-  //     );
+      const startSaleTx = await surge.connect(owner).startSale();
+      await startSaleTx.wait();
+      expect(await surge.saleIsActive()).to.equal(true);
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
-  //   });
+      let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-  //   it('Should not allow to mint a token if user has not enough eth', async function () {
-  //     let amountOfTokens = 1;
+      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+        value: ethers.utils.parseEther(price.toString())
+      });
+      await mintTx.wait();
 
-  //     const startSaleTx = await surge.connect(owner).startSale();
-  //     await startSaleTx.wait();
-  //     expect(await surge.saleIsActive()).to.equal(true);
+      expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+    });
+  });
 
-  //     expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Incorrect ETH value');
+  describe('Withdraw', function () {
+    it('Should allow only owner to withdraw', async function () {
+      const withdrawAllTx = await surge.connect(owner).withdrawAll();
+      await withdrawAllTx.wait();
+    });
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(0);
-  //   });
-
-  //   it('Should not allow user to mint a token', async function () {
-  //     let amountOfTokens = 1;
-
-  //     const startSaleTx = await surge.connect(owner).startSale();
-  //     await startSaleTx.wait();
-  //     expect(await surge.saleIsActive()).to.equal(true);
-
-  //     let price = ((await surge.price()) * amountOfTokens) / decimals;
-
-  //     const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
-  //       value: ethers.utils.parseEther(price.toString())
-  //     });
-  //     await mintTx.wait();
-
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
-  //   });
-  // });
-
-  // describe('Withdraw', function () {
-  //   it('Should allow only owner to withdraw', async function () {
-  //     const withdrawAllTx = await surge.connect(owner).withdrawAll();
-  //     await withdrawAllTx.wait();
-  //   });
-
-  //   it('Should not allow any address to withdraw', async function () {
-  //     expect(surge.connect(addr1).withdrawAll()).to.be.revertedWith('Ownable: caller is not the owner');
-  //   });
-  // });
+    it('Should not allow any address to withdraw', async function () {
+      expect(surge.connect(addr1).withdrawAll()).to.be.revertedWith('Ownable: caller is not the owner');
+    });
+  });
 
   // describe('Presale Mint', function () {
   //   it('Should not allow an address to presale mint tokens if presale is not active', async function () {
@@ -467,59 +443,24 @@ describe('Surge', function () {
   //   });
   // });
 
-  // describe('Gift Mint', function () {
-  //   it('Should not allow any address to gift mint tokens', async function () {
-  //     let receivers = [addr1.address];
+  describe('Gift Mint', function () {
+    it('Should not allow any address to gift mint tokens', async function () {
+      let receivers = [addr1.address];
 
-  //     expect(surge.connect(addr1).giftMint(receivers)).to.be.revertedWith('Ownable: caller is not the owner');
+      expect(surge.connect(addr1).giftMint(receivers)).to.be.revertedWith('Ownable: caller is not the owner');
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(0);
-  //   });
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
 
-  //   it('Should allow owner to gift mint tokens', async function () {
-  //     let receivers = [addr1.address, addr2.address, addr3.address];
+    it('Should allow owner to gift mint tokens', async function () {
+      let receivers = [addr1.address, addr2.address, addr3.address];
 
-  //     const mintTx = await surge.connect(owner).giftMint(receivers);
-  //     await mintTx.wait();
+      const mintTx = await surge.connect(owner).giftMint(receivers);
+      await mintTx.wait();
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(1);
-  //     expect(await surge.balanceOf(addr2.address)).to.equal(1);
-  //     expect(await surge.balanceOf(addr3.address)).to.equal(1);
-  //   });
-
-  //   it('Should not allow to gift mint more than 5 tokens per wallet', async function () {
-  //     let receivers = [];
-
-  //     for (var i = 0; i < maxPerUser; i++) {
-  //       receivers.push(addr1.address);
-  //     }
-
-  //     const mintTx = await surge.connect(owner).giftMint(receivers);
-  //     await mintTx.wait();
-
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(maxPerUser);
-
-  //     expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith(
-  //       'Wallet has max number of tokens allowed'
-  //     );
-
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(maxPerUser);
-  //   });
-
-  //   it('Should not allow to gift mint more than maxReserved', async function () {
-  //     let receivers = [];
-
-  //     for (var i = 0; i < maxReserved; i++) {
-  //       var id = crypto.randomBytes(32).toString('hex');
-  //       var privateKey = '0x' + id;
-  //       var wallet = new ethers.Wallet(privateKey);
-  //       receivers.push(wallet.address);
-  //     }
-
-  //     const mintTx = await surge.connect(owner).giftMint(receivers);
-  //     await mintTx.wait();
-
-  //     expect(surge.connect(owner).giftMint([addr1.address])).to.be.revertedWith('No available tokens for gifting');
-  //   });
-  // });
+      expect(await surge.balanceOf(addr1.address)).to.equal(1);
+      expect(await surge.balanceOf(addr2.address)).to.equal(1);
+      expect(await surge.balanceOf(addr3.address)).to.equal(1);
+    });
+  });
 });
