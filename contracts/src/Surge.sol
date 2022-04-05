@@ -18,14 +18,13 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
 
     bytes32 public merkleRoot;
 
-    uint256 public totalGiftMints = 0;
     bool public saleIsActive = false;
     bool public presaleIsActive = false;
 
     uint256 public price = 0.08 ether; //$250
     uint256 public maxSupply = 5000;
     uint256 public maxPerUser = 5;
-    uint256 public maxReserved = 199; // Zero based index
+    uint256 public maxReserved = 200; // Zero based index
     string public baseTokenURI;
 
 
@@ -78,10 +77,10 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     }
 
     //add wallets to give them access to the presale
-    function addToPresale(address[] calldata _wallet) external onlyOwner {        
-        for (uint256 i = 0; i < _wallet.length; i++) {
-            require(!_presaleApproved[_wallet[i]], "Wallet is already in the presale");
-            _presaleApproved[_wallet[i]] = true;
+    function addToPresale(address[] calldata _wallets) external onlyOwner {        
+        for (uint256 i = 0; i < _wallets.length; i++) {
+            require(!_presaleApproved[_wallets[i]], "Wallet is already in the presale");
+            _presaleApproved[_wallets[i]] = true;
         }
     }
 
@@ -105,11 +104,9 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         }
     }
 
-    // premint function allows the owner to mint maxReserved amount
-    function preMint(uint256 _amountOfTokens) external nonReentrant onlyOwner {
-        require(_amountOfTokens <= maxReserved, "No available tokens for gifting");
-        require(balanceOf(msg.sender) <= maxReserved, "Wallet has max number of tokens allowed");
-        _safeMint(msg.sender, _amountOfTokens);        
+    // giftMint function allows the owner to mint maxReserved amount
+    function giftMint(uint256 _amountOfTokens) external nonReentrant onlyOwner {
+        _safeMint(msg.sender, _amountOfTokens);
     }
 
     /**************ADMIN BASE FUNCTIONS *************/
