@@ -21,7 +21,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     bool public saleIsActive = false;
     bool public presaleIsActive = false;
 
-    uint256 public price = 0.08 ether; //$250
+    uint256 public price = 50000000000000000; //0.05ETH //$250
     uint256 public maxSupply = 5000;
     uint256 public maxPerUser = 5;
     uint256 public maxReserved = 200; // Zero based index
@@ -104,8 +104,14 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         }
     }
 
-    // giftMint function allows the owner to mint maxReserved amount
-    function giftMint(uint256 _amountOfTokens) external nonReentrant onlyOwner {
+    // batchMinting function allows the owner to mint maxReserved amount
+    function batchMinting(uint256 _amountOfTokens) 
+        external
+        payable
+        nonReentrant 
+        onlyOwner
+        isEnoughEth(_amountOfTokens) 
+    {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
@@ -132,6 +138,10 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
 
     function pausePresale() external onlyOwner {
         presaleIsActive = false;
+    }
+
+    function verifyInPresale(address userAddress) external view virtual returns(bool approved) {
+        return _presaleApproved[userAddress];
     }
 
     function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
