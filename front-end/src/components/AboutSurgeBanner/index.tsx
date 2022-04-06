@@ -69,7 +69,7 @@ export default function AboutSurgeBanner(): JSX.Element {
             dangerouslySetInnerHTML={{ __html: STRINGS.aboutSurgeDescription.replace(/\n/g, '<br/>') }}
           ></p>
           <div className={css(styles.button)}>
-            <MainButton callToAction={STRINGS.learnMoreAboutSurge} primary />
+            <MainButton callToAction={STRINGS.learnMoreAboutSurge} primary  action={() => window.open(STRINGS.surgeURL)}/>
           </div>
         </div>
         <img className={css(styles.image)} src={aboutCollectionImg} alt="logo" />
