@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     color: themeVariables.lightColor,
     ':hover': {
       background: themeVariables.whiteColor,
-      color: themeVariables.primaryColor
+      color: themeVariables.primaryColor,
+      fontWeight: 800
     }
   },
   secondaryButton: {
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
     color: themeVariables.darkColor,
     ':hover': {
       background: themeVariables.primaryColor,
-      color: themeVariables.lightColor
+      color: themeVariables.lightColor,
+      fontWeight: 800
     }
   },
   fullWidth: {

@@ -454,17 +454,17 @@ describe('Surge', function () {
     //     value: ethers.utils.parseEther(price.toString())})).to.be.revertedWith('Ownable: caller is not the owner');
 
     //   expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    // // });
+
+    // it('Should allow owner to batch mint tokens', async function () {
+    //   let amountOfTokens = 20;
+    //   let price = ((await surge.price()) * amountOfTokens) / decimals;
+
+    //   const mintTx = await surge.connect(owner).batchMinting(amountOfTokens, {
+    //     value: ethers.utils.parseEther(price.toString())});
+    //   await mintTx.wait();      
+
+    //   expect(await surge.balanceOf(owner)).to.equal(amountOfTokens);
     // });
-
-    it('Should allow owner to batch mint tokens', async function () {
-      let amountOfTokens = 20;
-      let price = ((await surge.price()) * amountOfTokens) / decimals;
-
-      const mintTx = await surge.connect(owner).batchMinting(amountOfTokens, {
-        value: ethers.utils.parseEther(price.toString())});
-      await mintTx.wait();      
-
-      expect(await surge.balanceOf(owner)).to.equal(amountOfTokens);
-    });
   });
 });

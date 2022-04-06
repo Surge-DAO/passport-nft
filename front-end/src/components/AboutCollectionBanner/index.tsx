@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
-import aboutCollectionImg from '../../images/about-collection.png';
+import aboutCollectionImg from '../../images/passport.gif';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,13 +18,16 @@ const styles = StyleSheet.create({
     }
   },
   image: {
-    width: '290px',
+    width: '500px',
+    marginTop: '24px',
     '@media (max-width: 768px)': {
-      width: '270px'
+      width: '60%',
+      margin: 'auto'
     }
   },
   title: {
     textAlign: 'left',
+    marginBottom: '24px',
     '@media (max-width: 768px)': {
       padding: '0 0 20px 0',
       textAlign: 'center'

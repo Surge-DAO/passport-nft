@@ -7,7 +7,7 @@ export const PerkBannerItems: Perk[] = [
     benefits: []
   },
   {
-    title: 'Web3 Tooling',
+    title: 'Tools',
     description: '',
     benefits: []
   },

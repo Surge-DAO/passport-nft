@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     justifyContent: 'flex-start',
-    padding: '24px'
+    padding: '12px'
   },
   title: {
     display: 'inline',
-    marginLeft: '24px'
+    marginLeft: '12px'
   },
   stepNo: {
     display: 'inline',
