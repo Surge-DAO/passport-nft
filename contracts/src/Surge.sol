@@ -98,7 +98,10 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
         require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), 'Invalid proof!');
 
-        _safeMint(msg.sender, _amountOfTokens);
+        if((balanceOf(msg.sender) + _amountOfTokens <= maxPerUser))
+        {
+            _safeMint(msg.sender, _amountOfTokens);
+        }
         if (balanceOf(msg.sender) == maxPerUser) {
             _presaleMinted[msg.sender] = true;
         }

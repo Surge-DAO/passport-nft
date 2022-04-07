@@ -446,15 +446,15 @@ describe('Surge', function () {
 
   describe('Batch Mint', function () {
     //Figure out why it does not think batchMinting is a method
-    // it('Should not allow any address to batch mint tokens', async function () {
-    //   let amountOfTokens = 1;
-    //   let price = ((await surge.price()) * amountOfTokens) / decimals;
+    it('Should not allow any address to batch mint tokens', async function () {
+      let amountOfTokens = 1;
+      let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-    //   expect(surge.connect(addr1).batchMinting(amountOfTokens, {
-    //     value: ethers.utils.parseEther(price.toString())})).to.be.revertedWith('Ownable: caller is not the owner');
+      expect(surge.connect(addr1).batchMinting(amountOfTokens, {
+        value: ethers.utils.parseEther(price.toString())})).to.be.revertedWith('Ownable: caller is not the owner');
 
-    //   expect(await surge.balanceOf(addr1.address)).to.equal(0);
-    // // });
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
 
     // it('Should allow owner to batch mint tokens', async function () {
     //   let amountOfTokens = 20;
