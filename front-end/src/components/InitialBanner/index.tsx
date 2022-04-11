@@ -51,7 +51,6 @@ export default function InitialComponent(): JSX.Element {
 
   return (
     <div className={css(styles.banner)}>
-      <Navbar />
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
       <PassportBanner />
       <div className={css(styles.bannerFooter)}>

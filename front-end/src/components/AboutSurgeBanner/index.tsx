@@ -4,13 +4,15 @@ import { STRINGS } from '../../strings';
 import themeVariables from '../../themeVariables.module.scss';
 import MainButton from '../MainButton';
 import aboutCollectionImg from '../../images/Logo.png';
+import Navbar from '../Navbar';
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '80%',
-    margin: 'auto',
+  mainWrapper: {
+    width: '100%',
+    backgroundColor: themeVariables.secondaryColor,
+  },
+  wrapper: {
+    paddingBottom: '60px',
     '@media (max-width: 768px)': {
       display: 'flex',
       flexDirection: 'column-reverse',
@@ -18,9 +20,11 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     }
   },
-  wrapper: {
-    backgroundColor: themeVariables.lightGreyColor,
-    paddingBottom: '60px',
+  container: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '80%',
+    margin: '0 auto',
     '@media (max-width: 768px)': {
       display: 'flex',
       flexDirection: 'column-reverse',
@@ -31,8 +35,9 @@ const styles = StyleSheet.create({
   image: {
     width: '335px',
     padding: '40px 0',
-    '@media (max-width: 768px)': {
-      width: '230px'
+    '@media (max-width: 1000px)': {
+      width: '230px',
+      display: 'none'
     }
   },
   title: {
@@ -60,7 +65,9 @@ const styles = StyleSheet.create({
 
 export default function AboutSurgeBanner(): JSX.Element {
   return (
-    <div className={css(styles.wrapper)} id={STRINGS.aboutSurge}>
+    <div className={css(styles.mainWrapper)}>
+      <Navbar />
+      <div className={css(styles.wrapper)} id={STRINGS.aboutSurge}>
       <div className={css(styles.container)}>
         <div>
           <h2 className={css(styles.title)}>{STRINGS.aboutSurge}</h2>
@@ -74,6 +81,7 @@ export default function AboutSurgeBanner(): JSX.Element {
         </div>
         <img className={css(styles.image)} src={aboutCollectionImg} alt="logo" />
       </div>
+    </div>
     </div>
   );
 }

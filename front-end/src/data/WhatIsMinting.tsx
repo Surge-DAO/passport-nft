@@ -3,6 +3,7 @@ export interface WhatIsMinting {
     description: string;
     buttonTitle: string;
     buttonURL?: string;
+    action?: () => void;
   }
 
   export const whatIsMinting: WhatIsMinting[] = [
@@ -21,7 +22,7 @@ export interface WhatIsMinting {
     {
       title: '<span style="font-weight: bold;">Connect wallet</span>',
       description: 'Close this modal and go to the navigation bar\'s top right corner, <span style="font-weight: bold;">click “Connect Wallet”</span>, and select your wallet-type (i.e Metamask).  Make sure you’re logged in, and your wallet is funded.<br /><br />',
-      buttonTitle: 'close modal to Connect Wallet',
+      buttonTitle: 'close modal to Connect Wallet'
     },
     {
       title: '<span style="font-weight: bold;">Minting time</span>',
