@@ -21,13 +21,13 @@ export const PerkBannerItems: Perk[] = [
     description: '',
     benefits: []
   },
-  // {
-  //   title: 'Gaming',
-  //   description: '',
-  //   benefits: []
-  // },
   {
     title: 'Education',
+    description: '',
+    benefits: []
+  },
+  {
+    title: 'Developer',
     description: '',
     benefits: []
   }

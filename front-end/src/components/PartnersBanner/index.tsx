@@ -7,10 +7,13 @@ import { Partners } from '../../data/PartnersItems';
 const styles = StyleSheet.create({
   container: {
     padding: '20px 0',
-    backgroundColor: themeVariables.lightGreyColor
+    backgroundColor: themeVariables.whiteColor,
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center'
   },
   logos: {
-    width: '100px',
+    width: '120px',
     marginTop: '20px',
     cursor: 'pointer'
   },

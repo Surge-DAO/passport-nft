@@ -2,8 +2,10 @@ import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
 import { STRINGS } from '../../strings';
-import { EducationIcon, IRLIcon, DAOsIcon, NFTsIcon, DeFiIcon } from '../Icons';
 import MainButton from '../MainButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGlobeAmericas, faGraduationCap, faPiggyBank, faRobot, faRocket } from '@fortawesome/free-solid-svg-icons';
+import { faPhoenixFramework } from '@fortawesome/free-brands-svg-icons';
 
 export interface Perk {
   title: string;
@@ -15,14 +17,14 @@ type Props = {
   perk: Perk;
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({   
   container: {
     backgroundColor: `${themeVariables.whiteColor}`,
     border: `2px solid ${themeVariables.thirdColor}`,
     borderRadius: '8px',
     boxShadow: `1px 1px 10px 1px rgba(43, 43, 43, 0.3)`,
-    paddingLeft: '15px',
-    paddingRight: '15px',
+    paddingLeft: '5px',
+    paddingRight: '5px',
     marginTop: '10px',
     marginBottom: '15px'
   },
@@ -38,15 +40,17 @@ const styles = StyleSheet.create({
 const getIcon = (title: string) => {
   switch (title) {
     case 'Education':
-      return <EducationIcon height={80} width={80} />;
+      return <FontAwesomeIcon icon={faGraduationCap} size='4x' color='#f7c2ca'/>;
     case 'Tools':
-      return <DAOsIcon height={80} width={80} />;
+      return <FontAwesomeIcon icon={faRocket} size='4x' color='#f7c2ca'/>;
     case 'NFTs':
-      return <NFTsIcon height={80} width={80} />;
+      return <FontAwesomeIcon icon={faPhoenixFramework} size='4x' color='#f7c2ca'/>;
     case 'Finance':
-      return <DeFiIcon height={80} width={80} />;
+      return <FontAwesomeIcon icon={faPiggyBank} size='4x' color='#f7c2ca'/>;
     case 'IRL':
-      return <IRLIcon height={80} width={80} />;
+      return <FontAwesomeIcon icon={faGlobeAmericas} size='4x' color='#f7c2ca'/>;
+    case 'Developer':
+      return <FontAwesomeIcon icon={faRobot} size='4x' color='#f7c2ca'/>;
   }
 };
 

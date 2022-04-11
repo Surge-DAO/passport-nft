@@ -17,7 +17,7 @@ export const STRINGS = {
 
   Our mission is to bring more women into the space and fix the gender imbalance.
   `,
-  clickToMint: 'CLICK TO MINT',
+  clickToMint: 'Mint Coming Soon',
   connectWallet: 'Connect Wallet',
   frequentlyAskedQuestions: 'Frequently Asked Questions',
   faq: 'FAQ',

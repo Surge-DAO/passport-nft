@@ -2,8 +2,13 @@ import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
 import aboutCollectionImg from '../../images/passport.gif';
+import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: themeVariables.lightGreyColor,
+    padding: '20px 0'
+  },
   container: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -45,15 +50,17 @@ const styles = StyleSheet.create({
 
 export default function AboutCollectionBanner(): JSX.Element {
   return (
-    <div className={css(styles.container)}>
-      <div className={css(styles.text)}>
-        <h2 className={css(styles.title)}>{STRINGS.aboutCollection}</h2>
-        <p
-          className={css(styles.description)}
-          dangerouslySetInnerHTML={{ __html: STRINGS.aboutDescription.replace(/\n/g, '<br/>') }}
-        ></p>
+    <div className={css(styles.wrapper)}>
+      <div className={css(styles.container)}>
+        <div className={css(styles.text)}>
+          <h2 className={css(styles.title)}>{STRINGS.aboutCollection}</h2>
+          <p
+            className={css(styles.description)}
+            dangerouslySetInnerHTML={{ __html: STRINGS.aboutDescription.replace(/\n/g, '<br/>') }}
+          ></p>
+        </div>
+        <img className={css(styles.image)} src={aboutCollectionImg} alt="collection" />
       </div>
-      <img className={css(styles.image)} src={aboutCollectionImg} alt="collection" />
     </div>
   );
 }
