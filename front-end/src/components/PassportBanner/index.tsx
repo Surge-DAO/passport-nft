@@ -16,9 +16,7 @@ const styles = StyleSheet.create({
 });
 
 export default function PassportBanner(): JSX.Element {
-
   const [width, setWidth] = useState(0)
-
 
   const getWindowSize = () => {
     setWidth(window.innerWidth);
@@ -31,8 +29,6 @@ export default function PassportBanner(): JSX.Element {
     getWindowSize()
   },[])
    
-    
-
   return (
     <div>
         <Row lg='5' md='3' sm='2'className="justify-content-md-center">

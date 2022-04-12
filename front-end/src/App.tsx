@@ -18,12 +18,12 @@ library.add(fab, faBars, faTimes);
 function App() {
   return (
     <div className="App">
-      <AboutSurgeBanner />
       <InitialBanner />
       <PartnersBanner />
       <AboutCollectionBanner />
       <PerkBanner />
       <CollapsableRoadmapBanner />
+      <AboutSurgeBanner />
       <TeamMembersBanner />
       <FAQBanner />
       <Footer />

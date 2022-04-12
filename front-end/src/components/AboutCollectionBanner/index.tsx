@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '80vw',
-    margin: '70px auto',
+    width: '90vw',
+    margin: '0 auto',
     '@media (max-width: 1100px)': {
       display: 'flex',
       flexDirection: 'column-reverse',
@@ -24,14 +24,16 @@ const styles = StyleSheet.create({
   image: {
     width: '500px',
     marginTop: '24px',
+    padding: '16px 0 24px 0',
     '@media (max-width: 768px)': {
       width: '80%',
-      margin: 'auto'
+      margin: 'auto',
+      paddingTop: '48px'
     }
   },
   title: {
     textAlign: 'left',
-    marginBottom: '24px',
+    margin: '24px 0 8px 0',
     '@media (max-width: 768px)': {
       padding: '0 0 20px 0',
       textAlign: 'center'
@@ -40,7 +42,8 @@ const styles = StyleSheet.create({
   description: {
     fontSize: '18px',
     textAlign: 'left',
-    width: '85%'
+    width: '85%',
+    paddingBottom: '48px'
   },
   text: {
     width: '85%'

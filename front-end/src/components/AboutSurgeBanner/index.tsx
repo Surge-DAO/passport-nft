@@ -1,17 +1,13 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
-import themeVariables from '../../themeVariables.module.scss';
 import MainButton from '../MainButton';
 import aboutCollectionImg from '../../images/Logo.png';
-import Navbar from '../Navbar';
+import gradientBackground from '../../images/gradient-background.png';
 
 const styles = StyleSheet.create({
-  mainWrapper: {
-    width: '100%',
-    backgroundColor: themeVariables.secondaryColor,
-  },
   wrapper: {
+    backgroundImage: `url(${gradientBackground})`,
     paddingBottom: '60px',
     '@media (max-width: 768px)': {
       display: 'flex',
@@ -65,8 +61,6 @@ const styles = StyleSheet.create({
 
 export default function AboutSurgeBanner(): JSX.Element {
   return (
-    <div className={css(styles.mainWrapper)}>
-      <Navbar />
       <div className={css(styles.wrapper)} id={STRINGS.aboutSurge}>
       <div className={css(styles.container)}>
         <div>
@@ -81,7 +75,6 @@ export default function AboutSurgeBanner(): JSX.Element {
         </div>
         <img className={css(styles.image)} src={aboutCollectionImg} alt="logo" />
       </div>
-    </div>
     </div>
   );
 }
