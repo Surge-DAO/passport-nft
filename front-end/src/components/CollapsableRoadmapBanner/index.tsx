@@ -8,7 +8,7 @@ import { socialMedia } from '../../data/surgePlatforms';
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: themeVariables.whiteColor
+    backgroundColor: themeVariables.lightGreyColor
   },
   container: {
     width: '60%',

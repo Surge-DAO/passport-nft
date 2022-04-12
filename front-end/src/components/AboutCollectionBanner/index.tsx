@@ -18,15 +18,14 @@ const styles = StyleSheet.create({
       display: 'flex',
       flexDirection: 'column-reverse',
       justifyContent: 'center',
-      alignItems: 'center',
-      paddingBottom: '50px'
+      alignItems: 'center'
     }
   },
   image: {
     width: '500px',
     marginTop: '24px',
     '@media (max-width: 768px)': {
-      width: '60%',
+      width: '80%',
       margin: 'auto'
     }
   },

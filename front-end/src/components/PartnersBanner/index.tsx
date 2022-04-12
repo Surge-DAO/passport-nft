@@ -6,14 +6,13 @@ import { Partners } from '../../data/PartnersItems';
 
 const styles = StyleSheet.create({
   container: {
-    padding: '20px 0',
+    padding: '0 10px 40px 10px',
     backgroundColor: themeVariables.whiteColor,
     display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center'
+    justifyContent: 'center'
   },
   logos: {
-    width: '120px',
+    width: '150px',
     marginTop: '20px',
     cursor: 'pointer'
   },
@@ -21,21 +20,28 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  title: {
+    paddingTop: '48px'
   }
 });
 
 export default function PartnersBanner(): JSX.Element {
   return (
-    <div className={css(styles.container)}>
-        <Row>
-          {Partners.map((partner, idx) => (
-            <Col key={idx}>
-              <div className={css(styles.container)}>
-                <img className={css(styles.logos)} title={partner.name} src={process.env.PUBLIC_URL + partner.logo} alt="partners" onClick={() => window.open(partner.link)}/>
-              </div>
-            </Col>
-          ))}
-      </Row>
+    <div>
+      <h2 className={css(styles.title)}>Our Partners </h2>
+        <div className={css(styles.container)}>
+          <Row>
+            {Partners.map((partner, idx) => (
+              <Col key={idx}>
+                <div className={css(styles.container)}>
+                  <img className={css(styles.logos)} title={partner.name} src={process.env.PUBLIC_URL + partner.logo} alt="partners" onClick={() => window.open(partner.link)}/>
+                </div>
+              </Col>
+            ))}
+        </Row>
+      </div>
     </div>
+    
   );
 }
