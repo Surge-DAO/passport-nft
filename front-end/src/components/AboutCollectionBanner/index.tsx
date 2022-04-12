@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     margin: '24px 0 8px 0',
     '@media (max-width: 768px)': {
       padding: '0 0 20px 0',
-      textAlign: 'center'
+      textAlign: 'center',
+      fontSize: '20px'
     }
   },
   description: {
