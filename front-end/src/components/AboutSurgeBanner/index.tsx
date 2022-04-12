@@ -3,11 +3,11 @@ import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
 import MainButton from '../MainButton';
 import aboutCollectionImg from '../../images/Logo.png';
-import gradientBackground from '../../images/gradient-background.png';
+import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundImage: `url(${gradientBackground})`,
+    backgroundColor: themeVariables.whiteColor,
     paddingBottom: '60px',
     '@media (max-width: 768px)': {
       display: 'flex',
