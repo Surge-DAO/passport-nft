@@ -31,7 +31,7 @@ export default function PartnersBanner(): JSX.Element {
     <div>
       <h2 className={css(styles.title)}>Our Partners </h2>
         <div className={css(styles.container)}>
-          <Row>
+          <Row xs={2} sm={2} md='auto' lg='auto'>
             {Partners.map((partner, idx) => (
               <Col key={idx}>
                 <div className={css(styles.container)}>
