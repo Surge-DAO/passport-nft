@@ -22,7 +22,10 @@ const styles = StyleSheet.create({
     paddingTop: '5%',
     paddingBottom: '5%',
     paddingLeft: '10%',
-    paddingRight: '10%'
+    paddingRight: '10%',
+    '@media (min-width: 320px) and (max-width: 768px)': {
+      fontSize: '20px'
+    }
   },
   bannerFooter: {
     paddingTop: '3%',

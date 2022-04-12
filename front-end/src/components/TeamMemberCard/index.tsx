@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
     fontSize: '16px',
     lineHeight: '19px',
     '@media (max-width: 1199px)': {
-      fontSize: '14px'
+      fontSize: '10px'
     }
   },
   name: {
     '@media (max-width: 1199px)': {
-      fontSize: '18px'
+      fontSize: '10px'
     }
   }
 });

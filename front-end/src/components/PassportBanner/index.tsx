@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
   },
   gif: {
     width: '40%',
-    margin: '0 auto'
+    margin: '0 auto',
+    padding: '20px 0'
   }
 });
 
