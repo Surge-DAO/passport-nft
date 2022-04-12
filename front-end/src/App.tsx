@@ -12,6 +12,7 @@ import FAQBanner from './components/FAQBanner';
 import RoadMapBanner from './components/RoadMapBanner';
 import PerkBanner from './components/PerkBanner';
 import './App.scss';
+import CollapsableRoadmapBanner from './components/CollapsableRoadmapBanner';
 
 library.add(fab, faBars, faTimes);
 
@@ -23,7 +24,7 @@ function App() {
       <PartnersBanner />
       <AboutCollectionBanner />
       <PerkBanner />
-      <RoadMapBanner />
+      <CollapsableRoadmapBanner />
       <TeamMembersBanner />
       <FAQBanner />
       <Footer />

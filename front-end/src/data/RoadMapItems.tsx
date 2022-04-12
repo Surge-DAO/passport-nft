@@ -36,7 +36,7 @@ export const roadMapItems: CardParams[] = [
   {
     title: 'Minting Begins',
     stepNo: 4,
-    description: 'Minting will start on April 21st.',
+    description: 'Minting will start on April 28th.',
     additionalSteps: [],
     active: false
   },
