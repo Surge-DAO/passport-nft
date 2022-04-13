@@ -114,7 +114,7 @@ export default function NavBar(): JSX.Element {
                 <SocialMediaIcons />
               </div>
               <div className={css(styles.connectBtn)}>
-                {/* <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary /> */}
+                <MainButton disable action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary />
                 <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
               </div>
             </Nav>
@@ -147,7 +147,7 @@ export default function NavBar(): JSX.Element {
             <div className={css(styles.paddingTop30)}>
               <SocialMediaIcons />
               <div className={css(styles.connectBtn)}>
-                {/* <MainButton disable action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary /> */}
+                <MainButton disable action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary />
                 <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
               </div>
             </div>
