@@ -45,30 +45,34 @@ const styles = StyleSheet.create({
 });
 
 export interface CardParams {
-	title: string;
-	stepNo: number;
-	description: string;
-	additionalSteps: string[];
   active: boolean;
+	additionalSteps: string[];
+	description: string;
+  lastLine?: string;
+	stepNo: number;
+	title: string;
 }
 
 export default function RoadMapCard(params: CardParams): JSX.Element {
-  const cardStyle = params.active ? css(styles.cardActive) : css(styles.cardInactive);
+  const { additionalSteps, active, description, lastLine, stepNo, title } = params;
+
+  const cardStyle = active ? css(styles.cardActive) : css(styles.cardInactive);
 
   return (
     <div className={`${css(styles.card)} ${cardStyle}`}>
       <div className={css(styles.container)}>
-        <h5 className={css(styles.stepNo)}>{params.stepNo}.</h5>
-        <h5 className={css(styles.title)}>{params.title}</h5>
+        <h5 className={css(styles.stepNo)}>{stepNo}.</h5>
+        <h5 className={css(styles.title)}>{title}</h5>
       </div>
-      <p className={css(styles.description)}>{params.description}</p>
+      <p className={css(styles.description)}>{description}</p>
       <ul>
-        {params.additionalSteps.map((item, id) => {
+        {additionalSteps.map((item, id) => {
           return (
             <li key={id} className={css(styles.listStyle)} dangerouslySetInnerHTML={{ __html: item.replace(/\n/g, '<br/>') }} />
           );
         })}
       </ul>
+      <p className={css(styles.description)}>{lastLine}</p>
     </div>
   );
 }

@@ -65,5 +65,17 @@ export const teamMembers: TeamMember[] = [
     role: 'Smart Contract Developer',
     image: 'assets/images/teamMembers/Gel.jpeg',
     link: 'https://twitter.com/0xgel'
+  },
+  {
+    name: 'Bianca Aguilar',
+    role: 'Designer',
+    image: 'assets/images/teamMembers/Bianca.jpeg',
+    link: 'https://twitter.com/biancamikaila'
+  },
+  {
+    name: 'Michelle L.',
+    role: 'Visual Design Lead',
+    image: 'assets/images/teamMembers/Michelle.jpeg',
+    link: 'https://twitter.com/PennyCandyNFT'
   }
 ];

@@ -4,20 +4,17 @@ export const STRINGS = {
 
   Today, the Surge Passport is your golden ticket to Web3. It is designed strategically to serve both as a point of entry and an accelerator to your Web3 development. And a beautiful art collection piece of course!
 
-  With the Passport, you get access to educational courses, scholarships, mentorships, discounts, digital tools, presale lists, IRL experiences… and this is just the beginning.
+  With the Passport, you get access to educational courses, scholarships, mentorships, discounts, digital tools, subscriptions, IRL experiences… <strong>and this is just the beginning.</strong>
   `,
   aboutCollection: 'About the Collection',
   aboutSurge: 'About Surge',
-  aboutSurgeDescription: `Surge is a female-led community, focused on educating and securing
-  women's place in Web3.
+  aboutSurgeDescription: `Surge is a female-led organization, educating and securing womxn's place in Web3.
 
-  A group of us met in Kernel in September, 2021 and have since launched Surge Women where we are publishing educational content.
+  To do so, we operate as creators of original educational content, curators of existing media, facilitators of Web3 careers for community members, and partners to mission-aligned Web3 platforms.
 
-  We know the language in Crypto is intimidating, so we are changing the information pipeline with easily digestible content.
-
-  Our mission is to bring more women into the space and fix the gender imbalance.
+  Surge’s ultimate goal is to tie together an enhanced ecosystem of compensated opportunities for women in Web3, by working with other mission-aligned organizations..
   `,
-  clickToMint: 'CLICK TO MINT',
+  clickToMint: 'Minting April 28',
   connectWallet: 'Connect Wallet',
   frequentlyAskedQuestions: 'Frequently Asked Questions',
   faq: 'FAQ',

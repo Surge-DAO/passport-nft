@@ -22,7 +22,10 @@ const styles = StyleSheet.create({
     paddingTop: '5%',
     paddingBottom: '5%',
     paddingLeft: '10%',
-    paddingRight: '10%'
+    paddingRight: '10%',
+    '@media (min-width: 320px) and (max-width: 768px)': {
+      fontSize: '20px'
+    }
   },
   bannerFooter: {
     paddingTop: '3%',
@@ -55,7 +58,7 @@ export default function InitialComponent(): JSX.Element {
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
       <PassportBanner />
       <div className={css(styles.bannerFooter)}>
-        <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
+        <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} link="https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform" />
         <MintingModal show={showModal} hide={() => setShowModal(false)} />
         <div className={css(styles.mintingText)}>
           <button className={css(styles.whatIsMintingModalButton)} onClick={() => setShowWhatIsMintingModal(!showWhatIsMintingModal)}>

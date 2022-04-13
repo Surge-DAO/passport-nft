@@ -6,10 +6,12 @@ import Row from 'react-bootstrap/Row';
 import TeamMemberCard from '../TeamMemberCard';
 import { teamMembers } from '../../data/TeamMembers';
 import { STRINGS } from '../../strings';
+import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
-  container: {
-    height: '100vh'
+  wrapper: {
+    backgroundColor: themeVariables.lightGreyColor,
+    paddingBottom: '24px'
   },
   cards: {
     marginBottom: '5%'
@@ -23,15 +25,17 @@ const styles = StyleSheet.create({
 
 export default function TeamMembersBanner(): JSX.Element {
   return (
-    <Container id={STRINGS.team}>
-      <h2 className={css(styles.title)}>{STRINGS.team}</h2>
-      <Row className={css(styles.cards)} xs="auto" sm={2} md={3} lg={4}>
-        {teamMembers.map((member, idx) => (
-          <Col key={idx}>
-            <TeamMemberCard member={member} />
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <div className={css(styles.wrapper)}>
+      <Container id={STRINGS.team}>
+        <h2 className={css(styles.title)}>{STRINGS.team}</h2>
+        <Row className={css(styles.cards)} xs={2} sm={2} md={3} lg={4}>
+          {teamMembers.map((member, idx) => (
+            <Col key={idx}>
+              <TeamMemberCard member={member} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </div>
   );
 }
