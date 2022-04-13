@@ -17,7 +17,7 @@ type Props = {
   perk: Perk;
 };
 
-const styles = StyleSheet.create({   
+const styles = StyleSheet.create({
   container: {
     backgroundColor: `${themeVariables.whiteColor}`,
     border: `2px solid ${themeVariables.thirdColor}`,
@@ -68,7 +68,7 @@ export default function PerkCard(props: Props): JSX.Element {
       <div className={css(styles.iconContainer)}>{getIcon(perk.title)}</div>
       <h4>{perk.title}</h4>
       <div className={css(styles.buttonContainer)}>
-        <MainButton callToAction={STRINGS.seePerks} fullWidth />
+        <MainButton callToAction={STRINGS.seePerks} fullWidth link="https://perks.surgewomen.io" />
       </div>
     </div>
   );

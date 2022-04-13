@@ -66,9 +66,9 @@ export const roadMapItems: CardParams[] = [
       'Set up Surge IRL events around the world for community members (not just token-holders)',
       'Gamifying, innovating, and increasing our educational content both sync and asynchronously',
       'Focus more on research to increase the value we can unlock for women in the space',
-      'Boosting our software products to make it even easier for women to come into Web3',
-      'Along with the innovative ideas our community keeps bringing along! Stay tuned for more! '
+      'Boosting our software products to make it even easier for women to come into Web3'
     ],
+    lastLine: 'Along with the innovative ideas our community keeps bringing along - stay tuned for more!',
     active: false
   }
 ];
