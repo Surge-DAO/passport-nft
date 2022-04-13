@@ -14,8 +14,9 @@ export const STRINGS = {
 
   Surge’s ultimate goal is to tie together an enhanced ecosystem of compensated opportunities for women in Web3, by working with other mission-aligned organizations..
   `,
-  clickToMint: 'Mint Coming Soon',
+  clickToMint: 'Minting April 28th',
   connectWallet: 'Connect Wallet',
+  connected: 'Connected',
   frequentlyAskedQuestions: 'Frequently Asked Questions',
   faq: 'FAQ',
   howManyPassport: 'How many passport do you want to mint?',
