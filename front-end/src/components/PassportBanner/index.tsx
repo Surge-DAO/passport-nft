@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     marginTop: '20px'
   },
   gif: {
-    width: '40%',
+    width: '60%',
     margin: '0 auto',
     padding: '20px 0'
   }

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   imgOverlay: {
     display: 'flex',
-    background: `linear-gradient(180deg, rgba(251, 246, 249, 0) 35%, ${themeVariables.whiteColor} 90%)`,
+    background: `linear-gradient(180deg, rgba(251, 246, 249, 0) 35%, ${themeVariables.whiteColor} 80%)`,
     cursor: 'pointer'
   },
   role: {
@@ -27,12 +27,13 @@ const styles = StyleSheet.create({
     fontSize: '16px',
     lineHeight: '19px',
     '@media (max-width: 1199px)': {
-      fontSize: '10px'
+      fontSize: '5px'
     }
   },
   name: {
     '@media (max-width: 1199px)': {
-      fontSize: '10px'
+      fontSize: '10px',
+      marginBottom: '0'
     }
   }
 });

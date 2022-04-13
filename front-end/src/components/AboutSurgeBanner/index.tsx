@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
       display: 'flex',
       flexDirection: 'column-reverse',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      paddingBottom: '30px'
     }
   },
   container: {
@@ -41,7 +42,8 @@ const styles = StyleSheet.create({
     padding: '60px 0 20px 0',
     '@media (max-width: 768px)': {
       padding: '0 0 20px 0',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginTop: '30px',
     }
   },
   button: {
@@ -49,7 +51,8 @@ const styles = StyleSheet.create({
     marginTop: '40px',
     '@media (max-width: 768px)': {
       padding: '20px 0 20px 0',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginTop: '10px'
     }
   },
   description: {
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
 
 export default function AboutSurgeBanner(): JSX.Element {
   return (
-      <div className={css(styles.wrapper)} id={STRINGS.aboutSurge}>
+    <div className={css(styles.wrapper)} id={STRINGS.aboutSurge}>
       <div className={css(styles.container)}>
         <div>
           <h2 className={css(styles.title)}>{STRINGS.aboutSurge}</h2>
@@ -75,6 +78,6 @@ export default function AboutSurgeBanner(): JSX.Element {
         </div>
         <img className={css(styles.image)} src={aboutCollectionImg} alt="logo" />
       </div>
-    </div>
+  </div>
   );
 }

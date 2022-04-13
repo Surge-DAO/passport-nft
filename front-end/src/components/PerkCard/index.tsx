@@ -26,7 +26,13 @@ const styles = StyleSheet.create({
     paddingLeft: '5px',
     paddingRight: '5px',
     marginTop: '10px',
-    marginBottom: '15px'
+    marginBottom: '15px',
+    marginRight: '5px',
+    '@media (max-width: 768px)': {
+      marginRight: '0',
+      paddingLeft: '0',
+      paddingRight: '0',
+    }
   },
   iconContainer: {
     marginTop: '12px'
