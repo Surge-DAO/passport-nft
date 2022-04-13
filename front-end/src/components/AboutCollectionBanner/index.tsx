@@ -44,7 +44,10 @@ const styles = StyleSheet.create({
     fontSize: '18px',
     textAlign: 'left',
     width: '85%',
-    paddingBottom: '48px'
+    paddingBottom: '48px',
+    '@media (max-width: 768px)': {
+      width: '100%'
+    }
   },
   text: {
     width: '85%'

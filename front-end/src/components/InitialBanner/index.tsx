@@ -58,7 +58,7 @@ export default function InitialComponent(): JSX.Element {
       <h1 className={css(styles.title)}>Surge Passport NFT</h1>
       <PassportBanner />
       <div className={css(styles.bannerFooter)}>
-        <MainButton disable callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
+        <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} link="https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform" />
         <MintingModal show={showModal} hide={() => setShowModal(false)} />
         <div className={css(styles.mintingText)}>
           <button className={css(styles.whatIsMintingModalButton)} onClick={() => setShowWhatIsMintingModal(!showWhatIsMintingModal)}>

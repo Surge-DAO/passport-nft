@@ -1,9 +1,9 @@
 
-export interface PartnersParams {
+export interface PassportLadiesParams {
   image: string;
 }
 
-export const Partners: PartnersParams[] = [
+export const PassportLadies: PassportLadiesParams[] = [
   {
     image: 'assets/images/passports/1.png',
   },

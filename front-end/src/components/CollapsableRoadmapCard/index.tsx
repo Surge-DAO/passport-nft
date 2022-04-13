@@ -81,6 +81,7 @@ export default function CollapsableRoadmapCard(params: CardParams): JSX.Element 
                 );
               })}
             </ul>
+            <p className={css(styles.answer)}>{params.lastLine}</p>
           </div>
         )}
       </div>

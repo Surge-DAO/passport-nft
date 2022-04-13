@@ -5,7 +5,7 @@ export interface PartnersParams {
   name: string;
 }
 
-export const Partners: PartnersParams[] = [ 
+export const Partners: PartnersParams[] = [
   {
     logo: 'assets/images/partners/unstoppable.png',
     link: 'https://unstoppabledomains.com/auth',
@@ -17,7 +17,7 @@ export const Partners: PartnersParams[] = [
     name: 'Consensys'
   },
   {
-    logo: 'assets/images/partners/decentology.png',
+    logo: 'assets/images/partners/Decentology.png',
     link: 'https://www.decentology.com/',
     name: 'Decentology'
   },
@@ -30,9 +30,9 @@ export const Partners: PartnersParams[] = [
     logo: 'assets/images/partners/c4.jpeg',
     link: 'https://cryptoconsortium.org/',
     name: 'c4'
-  }, 
+  },
   {
-    logo: 'assets/images/partners/kernel.png',
+    logo: 'assets/images/partners/Kernel.png',
     link: 'https://kernel.community/en/',
     name: 'Kernel'
   },
