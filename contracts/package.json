@@ -4,7 +4,8 @@
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
-    "solhint": "solhint -f table src/**/*.sol"
+    "solhint": "solhint -f table src/**/*.sol",
+    "createPreSaleMerkleRoot": "hardhat run scripts/createMerkleRoot.ts"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.3",
@@ -21,6 +22,7 @@
     "merkletreejs": "^0.2.27",
     "mocha": "^9.2.2",
     "solhint": "^3.3.6",
+    "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
   }
 }

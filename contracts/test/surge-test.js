@@ -15,9 +15,8 @@ describe('Surge', function () {
   let name = 'Surge';
   let symbol = 'SRG';
   let uri = 'ipfs://QmWL5dFPbKTawmtuujgDr6X3vF2fne73Qf5P6FGgvFL9gZ/';
-  let maxPerUser = 5;
-  let maxReserved = 200;
-  let maxSupply = 5000;
+  let MAX_PER_USER = 5;
+  let MAX_SUPPLY = 5000;
   let price = 50000000000000000n;
   let decimals = 1000000000000000000;
 
@@ -40,7 +39,7 @@ describe('Surge', function () {
     // To deploy our contract, we just have to call Token.deploy() and await
     // for it to be deployed(), which happens once its transaction has been
     // mined.
-    surge = await Surge.deploy(name, symbol, uri, ["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6]);
+    surge = await Surge.deploy(name, symbol, uri, price, ["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6]);
     await surge.deployed();
   });
 
@@ -50,11 +49,7 @@ describe('Surge', function () {
     });
 
     it('Should return the correct max tokens per user', async function () {
-      expect(await surge.maxPerUser()).to.equal(maxPerUser);
-    });
-
-    it('Should return the correct max reserved tokens', async function () {
-      expect(await surge.maxReserved()).to.equal(maxReserved);
+      expect(await surge.MAX_PER_USER()).to.equal(MAX_PER_USER);
     });
 
     it('Should set saleIsActive as false', async function () {
@@ -65,12 +60,8 @@ describe('Surge', function () {
       expect(await surge.presaleIsActive()).to.equal(false);
     });
 
-    it('Should return the right maxSupply', async function () {
-      expect(await surge.maxSupply()).to.equal(maxSupply);
-    });
-
-    it('Should verify address in presale as false', async function () {
-      expect(await surge.verifyInPresale(addr1.address)).to.equal(false);
+    it('Should return the right MAX_SUPPLY', async function () {
+      expect(await surge.MAX_SUPPLY()).to.equal(MAX_SUPPLY);
     });
 
     it('Should return the right price', async function () {
@@ -250,26 +241,6 @@ describe('Surge', function () {
   //   expect(await contract.balanceOf(await holder.getAddress())).to.equal(0);
   //   expect(await contract.balanceOf(await externalUser.getAddress())).to.equal(0);
   // });
-  describe('Presale whitelisting', function () {
-    it('Should allow only owner to add address to presale', async function () {      
-      let addresses = [addr1.address];
-      const addToPresaleTx = await surge.connect(owner).addToPresale(addresses);
-      await addToPresaleTx.wait();
-    });
-
-    it('Should not allow to add address to presale twice', async function () {
-      let addresses = [addr1.address];
-      const addToPresaleTx = await surge.connect(owner).addToPresale(addresses);
-      await addToPresaleTx.wait();
-
-      expect(surge.connect(owner).addToPresale(addresses)).to.be.revertedWith('Wallet is already in the presale');
-    });
-
-    it('Should not allow any address to add address to presale', async function () {
-      let addresses = [addr1.address];
-      expect(surge.connect(addr1).addToPresale(addresses)).to.be.revertedWith('Ownable: caller is not the owner');
-    });
-  });
 
   describe('Mint', function () {
     it('Should not allow to mint tokens is sale is not active', async function () {
@@ -283,7 +254,7 @@ describe('Surge', function () {
     });
 
     it('Should not allow to mint more than 5 tokens per wallet', async function () {
-      let amountOfTokens = maxPerUser;
+      let amountOfTokens = MAX_PER_USER;
 
       const startSaleTx = await surge.connect(owner).startSale();
       await startSaleTx.wait();
@@ -454,7 +425,7 @@ describe('Surge', function () {
     //     value: ethers.utils.parseEther(price.toString())})).to.be.revertedWith('Ownable: caller is not the owner');
 
     //   expect(await surge.balanceOf(addr1.address)).to.equal(0);
-    // // });
+    // });
 
     // it('Should allow owner to batch mint tokens', async function () {
     //   let amountOfTokens = 20;

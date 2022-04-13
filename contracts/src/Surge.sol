@@ -17,17 +17,14 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     using Strings for uint256;
 
     bytes32 public merkleRoot;
+    string public baseTokenURI;
 
     bool public saleIsActive = false;
     bool public presaleIsActive = false;
 
-    uint256 public price = 50000000000000000; //0.05ETH //$250
-    uint256 public maxSupply = 5000;
-    uint256 public maxPerUser = 5;
-    uint256 public maxReserved = 200; // Zero based index
-    string public baseTokenURI;
-
-
+    uint64 public constant MAX_SUPPLY = 5000;
+    uint64 public constant MAX_PER_USER = 5;
+    uint128 public price;
 
     /**
      * @dev it will not be ready to start sale upon deploy
@@ -36,23 +33,29 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         string memory _name,
         string memory _symbol,
         string memory _baseTokenURI,
+        uint128 _price,
         address[] memory _payees,
         uint256[] memory _shares
     ) ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares){
         setBaseURI(_baseTokenURI);
+        setPrice(_price);
         //REMINDER: Delete Later
         console.log("Testing test deploy", _name, _symbol);
     }
 
-    mapping(address => bool) internal _presaleApproved;
     mapping(address => bool) internal _presaleMinted;
 
     /*----------------------------------------------*/
     /*                  MODIFIERS                  */
     /*--------------------------------------------*/
 
-    modifier verifyMint(uint256 _amountOfTokens) {
-        require(balanceOf(msg.sender) + _amountOfTokens <= maxPerUser, "You already have maximum number of tokens allowed per wallet");
+    modifier verifyMaxPerUser(uint256 _amountOfTokens) {
+        require(balanceOf(msg.sender) + _amountOfTokens <= MAX_PER_USER, "Already have max tokens per wallet");
+        _;
+    }
+
+    modifier verifyMaxSupply(uint256 _amountOfTokens) {
+        require(_amountOfTokens + _totalMinted() <= MAX_SUPPLY, "Max minted tokens");
         _;
     }
 
@@ -69,19 +72,12 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         external
         payable
         nonReentrant
-        verifyMint(_amountOfTokens)
+        verifyMaxPerUser(_amountOfTokens)
+        verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(saleIsActive, "Sale is currently not active");
+        require(saleIsActive, "Sale is not active");
         _safeMint(msg.sender, _amountOfTokens);
-    }
-
-    //add wallets to give them access to the presale
-    function addToPresale(address[] calldata _wallets) external onlyOwner {        
-        for (uint256 i = 0; i < _wallets.length; i++) {
-            require(!_presaleApproved[_wallets[i]], "Wallet is already in the presale");
-            _presaleApproved[_wallets[i]] = true;
-        }
     }
 
     //presale minting
@@ -89,17 +85,19 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         external
         payable
         nonReentrant
-        verifyMint(_amountOfTokens)
+        verifyMaxPerUser(_amountOfTokens)
+        verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(presaleIsActive, "Presale is currently not active");
-        require(_presaleApproved[msg.sender], "You are not in the pre-sale");
-        require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
-        bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
+        require(presaleIsActive, "Presale is not active");
+
+        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), 'Invalid proof!');
 
+        require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
+
         _safeMint(msg.sender, _amountOfTokens);
-        if (balanceOf(msg.sender) == maxPerUser) {
+        if (balanceOf(msg.sender) == MAX_PER_USER) {
             _presaleMinted[msg.sender] = true;
         }
     }
@@ -110,11 +108,30 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         payable
         nonReentrant 
         onlyOwner
+        verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens) 
     {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
+    // Ensures that the address can only have a max of 5 tokens in their wallet after mint
+    function transferFrom(address from, address to, uint256 tokenId) 
+    public    
+    override
+    verifyMaxPerUser(balanceOf(to))
+    {
+        super.transferFrom(from, to, tokenId);
+    }
+
+    // Ensures that the address can only have a max of 5 tokens in their wallet after mint
+    function safeTransferFrom(address from, address to, uint256 tokenId) 
+    public    
+    override
+    verifyMaxPerUser(balanceOf(to))
+    {
+        super.safeTransferFrom(from, to, tokenId);
+    }
+   
     /**************ADMIN BASE FUNCTIONS *************/
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;
@@ -140,12 +157,12 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         presaleIsActive = false;
     }
 
-    function verifyInPresale(address userAddress) external view virtual returns(bool approved) {
-        return _presaleApproved[userAddress];
-    }
-
     function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
         merkleRoot = _merkleRoot;
+    }
+
+    function setPrice(uint128 _price) public onlyOwner {
+        price = _price;
     }
 
     function withdrawAll() public payable onlyOwner nonReentrant {
