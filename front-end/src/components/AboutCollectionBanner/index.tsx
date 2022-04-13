@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '500px',
-    marginTop: '24px',
     padding: '16px 0 24px 0',
     '@media (max-width: 768px)': {
       width: '80%',
