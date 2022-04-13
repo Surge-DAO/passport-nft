@@ -1,13 +1,14 @@
 import React from 'react';
 import themeVariables from '../../themeVariables.module.scss';
 import { StyleSheet, css } from 'aphrodite';
+import {Row} from 'react-bootstrap'
 import { STRINGS } from '../../strings';
 import PerkCard from '../PerkCard';
 import { PerkBannerItems } from '../../data/PerkBannerItems';
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: themeVariables.lightGreyColor,
+    backgroundColor: themeVariables.whiteColor,
     paddingTop: '20px',
     paddingBottom: '40px'
   },
@@ -25,6 +26,11 @@ const styles = StyleSheet.create({
   perkRow: {
     display: 'flex',
     flexDirection: 'row'
+  },
+  description: {
+    '@media (max-width: 768px)': {
+      padding: '0 20px'
+    }
   }
 });
 
@@ -34,13 +40,15 @@ export default function PerkBanner(): JSX.Element {
 
       <div className={css(styles.header)}>
         <h2 className={css(styles.header)}>{STRINGS.passportPerks}</h2>
-        <p>{STRINGS.passportPerksDescription}</p>
+        <p className={css(styles.description)}>{STRINGS.passportPerksDescription}</p>
       </div>
 
       <div className={`${css(styles.perkContainer)} container`}>
-        {PerkBannerItems.map((perk) => {
-          return <PerkCard perk={perk} />;
-        })}
+        <Row xs={2} sm={2} md={3} lg='auto' className='justify-content-md-center'>
+          {PerkBannerItems.map((perk) => {
+            return <PerkCard perk={perk} />;
+          })}
+        </Row>
       </div>
 
     </div>
