@@ -1,26 +1,27 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
-import themeVariables from '../../themeVariables.module.scss';
 import MainButton from '../MainButton';
 import aboutCollectionImg from '../../images/Logo.png';
+import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '80%',
-    margin: 'auto',
+  wrapper: {
+    backgroundColor: themeVariables.whiteColor,
+    paddingBottom: '60px',
     '@media (max-width: 768px)': {
       display: 'flex',
       flexDirection: 'column-reverse',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      paddingBottom: '30px'
     }
   },
-  wrapper: {
-    backgroundColor: themeVariables.lightGreyColor,
-    paddingBottom: '60px',
+  container: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '80%',
+    margin: '0 auto',
     '@media (max-width: 768px)': {
       display: 'flex',
       flexDirection: 'column-reverse',
@@ -31,8 +32,9 @@ const styles = StyleSheet.create({
   image: {
     width: '335px',
     padding: '40px 0',
-    '@media (max-width: 768px)': {
-      width: '230px'
+    '@media (max-width: 1000px)': {
+      width: '230px',
+      display: 'none'
     }
   },
   title: {
@@ -40,7 +42,8 @@ const styles = StyleSheet.create({
     padding: '60px 0 20px 0',
     '@media (max-width: 768px)': {
       padding: '0 0 20px 0',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginTop: '30px',
     }
   },
   button: {
@@ -48,7 +51,8 @@ const styles = StyleSheet.create({
     marginTop: '40px',
     '@media (max-width: 768px)': {
       padding: '20px 0 20px 0',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginTop: '10px'
     }
   },
   description: {
@@ -74,6 +78,6 @@ export default function AboutSurgeBanner(): JSX.Element {
         </div>
         <img className={css(styles.image)} src={aboutCollectionImg} alt="logo" />
       </div>
-    </div>
+  </div>
   );
 }

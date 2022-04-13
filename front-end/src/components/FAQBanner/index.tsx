@@ -6,7 +6,7 @@ import { STRINGS } from '../../strings';
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: themeVariables.lightGreyColor
+    backgroundColor: themeVariables.whiteColor
   },
   container: {
     width: '60%',
