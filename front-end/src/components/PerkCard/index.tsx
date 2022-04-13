@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     }
   },
   iconContainer: {
-    marginTop: '12px'
+    marginTop: '12px',
+    paddingTop: '25px'
   },
   buttonContainer: {
     borderRadius: '24px',
