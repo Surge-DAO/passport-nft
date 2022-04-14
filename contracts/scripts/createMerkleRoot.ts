@@ -25,7 +25,7 @@ async function main() {
 
   // how to get the proof in the front end
   var leaf = keccak256(msgSender);
-  const proof = merkleTree.getHexProof(keccak256(leaf)).toString();
+  const proof = merkleTree.getHexProof(leaf);
 
   console.log(rootHash);
   console.log(proof);
