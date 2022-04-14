@@ -92,7 +92,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         require(presaleIsActive, "Presale is not active");
 
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
-        require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), 'Invalid proof!');
+        require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof!");
 
         require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
 
@@ -166,7 +166,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     }
 
     function withdrawAll() public payable onlyOwner nonReentrant {
-        (bool success, ) = payable(msg.sender).call{value: address(this).balance}('');
+        (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
         require(success);
     }
 

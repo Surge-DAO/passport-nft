@@ -5,12 +5,16 @@ import keccak256 from 'keccak256';
 // Enter your testing addresses here
 const whitelistAddresses = 
 [
-    "0xCdDB9663B53A9Fbe53f838339e8909441C0cd353",
-    "0x4Ea3674531C8Cf80C29fD590F1cd508d4CF8E2E9"
+  "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
+  "0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db",
+  "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"
 ];
 
-// Enter your testing contract address here to get the proof to pass in for presaleMint function
-const msgSender = "0xCdDB9663B53A9Fbe53f838339e8909441C0cd353";
+// Set this to remember which address is the owner
+const owner = "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4";
+
+// Set this to the address you will be calling the presaleMint function with
+const msgSender = "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2";
 
 async function main() {
     
@@ -21,7 +25,7 @@ async function main() {
 
   // how to get the proof in the front end
   var leaf = keccak256(msgSender);
-  const proof = merkleTree.getProof(leaf);
+  const proof = merkleTree.getHexProof(keccak256(leaf)).toString();
 
   console.log(rootHash);
   console.log(proof);
