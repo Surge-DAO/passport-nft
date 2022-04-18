@@ -14,7 +14,9 @@ describe('Surge', function () {
   let addrs;
   let name = 'Surge';
   let symbol = 'SRG';
-  let uri = 'ipfs://QmWL5dFPbKTawmtuujgDr6X3vF2fne73Qf5P6FGgvFL9gZ/';
+  let uri = 'https://www.surgewomen.io/';
+  let multiSig = "0xD9A52b6506743cF5fAFf14C875cB443da9660e00";
+  let royaltyAmount = 200; // Divided by 10000
   let MAX_PER_USER = 5;
   let MAX_SUPPLY = 5000;
   let price = 50000000000000000n;
@@ -39,7 +41,7 @@ describe('Surge', function () {
     // To deploy our contract, we just have to call Token.deploy() and await
     // for it to be deployed(), which happens once its transaction has been
     // mined.
-    surge = await Surge.deploy(name, symbol, uri, price, ["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6]);
+    surge = await Surge.deploy(name, symbol, uri, price, [multiSig, "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6], multiSig, royaltyAmount);
     await surge.deployed();
   });
 

@@ -12,8 +12,9 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
+import "./ERC2981ContractWideRoyalties.sol";
 
-contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
+contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter, ERC2981ContractWideRoyalties {
     using Strings for uint256;
 
     bytes32 public merkleRoot;
@@ -35,12 +36,13 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         string memory _baseTokenURI,
         uint128 _price,
         address[] memory _payees,
-        uint256[] memory _shares
-    ) ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares){
+        uint256[] memory _shares,
+        address _receiver,
+        uint256 _royalties
+    ) payable ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares) {
         setBaseURI(_baseTokenURI);
         setPrice(_price);
-        //REMINDER: Delete Later
-        console.log("Testing test deploy", _name, _symbol);
+        setRoyalties(_receiver, _royalties);
     }
 
     mapping(address => bool) internal _presaleMinted;
@@ -65,8 +67,9 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     }
 
     /*----------------------------------------------*/
-    /*                  FUNCTIONS                  */
+    /*               MINT FUNCTIONS                */
     /*--------------------------------------------*/
+
     //public minting
     function mint(uint256 _amountOfTokens)
         external
@@ -103,68 +106,102 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     }
 
     // batchMinting function allows the owner to mint maxReserved amount
-    function batchMinting(uint256 _amountOfTokens) 
+    function batchMinting(uint256 _amountOfTokens)
         external
         payable
-        nonReentrant 
+        nonReentrant
         onlyOwner
         verifyMaxSupply(_amountOfTokens)
-        isEnoughEth(_amountOfTokens) 
+        isEnoughEth(_amountOfTokens)
     {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
+    /*----------------------------------------------*/
+    /*             TRANSFER FUNCTIONS              */
+    /*--------------------------------------------*/
+
     // Ensures that the address can only have a max of 5 tokens in their wallet after mint
-    function transferFrom(address from, address to, uint256 tokenId) 
-    public    
-    override
-    verifyMaxPerUser(balanceOf(to))
-    {
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override verifyMaxPerUser(balanceOf(to)) {
         super.transferFrom(from, to, tokenId);
     }
 
     // Ensures that the address can only have a max of 5 tokens in their wallet after mint
-    function safeTransferFrom(address from, address to, uint256 tokenId) 
-    public    
-    override
-    verifyMaxPerUser(balanceOf(to))
-    {
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override verifyMaxPerUser(balanceOf(to)) {
         super.safeTransferFrom(from, to, tokenId);
     }
-   
-    /**************ADMIN BASE FUNCTIONS *************/
+
+    /*----------------------------------------------*/
+    /*             ROYALTIES FUNCTION              */
+    /*--------------------------------------------*/
+
+    /// @notice Allows to set the royalties on the contract
+    /// @param value updated royalties (between 0 and 10000)
+    function setRoyalties(address recipient, uint256 value) public onlyOwner {
+        _setRoyalties(recipient, value);
+    }
+
+    /*----------------------------------------------*/
+    /*           ADMIN BASE FUNCTIONS              */
+    /*--------------------------------------------*/
+
+    /// @inheritdoc	ERC165
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721A, ERC2981Base) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
+
+    /// @notice Get the baseURI.
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;
     }
 
+    /// @notice Set metadata base URI
+    /// @param _baseTokenURI new base URI
     function setBaseURI(string memory _baseTokenURI) public onlyOwner {
         baseTokenURI = _baseTokenURI;
     }
 
-    function startSale() external onlyOwner {
-        saleIsActive = true;
-    }
-
-    function pauseSale() external onlyOwner {
-        saleIsActive = false;
-    }
-
-    function startPresale() external onlyOwner {
-        presaleIsActive = true;
-    }
-
-    function pausePresale() external onlyOwner {
-        presaleIsActive = false;
-    }
-
-    function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
-        merkleRoot = _merkleRoot;
-    }
-
+    /// @notice Set mint price.
+    /// @param _price mint price in Wei
     function setPrice(uint128 _price) public onlyOwner {
         price = _price;
     }
 
+    /// @notice Set pre-sale merkle root.
+    /// @param _merkleRoot merkle root hash
+    function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
+        merkleRoot = _merkleRoot;
+    }
+
+    /// @notice Start sale.
+    function startSale() external onlyOwner {
+        saleIsActive = true;
+    }
+
+    /// @notice Pause sale.
+    function pauseSale() external onlyOwner {
+        saleIsActive = false;
+    }
+
+    /// @notice Start pre-sale.
+    function startPresale() external onlyOwner {
+        presaleIsActive = true;
+    }
+
+    /// @notice Pause pre-sale.
+    function pausePresale() external onlyOwner {
+        presaleIsActive = false;
+    }
+
+    /// @notice Release contract funds funds to contract owner
     function withdrawAll() public payable onlyOwner nonReentrant {
         (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
         require(success);
@@ -175,4 +212,13 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         uint256 balance = token.balanceOf(address(this));
         token.transfer(msg.sender, balance);
     }
+
+    /// @notice Release contract funds through payment splitter
+    // /// @param addresses payable addresses to send the split to
+    // function withdrawSplit(address[] calldata addresses) external onlyOwner nonReentrant {
+    //     for (uint256 i = 0; i < addresses.length; i++) {
+    //         address payable wallet = payable(addresses[i]);
+    //         release(wallet);
+    //     }
+    // }
 }
