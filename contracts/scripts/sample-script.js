@@ -1,8 +1,3 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
 const hre = require('hardhat');
 
 async function main() {
@@ -14,8 +9,13 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
+  const name = 'Surge Women Passport';
+  const symbol = 'SURGE';
+  const baseURI = 'ipfs://CID/';
+  const price = 50000000000000000n; //0.05ETH //$250
+
   const Surge = await hre.ethers.getContractFactory('Surge');
-  const surge = await Surge.deploy('Surge Women', 'SURGE', 'baseURI');
+  const surge = await Surge.deploy(name, symbol, baseURI, price, ["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6]);
 
   await surge.deployed();
 
