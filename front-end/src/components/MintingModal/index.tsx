@@ -7,7 +7,7 @@ import Operator from '../Operator';
 import SquareButton from '../SquareButton';
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
-import contract from '../../utils/SurgePassportNFT.json';
+import { abi, contractAddress } from '../../data/Contract';
 
 declare var window: any
 
@@ -46,20 +46,10 @@ interface MintingParams {
   hide?: () => void;
 }
 
-interface MintingStatus {
-  success: string;
-  error: string;
-  waiting: string;
-  initialMessage: string;
-}
-
-const contractAddress: string = '0x8c304f91C36dDf8B15eD5901B6abbD3944220AAB';
-const abi = contract.abi;
-
 export default function MintingModal(params: MintingParams): JSX.Element {
   const { show, hide } = params;
 
-  const { account, active } = useWeb3React();
+  const { active } = useWeb3React();
 
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [mintNumber, setMintNumber] = useState<number>(1);
@@ -84,8 +74,6 @@ export default function MintingModal(params: MintingParams): JSX.Element {
       const signer = provider.getSigner();
       const nftContract = new ethers.Contract(contractAddress, abi, signer);
       const price = await nftContract.price();
-      console.log({ account });
-      console.log(price);
 
       try {
         setMintWait(true);
@@ -130,7 +118,7 @@ export default function MintingModal(params: MintingParams): JSX.Element {
         {!active && <p className={css(styles.bottomPadding)}>{STRINGS.pleaseConnectWallet}</p>}
         <Alert variant={error ? "danger" : "success"} show={showAlert} className={css(styles.alert)}>
           <Alert.Heading>
-            {error ? "Whoops!" : "Minting......"}
+            {error ? STRINGS.whoops : STRINGS.mintingSuspense}
           </Alert.Heading>
           <hr />
           <p className={`mb-0 ${css(styles.alertBodyP)}`}>
@@ -139,7 +127,7 @@ export default function MintingModal(params: MintingParams): JSX.Element {
           {!error && (
             <>
               <br />
-              <Alert.Link href={`https://etherscan.io/tx/${transactionHash}`}>You can find your transaction on Etherscan here</Alert.Link>
+              <Alert.Link href={`https://etherscan.io/tx/${transactionHash}`}>{STRINGS.findYourTxn}</Alert.Link>
             </>
           )}
         </Alert>
