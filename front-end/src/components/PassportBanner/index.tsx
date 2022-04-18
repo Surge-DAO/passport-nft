@@ -5,13 +5,19 @@ import { PassportLadies } from '../../data/PassportItems';
 import passportGif from '../../images/surge-passport.gif'
 
 const styles = StyleSheet.create({
+  container: {
+    '@media (max-width: 768px)': {
+      display: 'flex'
+    }
+  },
   image: {
-    width: '272px',
+    width: '100%',
+    height: 'auto',
     marginTop: '20px',
     borderRadius: '5px'
   },
   gif: {
-    width: '60%',
+    width: '70%',
     margin: '0 auto',
     padding: '20px 0'
   }
@@ -33,7 +39,7 @@ export default function PassportLadiesBanner(): JSX.Element {
 
   return (
     <div>
-        <Row lg='5' md='3' sm='2'className="justify-content-md-center">
+        <Row lg='5' md='3' sm='2' className="justify-content-md-center">
         {width <= 990 ?
           <img className={css(styles.gif)} src={passportGif} alt="passport"/> :
           PassportLadies.map((passport, idx) => (

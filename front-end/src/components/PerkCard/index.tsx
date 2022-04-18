@@ -20,18 +20,18 @@ type Props = {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: `${themeVariables.whiteColor}`,
-    border: `2px solid ${themeVariables.thirdColor}`,
     borderRadius: '8px',
     boxShadow: `1px 1px 10px 1px rgba(43, 43, 43, 0.3)`,
     paddingLeft: '5px',
     paddingRight: '5px',
     marginTop: '10px',
     marginBottom: '15px',
-    marginRight: '5px',
+    marginRight: '20px',
     '@media (max-width: 768px)': {
-      marginRight: '0',
+      marginLeft: '16px',
+      marginRight: '2px',
       paddingLeft: '0',
-      paddingRight: '0',
+      paddingRight: '0'
     }
   },
   iconContainer: {
@@ -40,7 +40,15 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     borderRadius: '24px',
-    margin: '24px 24px'
+    margin: '24px 24px',
+    '@media (max-width: 768px)': {
+      margin: '12px 12px'
+    }
+  },
+  text: {
+    '@media (max-width: 768px)': {
+      fontSize: ' 14px'
+    }
   }
 });
 
@@ -48,7 +56,7 @@ const getIcon = (title: string) => {
   switch (title) {
     case 'Education':
       return <FontAwesomeIcon icon={faGraduationCap} size='4x' color='#f7c2ca'/>;
-    case 'Tools':
+    case 'Web3 Tools':
       return <FontAwesomeIcon icon={faRocket} size='4x' color='#f7c2ca'/>;
     case 'NFTs':
       return <FontAwesomeIcon icon={faPhoenixFramework} size='4x' color='#f7c2ca'/>;
@@ -67,9 +75,9 @@ export default function PerkCard(props: Props): JSX.Element {
   return (
     <div className={css(styles.container)}>
       <div className={css(styles.iconContainer)}>{getIcon(perk.title)}</div>
-      <h4>{perk.title}</h4>
+      <h4 className={css(styles.text)}>{perk.title}</h4>
       <div className={css(styles.buttonContainer)}>
-        <MainButton callToAction={STRINGS.seePerks} fullWidth link="https://perks.surgewomen.io" />
+        <MainButton callToAction={STRINGS.seePerks} customStyle={css(styles.text)} fullWidth link="https://perks.surgewomen.io" />
       </div>
     </div>
   );
