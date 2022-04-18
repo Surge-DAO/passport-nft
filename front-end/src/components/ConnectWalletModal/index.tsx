@@ -8,6 +8,7 @@ import coinbaseLogo from '../../images/walletLogos/coinbase.png';
 import { STRINGS } from '../../strings';
 import MainButton from '../MainButton';
 import { CoinbaseWallet, Injected, WalletConnect } from './Connectors';
+import { CrossmintPayButton } from "@crossmint/client-sdk-react-ui";
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -72,9 +73,23 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
       </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>
         {account && <p className={css(styles.button)}><span className={css(styles.boldFont)}>Connected address:</span> {account}</p>}
+        {/* {window.ethereum?.networkVersion !== "1" && alert('You are in the wrong network. Please change into mainnet.')} */}
+        <br />
         <MainButton action={() => {activate(Injected)}} callToAction="Metamask" img={metamaskLogo} customStyle={css(styles.button)} />
         <MainButton action={() => walletConnect()} callToAction="Wallet Connect" img={walletConnectLogo} customStyle={css(styles.button)} />
         <MainButton action={() => activate(CoinbaseWallet)} callToAction="Coinbase" img={coinbaseLogo} customStyle={css(styles.button)} />
+        <br />
+        <CrossmintPayButton
+          collectionTitle="Surge Passport"
+          collectionDescription="Grants you access to web3 perks"
+          clientId="<YOUR_CLIENT_ID>"
+          environment="rinkeby"
+          mintConfig={{
+            price: ".07",
+            type: "erc-721A"
+          }}
+        />
+        <br />
         {active && <MainButton primary action={deactivate} callToAction={STRINGS.logOut} />}
       </Modal.Body>
     </Modal>

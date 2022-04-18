@@ -45,8 +45,8 @@ export default function PerkBanner(): JSX.Element {
 
       <div className={`${css(styles.perkContainer)} container`}>
         <Row xs={2} sm={2} md={3} lg='auto' className='justify-content-md-center'>
-          {PerkBannerItems.map((perk) => {
-            return <PerkCard perk={perk} />;
+          {PerkBannerItems.map((perk, key) => {
+            return <PerkCard perk={perk} key={key} />;
           })}
         </Row>
       </div>
