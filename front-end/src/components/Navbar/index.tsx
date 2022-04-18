@@ -30,18 +30,8 @@ const styles = StyleSheet.create({
       display: 'none'
     }
   },
-  showIcon: {
-    '@media (max-width: 769px)': {
-      display: 'block',
-    }
-  },
   hideSocial: {
     '@media (max-width: 768px)': {
-      display: 'none'
-    }
-  },
-  hide: {
-    '@media (max-width: 769px)': {
       display: 'none'
     }
   },
@@ -122,7 +112,7 @@ export default function NavBar(): JSX.Element {
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">
           <div className={`${css(styles.flex)} ${css(styles.hideSm)}`}>
-            <Nav className={`${css(styles.paddingTop30)}`}>
+            <Nav className={css(styles.paddingTop30)}>
               {navBarItems.map((item, idx) => {
                 return (
                   <Nav.Item>

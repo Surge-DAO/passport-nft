@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     '@media (max-width: 768px)': {
-      flexWrap: 'wrap',
+      flexWrap: 'wrap'
     }
   },  
   perkRow: {
@@ -42,7 +42,7 @@ export default function PerkBanner(): JSX.Element {
         <p className={css(styles.description)}>{STRINGS.passportPerksDescription}</p>
       </div>
 
-      <div className={`${css(styles.perkContainer)}`}>
+      <div className={css(styles.perkContainer)}>
           {PerkBannerItems.map((perk) => {
             return <PerkCard perk={perk} />;
           })}

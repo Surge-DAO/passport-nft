@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   title: {
-    marginTop: '15px',
+    marginTop: '15px'
   },
   answerSection: {
     transition: '0.5s'
