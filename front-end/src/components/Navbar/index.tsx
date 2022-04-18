@@ -30,6 +30,27 @@ const styles = StyleSheet.create({
       display: 'none'
     }
   },
+  showIcon: {
+    '@media (max-width: 769px)': {
+      display: 'block',
+    }
+  },
+  hideSocial: {
+    '@media (max-width: 768px)': {
+      display: 'none'
+    }
+  },
+  hide: {
+    '@media (max-width: 769px)': {
+      display: 'none'
+    }
+  },
+  smallbtn: {
+    '@media (max-width: 768px)': {
+      padding: '8px 12px',
+      fontSize: '12px'
+    }
+  },
   closeBtn: {
     position: 'absolute',
     top: '15px',
@@ -72,7 +93,10 @@ const styles = StyleSheet.create({
     display: 'block'
   },
   imgLogo: {
-    maxWidth: '120px'
+    maxWidth: '120px',
+    '@media (min-width: 375px) and (max-width: 768px)': {
+      marginTop: '12px'
+    }
   },
   containerOverride: {
     paddingRight: '40px',
@@ -98,7 +122,7 @@ export default function NavBar(): JSX.Element {
         </Navbar.Brand>
         <Navbar.Collapse className="me-auto">
           <div className={`${css(styles.flex)} ${css(styles.hideSm)}`}>
-            <Nav className={css(styles.paddingTop30)}>
+            <Nav className={`${css(styles.paddingTop30)}`}>
               {navBarItems.map((item, idx) => {
                 return (
                   <Nav.Item>
@@ -110,11 +134,11 @@ export default function NavBar(): JSX.Element {
               })}
             </Nav>
             <Nav>
-              <div className={css(styles.paddingTop20)}>
+              <div className={`${css(styles.paddingTop20)} ${css(styles.hideSocial)}`}>
                 <SocialMediaIcons />
               </div>
               <div className={css(styles.connectBtn)}>
-                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary />
+                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary customStyle={css(styles.smallbtn)} />
                 <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
               </div>
             </Nav>
