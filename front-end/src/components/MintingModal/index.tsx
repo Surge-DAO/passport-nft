@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import { STRINGS } from '../../strings';
-import { Modal } from 'react-bootstrap';
+import { Alert, Modal } from 'react-bootstrap';
 import MainButton from '../MainButton';
 import Operator from '../Operator';
 import SquareButton from '../SquareButton';
 import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
+import contract from '../../utils/SurgePassportNFT.json';
+
+declare var window: any
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -28,6 +32,12 @@ const styles = StyleSheet.create({
   bottomPadding: {
     paddingBottom: '3%',
     fontWeight: 'bold'
+  },
+  alert: {
+    maxWidth: '80%'
+  },
+  alertBodyP: {
+    overflowWrap: 'anywhere'
   }
 })
 
@@ -36,11 +46,27 @@ interface MintingParams {
   hide?: () => void;
 }
 
+interface MintingStatus {
+  success: string;
+  error: string;
+  waiting: string;
+  initialMessage: string;
+}
+
+const contractAddress: string = '0x8c304f91C36dDf8B15eD5901B6abbD3944220AAB';
+const abi = contract.abi;
+
 export default function MintingModal(params: MintingParams): JSX.Element {
   const { show, hide } = params;
-  const [mintNumber, setMintNumber] = useState<number>(1);
 
-  const { active } = useWeb3React();
+  const { account, active } = useWeb3React();
+
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [mintNumber, setMintNumber] = useState<number>(1);
+  const [mintingStatus, setMintingStatus] = useState<string>('');
+  const [error, setError] = useState<boolean>(false);
+  const [mintWait, setMintWait] = useState<boolean>(false);
+  const [transactionHash, setTransactionHash] = useState<string>('');
 
   function increaseMint() {
     return mintNumber <= 4 ? setMintNumber(mintNumber + 1) : null;
@@ -50,7 +76,38 @@ export default function MintingModal(params: MintingParams): JSX.Element {
     return mintNumber === 1 ? null : setMintNumber(mintNumber - 1);
   }
 
-  return(
+  async function mintNFTHandler() {
+    const { ethereum } = window;
+
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const nftContract = new ethers.Contract(contractAddress, abi, signer);
+      const price = await nftContract.price();
+      console.log({ account });
+      console.log(price);
+
+      try {
+        setMintWait(true);
+        const nftTransaction = await nftContract.mint(mintNumber, { value: price.mul(mintNumber) });
+        setError(false);
+        setMintingStatus(`Minting happening right now. Will let you know once the transaction goes through.`);
+        setTransactionHash(nftTransaction.hash);
+        setShowAlert(true);
+        await nftTransaction.wait();
+        setMintWait(false);
+        setMintingStatus(`Minting successful! Transaction id: ${nftTransaction.hash}`);
+      } catch (e: any) {
+        setMintWait(true);
+        setError(true);
+        setMintingStatus(e.error.message);
+        setMintWait(false);
+        setShowAlert(true);
+      }
+    }
+  }
+
+  return (
     <Modal
       show={show}
       onHide={hide}
@@ -71,7 +128,22 @@ export default function MintingModal(params: MintingParams): JSX.Element {
           <Operator text='+' action={increaseMint} />
         </div>
         {!active && <p className={css(styles.bottomPadding)}>{STRINGS.pleaseConnectWallet}</p>}
-        <MainButton disable={!active} callToAction={STRINGS.clickToMint} primary action={() =>{console.log("call the minting function from the smart contracts")}}/>
+        <Alert variant={error ? "danger" : "success"} show={showAlert} className={css(styles.alert)}>
+          <Alert.Heading>
+            {error ? "Whoops!" : "Minting......"}
+          </Alert.Heading>
+          <hr />
+          <p className={`mb-0 ${css(styles.alertBodyP)}`}>
+            {mintingStatus}
+          </p>
+          {!error && (
+            <>
+              <br />
+              <Alert.Link href={`https://etherscan.io/tx/${transactionHash}`}>You can find your transaction on Etherscan here</Alert.Link>
+            </>
+          )}
+        </Alert>
+        <MainButton disable={!active || mintWait} callToAction={STRINGS.clickToMint} primary action={mintNFTHandler} />
       </Modal.Body>
     </Modal>
   )
