@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     borderRadius: '5px'
   },
   gif: {
-    width: '60%',
+    width: '70%',
     margin: '0 auto',
     padding: '20px 0'
   }
