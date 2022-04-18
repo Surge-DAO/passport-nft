@@ -36,7 +36,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         uint128 _price,
         address[] memory _payees,
         uint256[] memory _shares
-    ) ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares){
+    ) ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares) {
         setBaseURI(_baseTokenURI);
         setPrice(_price);
         //REMINDER: Delete Later
@@ -103,35 +103,35 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     }
 
     // batchMinting function allows the owner to mint maxReserved amount
-    function batchMinting(uint256 _amountOfTokens) 
+    function batchMinting(uint256 _amountOfTokens)
         external
         payable
-        nonReentrant 
+        nonReentrant
         onlyOwner
         verifyMaxSupply(_amountOfTokens)
-        isEnoughEth(_amountOfTokens) 
+        isEnoughEth(_amountOfTokens)
     {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
     // Ensures that the address can only have a max of 5 tokens in their wallet after mint
-    function transferFrom(address from, address to, uint256 tokenId) 
-    public    
-    override
-    verifyMaxPerUser(balanceOf(to))
-    {
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override verifyMaxPerUser(balanceOf(to)) {
         super.transferFrom(from, to, tokenId);
     }
 
     // Ensures that the address can only have a max of 5 tokens in their wallet after mint
-    function safeTransferFrom(address from, address to, uint256 tokenId) 
-    public    
-    override
-    verifyMaxPerUser(balanceOf(to))
-    {
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override verifyMaxPerUser(balanceOf(to)) {
         super.safeTransferFrom(from, to, tokenId);
     }
-   
+
     /**************ADMIN BASE FUNCTIONS *************/
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;
