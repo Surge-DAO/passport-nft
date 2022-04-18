@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
   perkContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     '@media (max-width: 768px)': {
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
     }
-  },
+  },  
   perkRow: {
     display: 'flex',
     flexDirection: 'row'
@@ -43,12 +43,10 @@ export default function PerkBanner(): JSX.Element {
         <p className={css(styles.description)}>{STRINGS.passportPerksDescription}</p>
       </div>
 
-      <div className={`${css(styles.perkContainer)} container`}>
-        <Row xs={2} sm={2} md={3} lg='auto' className='justify-content-md-center'>
+      <div className={`${css(styles.perkContainer)}`}>
           {PerkBannerItems.map((perk) => {
             return <PerkCard perk={perk} />;
           })}
-        </Row>
       </div>
 
     </div>
