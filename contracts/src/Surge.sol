@@ -15,12 +15,18 @@ import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 
 contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     using Strings for uint256;
+
+    // Status of the token & token sale
+    enum SaleStatus {
+        Paused,
+        Presale,
+        PublicSale,
+        SoldOut
+    }
     
+    SaleStatus public status = SaleStatus.Paused;
     bytes32 public merkleRoot;
     string public baseTokenURI;
-
-    bool public saleIsActive = false;
-    bool public presaleIsActive = false;
 
     uint64 public constant MAX_SUPPLY = 5000;
     uint64 public constant MAX_PER_USER = 5;
@@ -79,7 +85,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(saleIsActive, "Sale is not active");
+        require(status == SaleStatus.PublicSale, "Sale is not active");
         _safeMint(msg.sender, _amountOfTokens);
     }
 
@@ -91,7 +97,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(presaleIsActive, "Presale is not active");
+        require(status == SaleStatus.Presale, "Presale is not active");
 
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof!");
@@ -141,20 +147,8 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         baseTokenURI = _baseTokenURI;
     }
 
-    function startSale() external onlyOwner {
-        saleIsActive = true;
-    }
-
-    function pauseSale() external onlyOwner {
-        saleIsActive = false;
-    }
-
-    function startPresale() external onlyOwner {
-        presaleIsActive = true;
-    }
-
-    function pausePresale() external onlyOwner {
-        presaleIsActive = false;
+    function setStatus(SaleStatus _status) public onlyOwner {
+        status = _status;
     }
 
     function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {

@@ -52,12 +52,9 @@ describe('Surge', function () {
       expect(await surge.MAX_PER_USER()).to.equal(MAX_PER_USER);
     });
 
-    it('Should set saleIsActive as false', async function () {
-      expect(await surge.saleIsActive()).to.equal(false);
-    });
-
-    it('Should set presaleIsActive as false', async function () {
-      expect(await surge.presaleIsActive()).to.equal(false);
+    it('Should set SaleStatus to Presale', async function () {
+      await surge.setStatus(Surge.SaleStatus.Presale);
+      expect((await surge.SaleStatus())).to.equal(Surge.SaleStatus.Presale);
     });
 
     it('Should return the right MAX_SUPPLY', async function () {
@@ -102,7 +99,7 @@ describe('Surge', function () {
 
   describe('Start/Pause sale', function () {
     it('Should allow only owner to start sale', async function () {
-      const startSaleTx = await surge.connect(owner).startSale();
+      const startSaleTx = await surge.connect(owner).setStatus(Surge.SaleStatus.PublicSale);
       await startSaleTx.wait();
 
       expect(await surge.saleIsActive()).to.equal(true);
