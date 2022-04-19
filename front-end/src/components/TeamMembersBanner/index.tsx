@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
 
 export default function TeamMembersBanner(): JSX.Element {
   return (
-    <div className={css(styles.wrapper)}>
-      <Container id={STRINGS.team}>
+    <div id={STRINGS.team} className={css(styles.wrapper)}>
+      <Container>
         <h2 className={css(styles.title)}>{STRINGS.team}</h2>
         <Row className={css(styles.cards)} xs={2} sm={2} md={3} lg={4}>
           {teamMembers.map((member, idx) => (
