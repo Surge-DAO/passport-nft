@@ -18,6 +18,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
 
     bytes32 public merkleRoot;
     string public baseTokenURI;
+    address _crossmintAddress = 0xdAb1a1854214684acE522439684a145E62505233;
 
     bool public saleIsActive = false;
     bool public presaleIsActive = false;
@@ -78,6 +79,19 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     {
         require(saleIsActive, "Sale is not active");
         _safeMint(msg.sender, _amountOfTokens);
+    }
+
+    // cossmint minting
+    function mintTo(address to, uint256 _amountOfTokens)
+        external
+        payable
+        verifyMaxSupply(_amountOfTokens)
+        isEnoughEth(_amountOfTokens)
+    {
+        require(saleIsActive, "Sale is not active");
+        require(msg.sender == _crossmintAddress, "This function is for Crossmint only.");
+
+        _safeMint(to, _amountOfTokens);
     }
 
     //presale minting
