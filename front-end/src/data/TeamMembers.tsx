@@ -28,11 +28,11 @@ export const teamMembers: TeamMember[] = [
     name: 'lonilush',
     role: 'Content Lead',
     image: 'assets/images/teamMembers/duasnka.jpeg',
-    link: ''
+    link: 'https://twitter.com/lonilush'
   },
   {
     name: 'Kim Chen',
-    role: 'Operations Queen',
+    role: 'Operations Lead',
     image: 'assets/images/teamMembers/Kim.jpeg',
     link: 'https://twitter.com/chimmyken'
   },

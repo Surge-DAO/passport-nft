@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
 export default function CollapsableRoadmapBanner(): JSX.Element {
   return (
-    <div className={css(styles.wrapper)} id={STRINGS.faq}>
+    <div className={css(styles.wrapper)} id={STRINGS.roadmap}>
       <h2 className={css(styles.title)}>{STRINGS.roadmap}</h2>
       <div className={css(styles.container)}>
         {roadMapItems.map((item, id) => {

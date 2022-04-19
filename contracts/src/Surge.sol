@@ -27,6 +27,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     SaleStatus public status = SaleStatus.Paused;
     bytes32 public merkleRoot;
     string public baseTokenURI;
+    address _crossmintAddress = 0xdAb1a1854214684acE522439684a145E62505233;
 
     uint64 public constant MAX_SUPPLY = 5000;
     uint64 public constant MAX_PER_USER = 5;
@@ -42,7 +43,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         uint128 _price,
         address[] memory _payees,
         uint256[] memory _shares
-    ) ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares){
+    ) ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares) {
         setBaseURI(_baseTokenURI);
         setPrice(_price);
     }
@@ -89,6 +90,19 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
+    // cossmint minting
+    function mintTo(address to, uint256 _amountOfTokens)
+        external
+        payable
+        verifyMaxSupply(_amountOfTokens)
+        isEnoughEth(_amountOfTokens)
+    {
+        require(status == SaleStatus.PublicSale || status == SaleStatus.Presale, "Sale is not active");
+        require(msg.sender == _crossmintAddress, "This function is for Crossmint only.");
+
+        _safeMint(to, _amountOfTokens);
+    }
+
     //presale minting
     function presaleMint(uint256 _amountOfTokens, bytes32[] calldata _merkleProof)
         external
@@ -109,35 +123,35 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     }
 
     // batchMinting function allows the owner to mint maxReserved amount
-    function batchMinting(uint256 _amountOfTokens) 
+    function batchMinting(uint256 _amountOfTokens)
         external
         payable
-        nonReentrant 
+        nonReentrant
         onlyOwner
         verifyMaxSupply(_amountOfTokens)
-        isEnoughEth(_amountOfTokens) 
+        isEnoughEth(_amountOfTokens)
     {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
     // Ensures that the address can only have a max of 5 tokens in their wallet after mint
     function transferFrom(address from, address to, uint256 tokenId) 
-    public    
-    override
-    verifyMaxPerUserByAddress(to)
+        public    
+        override
+        verifyMaxPerUserByAddress(to)
     {
         super.transferFrom(from, to, tokenId);
     }
 
     // Ensures that the address can only have a max of 5 tokens in their wallet after mint
     function safeTransferFrom(address from, address to, uint256 tokenId) 
-    public    
-    override
-    verifyMaxPerUserByAddress(to)
+        public    
+        override
+        verifyMaxPerUserByAddress(to)
     {
         super.safeTransferFrom(from, to, tokenId);
     }
-   
+
     /**************ADMIN BASE FUNCTIONS *************/
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;

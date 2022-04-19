@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   imgOverlay: {
     display: 'flex',
-    background: `linear-gradient(180deg, rgba(251, 246, 249, 0) 35%, ${themeVariables.whiteColor} 80%)`,
+    background: `linear-gradient(180deg, rgba(251, 246, 249, 0) 35%, ${themeVariables.whiteColor} 100%)`,
     cursor: 'pointer'
   },
   role: {

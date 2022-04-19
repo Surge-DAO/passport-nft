@@ -6,12 +6,12 @@ import passportGif from '../../images/surge-passport.gif'
 
 const styles = StyleSheet.create({
   image: {
-    width: '272px',
+    width: '100%',
     marginTop: '20px',
     borderRadius: '5px'
   },
   gif: {
-    width: '60%',
+    width: '70%',
     margin: '0 auto',
     padding: '20px 0'
   }
