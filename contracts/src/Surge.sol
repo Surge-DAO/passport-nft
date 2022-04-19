@@ -39,8 +39,6 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     ) ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares){
         setBaseURI(_baseTokenURI);
         setPrice(_price);
-        //REMINDER: Delete Later
-        console.log("Testing test deploy", _name, _symbol);
     }
 
     mapping(address => bool) internal _presaleMinted;
