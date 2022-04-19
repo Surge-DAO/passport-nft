@@ -15,7 +15,7 @@ import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 
 contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     using Strings for uint256;
-
+    
     bytes32 public merkleRoot;
     string public baseTokenURI;
 
@@ -44,13 +44,19 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     }
 
     mapping(address => bool) internal _presaleMinted;
+    mapping(address => uint) internal _mintedAmount;
 
     /*----------------------------------------------*/
     /*                  MODIFIERS                  */
     /*--------------------------------------------*/
 
     modifier verifyMaxPerUser(uint256 _amountOfTokens) {
-        require(balanceOf(msg.sender) + _amountOfTokens <= MAX_PER_USER, "Already have max tokens per wallet");
+        require(_mintedAmount[msg.sender] + _amountOfTokens <= MAX_PER_USER, "Already have Max");
+        _;
+    }
+
+    modifier verifyMaxPerUserByAddress(address to) {
+        require(_mintedAmount[to] + 1 <= MAX_PER_USER && balanceOf(to) + 1 <= MAX_PER_USER, "Already have Max");
         _;
     }
 
@@ -71,7 +77,6 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     function mint(uint256 _amountOfTokens)
         external
         payable
-        nonReentrant
         verifyMaxPerUser(_amountOfTokens)
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
@@ -84,7 +89,6 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     function presaleMint(uint256 _amountOfTokens, bytes32[] calldata _merkleProof)
         external
         payable
-        nonReentrant
         verifyMaxPerUser(_amountOfTokens)
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
@@ -93,13 +97,11 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
 
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof!");
-
         require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
 
+        _mintedAmount[msg.sender] = _amountOfTokens;
+        _presaleMinted[msg.sender] = true;
         _safeMint(msg.sender, _amountOfTokens);
-        if (balanceOf(msg.sender) == MAX_PER_USER) {
-            _presaleMinted[msg.sender] = true;
-        }
     }
 
     // batchMinting function allows the owner to mint maxReserved amount
@@ -118,7 +120,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     function transferFrom(address from, address to, uint256 tokenId) 
     public    
     override
-    verifyMaxPerUser(balanceOf(to))
+    verifyMaxPerUserByAddress(to)
     {
         super.transferFrom(from, to, tokenId);
     }
@@ -127,7 +129,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     function safeTransferFrom(address from, address to, uint256 tokenId) 
     public    
     override
-    verifyMaxPerUser(balanceOf(to))
+    verifyMaxPerUserByAddress(to)
     {
         super.safeTransferFrom(from, to, tokenId);
     }
