@@ -2,16 +2,28 @@ import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { STRINGS } from '../../strings';
 import CircleButton from '../CircleButton';
-import footerBackground from '../../images/footer-background.svg';
+import themeVariables from '../../themeVariables.module.scss';
 import { socialMedia } from '../../data/surgePlatforms';
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
+    backgroundColor: themeVariables.secondaryColor,
+    width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     padding: '24px',
-    backgroundImage: `url(${footerBackground})`,
-    '@media (max-width: 768px)': {
+    height: 'auto',
+    '@media (min-width: 320px) and (max-width: 768px)': {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }
+  },
+  container: {
+    verticalAlign: 'middle',
+    marginTop: '24px',
+    '@media (max-width: 492px)': {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -25,11 +37,9 @@ const styles = StyleSheet.create({
   tagline: {
     marginLeft: '18px',
     display: 'inline',
-    paddingTop: '20px',
-    '@media (max-width: 379px)': {
-      display: 'block',
-      padding: '0 0 20px 0',
-      textAlign: 'center'
+    padding: '24px',
+    '@media (max-width: 492px)': {
+     fontSize: '16px'
     }
   },
   socials: {
@@ -41,7 +51,7 @@ const styles = StyleSheet.create({
 
 export default function Footer(): JSX.Element {
   return (
-    <div className={css(styles.container)}>
+    <div className={css(styles.wrapper)}>
       <div className={css(styles.container)}>
         <img
           className={css(styles.image)}
