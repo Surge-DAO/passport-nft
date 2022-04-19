@@ -32,7 +32,7 @@ export const teamMembers: TeamMember[] = [
   },
   {
     name: 'Kim Chen',
-    role: 'Operations Queen',
+    role: 'Operations Lead',
     image: 'assets/images/teamMembers/Kim.jpeg',
     link: 'https://twitter.com/chimmyken'
   },

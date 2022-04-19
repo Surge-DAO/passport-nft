@@ -28,6 +28,9 @@ const styles = StyleSheet.create({
     marginRight: '24px',
     textAlign: 'left'
   },
+  title: {
+    marginTop: '15px'
+  },
   answerSection: {
     transition: '0.5s'
   },
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
     padding: '10px'
   },
   icon: {
-    marginTop: '20px'
+    marginTop: '15px'
   },
   listStyle: {
     listStyleType: 'disc',
@@ -57,7 +60,7 @@ export default function CollapsableRoadmapCard(params: CardParams): JSX.Element 
 
   return (
     <div className={`${css(styles.card)} ${cardStyle}`} onClick={() => setOpen(!open)}>
-      <div className={css(styles.questionSection)}>
+      <div className={!open ? `${css(styles.questionSection)}`  :  `${css(styles.questionSection)} ${css(styles.title)}`}>
         <h5>{params.title}</h5>
         {!open && (
           <FontAwesomeIcon className={css(styles.icon)} icon={faAngleDown} size="lg" onClick={() => setOpen(!open)} />
