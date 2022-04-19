@@ -20,6 +20,7 @@ module.exports = {
   solidity: '0.8.4',
   paths: {
     sources: './src',
+    sources: './test',
     tests: './test',
     cache: './cache',
     artifacts: './artifacts'
