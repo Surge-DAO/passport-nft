@@ -115,8 +115,8 @@ export default function NavBar(): JSX.Element {
             <Nav className={css(styles.paddingTop30)}>
               {navBarItems.map((item, idx) => {
                 return (
-                  <Nav.Item>
-                    <Nav.Link eventKey={idx} key={idx} href={item.link} className={css(styles.navLinks)}>
+                  <Nav.Item key={idx}>
+                    <Nav.Link eventKey={idx} href={item.link} className={css(styles.navLinks)}>
                       {item.name}
                     </Nav.Link>
                   </Nav.Item>
@@ -150,8 +150,8 @@ export default function NavBar(): JSX.Element {
             <Nav className="justify-content-end flex-grow-1 pe-3">
               {navBarItems.map((item, idx) => {
                 return (
-                  <Nav.Item>
-                    <Nav.Link href={item.link} key={idx} className={css(styles.navLinks)}>
+                  <Nav.Item key={idx}>
+                    <Nav.Link href={item.link} className={css(styles.navLinks)}>
                       {item.name}
                     </Nav.Link>
                   </Nav.Item>

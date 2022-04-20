@@ -46,14 +46,14 @@ export default function CollapsableRoadmapBanner(): JSX.Element {
       <h2 className={css(styles.title)}>{STRINGS.roadmap}</h2>
       <div className={css(styles.container)}>
         {roadMapItems.map((item, id) => {
-          return <CollapsableRoadmapCard key={id} title={item.title} description={item.description} stepNo ={item.stepNo} additionalSteps={item.additionalSteps} active={item.active} lastLine={item.lastLine} />;
+          return <CollapsableRoadmapCard key={id} title={item.title} description={item.description} stepNo={item.stepNo} additionalSteps={item.additionalSteps} active={item.active} lastLine={item.lastLine} />;
         })}
         <p className={css(styles.update)}>{STRINGS.roadmapUpdate}</p>
         <div className={css(styles.socials)}>
           {socialMedia.map((platform, idx) => {
             return (
-              <div className={css(styles.socialItem)}>
-                <MainButton key={idx} callToAction={platform.name.toUpperCase()} action={() => window.open(platform.link)} primary />
+              <div className={css(styles.socialItem)} key={idx}>
+                <MainButton callToAction={platform.name.toUpperCase()} action={() => window.open(platform.link)} primary />
               </div>
             );
           })}

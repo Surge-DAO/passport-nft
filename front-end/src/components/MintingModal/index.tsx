@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import { STRINGS } from '../../strings';
-import { Alert, Modal } from 'react-bootstrap';
+import { Alert, Container, Col, Modal, Row } from 'react-bootstrap';
 import MainButton from '../MainButton';
 import Operator from '../Operator';
 import SquareButton from '../SquareButton';
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import { abi, contractAddress } from '../../data/Contract';
+import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui';
+import themeVariables from '../../themeVariables.module.scss';
 
 declare var window: any
 
@@ -31,13 +33,28 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     paddingBottom: '3%',
-    fontWeight: 'bold'
+    fontSize: '15px'
   },
   alert: {
     maxWidth: '80%'
   },
   alertBodyP: {
     overflowWrap: 'anywhere'
+  },
+  crossMintBtn: {
+    border: 'none',
+    boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.16)',
+    borderRadius: '24px',
+    fontFamily: themeVariables.secondaryFont,
+    fontWeight: 800,
+    padding: '16px 24px',
+    background: themeVariables.primaryColor,
+    color: themeVariables.darkColor,
+    ':hover': {
+      background: themeVariables.thirdColor,
+      color: themeVariables.lightColor,
+      fontWeight: 800
+    }
   }
 })
 
@@ -115,7 +132,6 @@ export default function MintingModal(params: MintingParams): JSX.Element {
           <SquareButton value={mintNumber} />
           <Operator text='+' action={increaseMint} />
         </div>
-        {!active && <p className={css(styles.bottomPadding)}>{STRINGS.pleaseConnectWallet}</p>}
         <Alert variant={error ? "danger" : "success"} show={showAlert} className={css(styles.alert)}>
           <Alert.Heading>
             {error ? STRINGS.whoops : STRINGS.mintingSuspense}
@@ -127,11 +143,34 @@ export default function MintingModal(params: MintingParams): JSX.Element {
           {!error && (
             <>
               <br />
-              <Alert.Link href={`https://etherscan.io/tx/${transactionHash}`}>{STRINGS.findYourTxn}</Alert.Link>
+              <Alert.Link href={`https://rinkeby.etherscan.io/tx/${transactionHash}`}>{STRINGS.findYourTxn}</Alert.Link>
             </>
           )}
         </Alert>
-        <MainButton disable={!active || mintWait} callToAction={STRINGS.clickToMint} primary action={mintNFTHandler} />
+        <Container>
+          <Row>
+            <Col>
+              {!active && <p className={css(styles.bottomPadding)}>{STRINGS.pleaseConnectWallet}</p>}
+              <MainButton disable={!active || mintWait} callToAction={STRINGS.ethMint} primary action={mintNFTHandler} />
+            </Col>
+            <Col>
+              <p className={css(styles.bottomPadding)}>{STRINGS.crossmintDisclaimer}</p>
+              <CrossmintPayButton
+                collectionTitle="Surge Passport"
+                collectionDescription="Grants you access to web3 perks"
+                clientId={process.env.REACT_APP_CROSSMINT_CLIENT_ID || ''}
+                environment="staging"
+                mintConfig={{
+                  price: "0.08",
+                  type: "erc-721",
+                  amountOfTokens: mintNumber
+                }}
+                className={css(styles.crossMintBtn)}
+              />
+            </Col>
+          </Row>
+        </Container>
+        <br />
       </Modal.Body>
     </Modal>
   )
