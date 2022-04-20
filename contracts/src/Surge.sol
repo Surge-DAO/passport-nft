@@ -16,12 +16,20 @@ import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     using Strings for uint256;
 
+    // Status of the token & token sale
+    enum SaleStatus {
+        Paused,
+        Presale,
+        PublicSale,
+        SoldOut
+    }
+    
+    event StatusUpdate(SaleStatus _status);
+    
+    SaleStatus public status = SaleStatus.Paused;
     bytes32 public merkleRoot;
     string public baseTokenURI;
-    address _crossmintAddress = 0xdAb1a1854214684acE522439684a145E62505233;
-
-    bool public saleIsActive = false;
-    bool public presaleIsActive = false;
+    address private _crossmintAddress = 0xdAb1a1854214684acE522439684a145E62505233;
 
     uint64 public constant MAX_SUPPLY = 5000;
     uint64 public constant MAX_PER_USER = 5;
@@ -40,18 +48,16 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     ) ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares) {
         setBaseURI(_baseTokenURI);
         setPrice(_price);
-        //REMINDER: Delete Later
-        console.log("Testing test deploy", _name, _symbol);
     }
 
-    mapping(address => bool) internal _presaleMinted;
+    mapping(address => uint) private _mintedAmount;
 
     /*----------------------------------------------*/
     /*                  MODIFIERS                  */
     /*--------------------------------------------*/
 
     modifier verifyMaxPerUser(uint256 _amountOfTokens) {
-        require(balanceOf(msg.sender) + _amountOfTokens <= MAX_PER_USER, "Already have max tokens per wallet");
+        require(_mintedAmount[msg.sender] + _amountOfTokens <= MAX_PER_USER, "Already have Max");
         _;
     }
 
@@ -72,24 +78,25 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     function mint(uint256 _amountOfTokens)
         external
         payable
-        nonReentrant
         verifyMaxPerUser(_amountOfTokens)
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(saleIsActive, "Sale is not active");
+        require(status == SaleStatus.PublicSale, "Sale is not active");
+
+        _mintedAmount[msg.sender] += _amountOfTokens;
         _safeMint(msg.sender, _amountOfTokens);
     }
 
-    // cossmint minting
+    // crossmint minting
     function mintTo(address to, uint256 _amountOfTokens)
         external
         payable
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(saleIsActive, "Sale is not active");
-        require(msg.sender == _crossmintAddress, "This function is for Crossmint only.");
+        require(status == SaleStatus.PublicSale, "Sale is not active");
+        require(msg.sender == _crossmintAddress, "Crossmint only.");
 
         _safeMint(to, _amountOfTokens);
     }
@@ -98,22 +105,17 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     function presaleMint(uint256 _amountOfTokens, bytes32[] calldata _merkleProof)
         external
         payable
-        nonReentrant
         verifyMaxPerUser(_amountOfTokens)
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(presaleIsActive, "Presale is not active");
+        require(status == SaleStatus.Presale, "Presale is not active");
 
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof!");
 
-        require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
-
+        _mintedAmount[msg.sender] += _amountOfTokens;
         _safeMint(msg.sender, _amountOfTokens);
-        if (balanceOf(msg.sender) == MAX_PER_USER) {
-            _presaleMinted[msg.sender] = true;
-        }
     }
 
     // batchMinting function allows the owner to mint maxReserved amount
@@ -128,24 +130,6 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
-    // Ensures that the address can only have a max of 5 tokens in their wallet after mint
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override verifyMaxPerUser(balanceOf(to)) {
-        super.transferFrom(from, to, tokenId);
-    }
-
-    // Ensures that the address can only have a max of 5 tokens in their wallet after mint
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override verifyMaxPerUser(balanceOf(to)) {
-        super.safeTransferFrom(from, to, tokenId);
-    }
-
     /**************ADMIN BASE FUNCTIONS *************/
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;
@@ -155,20 +139,9 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         baseTokenURI = _baseTokenURI;
     }
 
-    function startSale() external onlyOwner {
-        saleIsActive = true;
-    }
-
-    function pauseSale() external onlyOwner {
-        saleIsActive = false;
-    }
-
-    function startPresale() external onlyOwner {
-        presaleIsActive = true;
-    }
-
-    function pausePresale() external onlyOwner {
-        presaleIsActive = false;
+    function setStatus(SaleStatus _status) public onlyOwner {
+        status = _status;
+        emit StatusUpdate(_status);
     }
 
     function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
