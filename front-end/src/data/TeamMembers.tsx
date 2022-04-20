@@ -75,7 +75,7 @@ export const teamMembers: TeamMember[] = [
   {
     name: 'Michelle L.',
     role: 'Visual Design Lead',
-    image: 'assets/images/teamMembers/Michelle.jpeg',
+    image: 'assets/images/teamMembers/Michelle.png',
     link: 'https://twitter.com/PennyCandyNFT'
   }
 ];
