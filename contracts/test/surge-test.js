@@ -208,11 +208,11 @@ describe('Surge', function () {
 
       // Trying to mint twice
       await expect(surge.connect(addr1).presaleMint(
-        1,
+        5,
         merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
         {value: ethers.utils.parseEther(price.toString())},
-      )).to.be.revertedWith('You have already minted your tokens for the presale');
-      
+      )).to.be.revertedWith('Already have Max');
+
       // Sending an invalid mint amount
       await expect(surge.connect(addr1).presaleMint(
         1,
@@ -247,7 +247,7 @@ describe('Surge', function () {
         [],
         {value: ethers.utils.parseEther(price.toString())},
       )).to.be.revertedWith('Invalid proof!');
-      
+
       // Pause whitelist sale
       const pausePresaleTx = await surge.connect(owner).setStatus(SaleStatus.Paused);
       await pausePresaleTx.wait();
