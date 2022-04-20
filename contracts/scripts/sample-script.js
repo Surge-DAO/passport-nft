@@ -13,12 +13,14 @@ async function main() {
   const symbol = 'SURGE';
   const baseURI = 'ipfs://CID/';
   const price = 50000000000000000n; //0.05ETH //$250
+  let multiSig = "0xD9A52b6506743cF5fAFf14C875cB443da9660e00";
+  let royaltyAmount = 200; // Divided by 10000
 
   const Surge = await hre.ethers.getContractFactory('Surge');
-  const surge = await Surge.deploy(name, symbol, baseURI, price, ["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6]);
+  const surge = await Surge.deploy(name, symbol, baseURI, price, ["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6], multiSig, royaltyAmount);
 
   await surge.deployed();
-
+  
   console.log('Surge deployed to:', surge.address);
 }
 
