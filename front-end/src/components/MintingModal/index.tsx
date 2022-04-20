@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     paddingBottom: '3%',
-    // fontWeight: 'bold'
     fontSize: '15px'
   },
   alert: {
