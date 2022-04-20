@@ -27,7 +27,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     SaleStatus public status = SaleStatus.Paused;
     bytes32 public merkleRoot;
     string public baseTokenURI;
-    address _crossmintAddress = 0xdAb1a1854214684acE522439684a145E62505233;
+    address private _crossmintAddress = 0xdAb1a1854214684acE522439684a145E62505233;
 
     uint64 public constant MAX_SUPPLY = 5000;
     uint64 public constant MAX_PER_USER = 5;
@@ -48,8 +48,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         setPrice(_price);
     }
 
-    mapping(address => bool) internal _presaleMinted;
-    mapping(address => uint) internal _mintedAmount;
+    mapping(address => uint) private _mintedAmount;
 
     /*----------------------------------------------*/
     /*                  MODIFIERS                  */
@@ -87,10 +86,12 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         isEnoughEth(_amountOfTokens)
     {
         require(status == SaleStatus.PublicSale, "Sale is not active");
+
+        _mintedAmount[msg.sender] += _amountOfTokens;
         _safeMint(msg.sender, _amountOfTokens);
     }
 
-    // cossmint minting
+    // crossmint minting
     function mintTo(address to, uint256 _amountOfTokens)
         external
         payable
@@ -98,7 +99,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         isEnoughEth(_amountOfTokens)
     {
         require(status == SaleStatus.PublicSale || status == SaleStatus.Presale, "Sale is not active");
-        require(msg.sender == _crossmintAddress, "This function is for Crossmint only.");
+        require(msg.sender == _crossmintAddress, "Crossmint only.");
 
         _safeMint(to, _amountOfTokens);
     }
@@ -115,10 +116,8 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
 
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof!");
-        require(!_presaleMinted[msg.sender], "You have already minted your tokens for the presale");
 
-        _mintedAmount[msg.sender] = _amountOfTokens;
-        _presaleMinted[msg.sender] = true;
+        _mintedAmount[msg.sender] += _amountOfTokens;
         _safeMint(msg.sender, _amountOfTokens);
     }
 
