@@ -24,6 +24,8 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         SoldOut
     }
     
+    event StatusUpdate(SaleStatus _status);
+    
     SaleStatus public status = SaleStatus.Paused;
     bytes32 public merkleRoot;
     string public baseTokenURI;
@@ -56,11 +58,6 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
 
     modifier verifyMaxPerUser(uint256 _amountOfTokens) {
         require(_mintedAmount[msg.sender] + _amountOfTokens <= MAX_PER_USER, "Already have Max");
-        _;
-    }
-
-    modifier verifyMaxPerUserByAddress(address to) {
-        require(_mintedAmount[to] + 1 <= MAX_PER_USER && balanceOf(to) + 1 <= MAX_PER_USER, "Already have Max");
         _;
     }
 
@@ -98,7 +95,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(status == SaleStatus.PublicSale || status == SaleStatus.Presale, "Sale is not active");
+        require(status == SaleStatus.PublicSale, "Sale is not active");
         require(msg.sender == _crossmintAddress, "Crossmint only.");
 
         _safeMint(to, _amountOfTokens);
@@ -133,24 +130,6 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
-    // Ensures that the address can only have a max of 5 tokens in their wallet after mint
-    function transferFrom(address from, address to, uint256 tokenId) 
-        public    
-        override
-        verifyMaxPerUserByAddress(to)
-    {
-        super.transferFrom(from, to, tokenId);
-    }
-
-    // Ensures that the address can only have a max of 5 tokens in their wallet after mint
-    function safeTransferFrom(address from, address to, uint256 tokenId) 
-        public    
-        override
-        verifyMaxPerUserByAddress(to)
-    {
-        super.safeTransferFrom(from, to, tokenId);
-    }
-
     /**************ADMIN BASE FUNCTIONS *************/
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;
@@ -162,6 +141,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
 
     function setStatus(SaleStatus _status) public onlyOwner {
         status = _status;
+        emit StatusUpdate(_status);
     }
 
     function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
