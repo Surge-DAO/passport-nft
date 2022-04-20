@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     '@media (max-width: 768px)': {
       flexWrap: 'wrap'
     }
-  },  
+  },
   perkRow: {
     display: 'flex',
     flexDirection: 'row'
@@ -43,8 +43,8 @@ export default function PerkBanner(): JSX.Element {
       </div>
 
       <div className={css(styles.perkContainer)}>
-          {PerkBannerItems.map((perk) => {
-            return <PerkCard perk={perk} />;
+          {PerkBannerItems.map((perk, idx) => {
+            return <PerkCard perk={perk} key={idx} />;
           })}
       </div>
 

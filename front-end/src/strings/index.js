@@ -14,8 +14,10 @@ export const STRINGS = {
 
   Surge’s ultimate goal is to tie together an enhanced ecosystem of compensated opportunities for women in Web3, by working with other mission-aligned organizations..
   `,
-  clickToMint: 'Click to mint',
+  clickToMint: 'Click to Mint',
   connectWallet: 'Connect Wallet',
+  crossmintDisclaimer: 'Keep in mind, minting with credit card incurs a 4.5% fee.',
+  ethMint: 'Mint NFT using ETH',
   findYourTxn: 'You can find your transaction on Etherscan here',
   frequentlyAskedQuestions: 'Frequently Asked Questions',
   faq: 'FAQ',
@@ -30,7 +32,7 @@ export const STRINGS = {
   passportPerks: 'Passport Perks',
   passportPerksDescription: 'Here are some of the amazing goodies you get when owning a Surge NFT',
   perks: 'Perks',
-  pleaseConnectWallet: 'Please connect your wallet first.',
+  pleaseConnectWallet: 'If you\'re minting with ETH, please connect your wallet first.',
   roadmap: 'Roadmap',
   roadmapUpdate: 'Get the latest updates on our roadmap',
   securingWomen: 'Securing women’s place in Web3',
