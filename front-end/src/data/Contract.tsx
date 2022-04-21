@@ -1,4 +1,4 @@
 import contract from '../utils/SurgePassportNFT.json';
 
-export const contractAddress: string = '0xD711e27F9adB4dF94b3711529c8367fb5e23E691';
+export const contractAddress: string = '0x850c8e0b6EB33C459b5780bBC15AF78F817b7f77';
 export const abi = contract.abi;
