@@ -11,10 +11,10 @@ import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./ERC2981ContractWideRoyalties.sol";
 
-contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter, ERC2981ContractWideRoyalties {
+contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyalties {
     using Strings for uint256;
 
     // Status of the token & token sale
@@ -44,11 +44,9 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter, ERC2981Con
         string memory _symbol,
         string memory _baseTokenURI,
         uint128 _price,
-        address[] memory _payees,
-        uint256[] memory _shares,
         address _receiver,
         uint256 _royalties
-    ) payable ERC721A(_name, _symbol) PaymentSplitter(_payees, _shares) {
+    ) payable ERC721A(_name, _symbol) {
         setBaseURI(_baseTokenURI);
         setPrice(_price);
         setRoyalties(_receiver, _royalties);
@@ -190,15 +188,6 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter, ERC2981Con
     // // Allows us to recover ERC20 tokens sent to contract
     function withdrawTokens(IERC20 token) public onlyOwner {
         uint256 balance = token.balanceOf(address(this));
-        token.transfer(msg.sender, balance);
+        SafeERC20.safeTransfer(token, msg.sender, balance);
     }
-
-    /// @notice Release contract funds through payment splitter
-    // /// @param addresses payable addresses to send the split to
-    // function withdrawSplit(address[] calldata addresses) external onlyOwner nonReentrant {
-    //     for (uint256 i = 0; i < addresses.length; i++) {
-    //         address payable wallet = payable(addresses[i]);
-    //         release(wallet);
-    //     }
-    // }
 }

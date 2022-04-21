@@ -47,7 +47,7 @@ describe('Surge', function () {
     // To deploy our contract, we just have to call Token.deploy() and await
     // for it to be deployed(), which happens once its transaction has been
     // mined.
-    surge = await Surge.deploy(name, symbol, uri, price, [multiSig, "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6], multiSig, royaltyAmount);
+    surge = await Surge.deploy(name, symbol, uri, price, multiSig, royaltyAmount);
     await surge.deployed();
   });
 
