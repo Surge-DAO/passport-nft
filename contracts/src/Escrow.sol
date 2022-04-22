@@ -41,15 +41,15 @@ contract Escrow is Context {
     mapping(IERC20 => mapping(address => uint256)) private _erc20Released;
 
     /**
-     * @dev Creates an instance of `PaymentSplitter` where each account in `payees` is assigned the number of shares at
+     * @dev Creates an instance of `Escrow` where each account in `payees` is assigned the number of shares at
      * the matching position in the `shares` array.
      *
      * All addresses in `payees` must be non-zero. Both arrays must have the same non-zero length, and there must be no
      * duplicates in `payees`.
      */
     constructor(address[] memory payees, uint256[] memory shares_) payable {
-        require(payees.length == shares_.length, "PaymentSplitter: payees and shares length mismatch");
-        require(payees.length > 0, "PaymentSplitter: no payees");
+        require(payees.length == shares_.length, "Escrow: payees and shares length mismatch");
+        require(payees.length > 0, "Escrow: no payees");
 
         for (uint256 i = 0; i < payees.length; i++) {
             _addPayee(payees[i], shares_[i]);
