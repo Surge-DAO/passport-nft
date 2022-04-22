@@ -48,7 +48,7 @@ contract Escrow is Context {
      * duplicates in `payees`.
      */
     constructor(address[] memory payees, uint256[] memory shares_) payable {
-        require(payees.length == shares_.length, "Escrow: payees and shares length mismatch");
+        require(payees.length == shares_.length, "Payees, shares mismatch");
         require(payees.length > 0, "Escrow: no payees");
 
         for (uint256 i = 0; i < payees.length; i++) {
@@ -125,12 +125,12 @@ contract Escrow is Context {
      * total shares and their previous withdrawals.
      */
     function release(address payable account) public virtual {
-        require(_shares[account] > 0, "PaymentSplitter: account has no shares");
+        require(_shares[account] > 0, "Account has no shares");
 
         uint256 totalReceived = address(this).balance + totalReleased();
         uint256 payment = _pendingPayment(account, totalReceived, released(account));
 
-        require(payment != 0, "PaymentSplitter: account is not due payment");
+        require(payment != 0, "Account is not due payment");
 
         _released[account] += payment;
         _totalReleased += payment;
@@ -145,12 +145,12 @@ contract Escrow is Context {
      * contract.
      */
     function release(IERC20 token, address account) public virtual {
-        require(_shares[account] > 0, "PaymentSplitter: account has no shares");
+        require(_shares[account] > 0, "Account has no shares");
 
         uint256 totalReceived = token.balanceOf(address(this)) + totalReleased(token);
         uint256 payment = _pendingPayment(account, totalReceived, released(token, account));
 
-        require(payment != 0, "PaymentSplitter: account is not due payment");
+        require(payment != 0, "Account is not due payment");
 
         _erc20Released[token][account] += payment;
         _erc20TotalReleased[token] += payment;
@@ -177,9 +177,9 @@ contract Escrow is Context {
      * @param shares_ The number of shares owned by the payee.
      */
     function _addPayee(address account, uint256 shares_) private {
-        require(account != address(0), "PaymentSplitter: account is the zero address");
-        require(shares_ > 0, "PaymentSplitter: shares are 0");
-        require(_shares[account] == 0, "PaymentSplitter: account already has shares");
+        require(account != address(0), "Account is the zero address");
+        require(shares_ > 0, "Shares are 0");
+        require(_shares[account] == 0, "Already has shares");
 
         _payees.push(account);
         _shares[account] = shares_;

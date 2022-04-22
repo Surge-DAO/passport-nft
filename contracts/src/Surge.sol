@@ -169,7 +169,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
     /// @notice Release contract funds funds to contract owner
     function withdrawAll() public payable onlyOwner nonReentrant {
         (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
-        require(success);
+        require(success, "Unsuccessful withdraw");
     }
 
     // // Allows us to recover ERC20 tokens sent to contract
