@@ -58,8 +58,8 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
     /*                  MODIFIERS                  */
     /*--------------------------------------------*/
 
-    modifier verifyMaxPerUser(uint256 _amountOfTokens) {
-        require(_mintedAmount[msg.sender] + _amountOfTokens <= MAX_PER_USER, "Already have Max");
+    modifier verifyMaxPerUser(address to, uint256 _amountOfTokens) {
+        require(_mintedAmount[to] + _amountOfTokens <= MAX_PER_USER, "Already have Max");
         _;
     }
 
@@ -78,29 +78,16 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
     /*--------------------------------------------*/
 
     //public minting
-    function mint(uint256 _amountOfTokens)
+    function mint(address to, uint256 _amountOfTokens)
         external
         payable
-        verifyMaxPerUser(_amountOfTokens)
+        verifyMaxPerUser(to, _amountOfTokens)
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
         require(status == SaleStatus.PublicSale, "Sale is not active");
 
-        _mintedAmount[msg.sender] += _amountOfTokens;
-        _safeMint(msg.sender, _amountOfTokens);
-    }
-
-    // crossmint minting
-    function mintTo(address to, uint256 _amountOfTokens)
-        external
-        payable
-        verifyMaxSupply(_amountOfTokens)
-        isEnoughEth(_amountOfTokens)
-    {
-        require(status == SaleStatus.PublicSale, "Sale is not active");
-        require(msg.sender == _crossmintAddress, "Crossmint only.");
-
+        _mintedAmount[to] += _amountOfTokens;
         _safeMint(to, _amountOfTokens);
     }
 
@@ -108,7 +95,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
     function presaleMint(uint256 _amountOfTokens, bytes32[] calldata _merkleProof)
         external
         payable
-        verifyMaxPerUser(_amountOfTokens)
+        verifyMaxPerUser(msg.sender, _amountOfTokens)
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {

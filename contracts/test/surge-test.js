@@ -269,7 +269,7 @@ describe('Surge', function () {
 
       expect(await surge.status()).to.equal(SaleStatus.Paused);
 
-      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Sale is currently not active');
+      expect(surge.connect(addr1).mint(addr1.address, amountOfTokens)).to.be.revertedWith('Sale is currently not active');
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
@@ -283,15 +283,15 @@ describe('Surge', function () {
 
       let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+      const mintTx = await surge.connect(addr1).mint(addr1.address, amountOfTokens, {
         value: ethers.utils.parseEther(price.toString())
       });
       await mintTx.wait();
 
       expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
 
-      expect(surge.connect(addr1).mint(1)).to.be.revertedWith(
-        'You already have maximum number of tokens allowed per wallet'
+      expect(surge.connect(addr1).mint(addr1.address, 1)).to.be.revertedWith(
+        'Already have Max'
       );
 
       expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
@@ -304,7 +304,7 @@ describe('Surge', function () {
       await startSaleTx.wait();
       expect(await surge.status()).to.equal(SaleStatus.PublicSale);
 
-      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Incorrect ETH value');
+      expect(surge.connect(addr1).mint(addr1.address, amountOfTokens)).to.be.revertedWith('Incorrect ETH value');
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
@@ -318,7 +318,7 @@ describe('Surge', function () {
 
       let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+      const mintTx = await surge.connect(addr1).mint(addr1.address, amountOfTokens, {
         value: ethers.utils.parseEther(price.toString())
       });
       await mintTx.wait();
