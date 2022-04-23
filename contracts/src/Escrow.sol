@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (finance/PaymentSplitter.sol)
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.1;
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
@@ -72,7 +72,7 @@ contract Escrow is Context {
     /**
      * @dev Getter for the total shares held by payees.
      */
-    function totalShares() public view returns (uint256) {
+    function totalShares() external view returns (uint256) {
         return _totalShares;
     }
 
@@ -94,7 +94,7 @@ contract Escrow is Context {
     /**
      * @dev Getter for the amount of shares held by an account.
      */
-    function shares(address account) public view returns (uint256) {
+    function shares(address account) external view returns (uint256) {
         return _shares[account];
     }
 
@@ -116,7 +116,7 @@ contract Escrow is Context {
     /**
      * @dev Getter for the address of the payee number `index`.
      */
-    function payee(uint256 index) public view returns (address) {
+    function payee(uint256 index) external view returns (address) {
         return _payees[index];
     }
 
@@ -124,7 +124,7 @@ contract Escrow is Context {
      * @dev Triggers a transfer to `account` of the amount of Ether they are owed, according to their percentage of the
      * total shares and their previous withdrawals.
      */
-    function release(address payable account) public virtual {
+    function release(address payable account) external virtual {
         require(_shares[account] > 0, "Account has no shares");
 
         uint256 totalReceived = address(this).balance + totalReleased();
@@ -144,7 +144,7 @@ contract Escrow is Context {
      * percentage of the total shares and their previous withdrawals. `token` must be the address of an IERC20
      * contract.
      */
-    function release(IERC20 token, address account) public virtual {
+    function release(IERC20 token, address account) external virtual {
         require(_shares[account] > 0, "Account has no shares");
 
         uint256 totalReceived = token.balanceOf(address(this)) + totalReleased(token);

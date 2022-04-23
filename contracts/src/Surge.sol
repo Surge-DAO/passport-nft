@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.1;
 
 // @title: Surge Women NFT Collection
 // @website : https://www.surgewomen.io/
@@ -30,7 +30,6 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
     SaleStatus public status = SaleStatus.Paused;
     bytes32 public merkleRoot;
     string public baseTokenURI;
-    address private _crossmintAddress = 0xdAb1a1854214684acE522439684a145E62505233;
 
     uint64 public constant MAX_SUPPLY = 5000;
     uint64 public constant MAX_PER_USER = 5;

@@ -10,7 +10,7 @@ async function main() {
 
   //deploy escrow contract first
   const Escrow = await hre.ethers.getContractFactory('Escrow');
-  const escrow = await Escrow.deploy(["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6]);
+  const escrow = await Escrow.deploy(["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [20, 80]);
 
   await escrow.deployed();
   console.log('Escrow deployed to:', escrow.address);
@@ -19,9 +19,9 @@ async function main() {
   const name = 'Surge Women Passport';
   const symbol = 'SURGE';
   const baseURI = 'ipfs://CID/';
-  const price = 50000000000000000n; //0.05ETH //$250
+  const price = 80000000000000000n; //0.08ETH //$250
   let receiver = escrow.address;
-  let royaltyAmount = 800; // Divided by 10000
+  let royaltyAmount = 600; // Divided by 10000
 
   const Surge = await hre.ethers.getContractFactory('Surge');
   const surge = await Surge.deploy(name, symbol, baseURI, price, receiver, royaltyAmount);

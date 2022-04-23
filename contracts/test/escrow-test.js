@@ -11,7 +11,7 @@ describe('Escrow', function () {
     let addr3;
     let addrs;
     let payees = ["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"];
-    let shares = [2, 6];
+    let shares = [20, 80];
 
     beforeEach(async function () {
       // Get the ContractFactory and Signers here.

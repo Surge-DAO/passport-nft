@@ -16,10 +16,10 @@ describe('Surge', function () {
   let symbol = 'SRG';
   let uri = 'https://www.surgewomen.io/';
   let multiSig = "0xD9A52b6506743cF5fAFf14C875cB443da9660e00";
-  let royaltyAmount = 200; // Divided by 10000
+  let royaltyAmount = 600; // Divided by 10000
   let MAX_PER_USER = 5;
   let MAX_SUPPLY = 5000;
-  let price = 50000000000000000n;
+  let price = 80000000000000000n;
   let decimals = 1000000000000000000;
   const SaleStatus = {
     Paused: 0,
