@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import themeVariables from '../../themeVariables.module.scss';
-import gradientBackground from '../../images/gradient-background.png';
-import { STRINGS } from '../../strings';
+import { Contract, ethers } from 'ethers';
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import MainButton from '../MainButton';
 import Navbar from '../Navbar';
 import MintingModal from '../MintingModal';
 import WhatIsMintingModal from '../WhatIsMintingModal';
 import PassportBanner from '../PassportBanner';
+import { STRINGS } from '../../strings';
+import { abi, contractAddress } from '../../data/Contract';
+import gradientBackground from '../../images/gradient-background.png';
+import themeVariables from '../../themeVariables.module.scss';
 
 const styles = StyleSheet.create({
   banner: {
@@ -49,16 +52,56 @@ const styles = StyleSheet.create({
 });
 
 export default function InitialComponent(): JSX.Element {
+  const { ethereum } = window;
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState<boolean>(false);
+  const [saleStatus, setSaleStatus] = useState<number>(0);
+  const [signer, setSigner] = useState<JsonRpcSigner>();
+
+  useEffect(() => {
+    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
+    const signerReceived: JsonRpcSigner = provider.getSigner();
+
+    setSigner(signerReceived);
+  }, [ethereum]);
+
+  useEffect(() => {
+    getSaleStatus();
+  })
+
+  useEffect(() => {
+    if (signer) {
+      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
+      nftContract.on("StatusUpdate", (saleStatusUpdate) => {
+        setSaleStatus(saleStatusUpdate);
+      })
+    }
+  }, [signer]);
+
+  async function getSaleStatus() {
+    if (signer) {
+      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
+      const status = await nftContract.status();
+
+      setSaleStatus(status);
+    }
+  }
+
+  const isMintOpen = saleStatus && [1, 2].includes(saleStatus);
 
   return (
     <div className={css(styles.banner)}>
       <Navbar />
-      <h1 className={css(styles.title)}>Surge Passport NFT</h1>
+      <h1 className={css(styles.title)}>{STRINGS.surgePassportNFT}</h1>
       <PassportBanner />
       <div className={css(styles.bannerFooter)}>
-        <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
+        {saleStatus === 3 &&
+          <MainButton callToAction={STRINGS.checkOutCollection} link={STRINGS.openSeaCollectionDomain} />
+        }
+        {[0, 1, 2].includes(saleStatus) &&
+          <MainButton disable={!isMintOpen} callToAction={!isMintOpen ? STRINGS.presaleOpens : STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
+        }
         <MintingModal show={showModal} hide={() => setShowModal(false)} />
         <div className={css(styles.mintingText)}>
           <button className={css(styles.whatIsMintingModalButton)} onClick={() => setShowWhatIsMintingModal(!showWhatIsMintingModal)}>
