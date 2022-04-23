@@ -53,9 +53,13 @@ const styles = StyleSheet.create({
     background: themeVariables.primaryColor,
     color: themeVariables.darkColor,
     ':hover': {
-      background: themeVariables.thirdColor,
+      background: themeVariables.lightColor,
       color: themeVariables.lightColor,
       fontWeight: 800
+    },
+    ':disabled': {
+      opacity: 0.65,
+      pointerEvents: 'none'
     }
   }
 })
@@ -113,6 +117,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
     if (signer) {
       const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
       const status = await nftContract.status();
+
       setSaleStatus(status);
     }
   }
@@ -142,6 +147,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
       const price = await nftContract.price();
 
       try {
+        setError(false);
         setMintStatus({ wait: true, message: STRINGS.mintWait });
         const merkleProof = Allowlist.getProofForAddress(account!);
         const presaleMintTransaction = await nftContract.presaleMint(mintNumber, merkleProof, { value: price.mul(mintNumber) });
@@ -151,7 +157,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
         await presaleMintTransaction.wait();
         setMintStatus({ wait: true, message: `${STRINGS.mintSuccess} ${presaleMintTransaction.hash}` });
       } catch (e: any) {
-        setMintStatus({ wait: false, message: e.message });
+        setMintStatus({ wait: false, message: e.error.message });
         setError(true);
         setShowAlert(true);
       }
@@ -172,7 +178,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
         setMintStatus({ wait: false, message: `${STRINGS.mintSuccess} ${nftTransaction.hash}` });
       } catch (e: any) {
         setError(true);
-        setMintStatus({ wait: false, message: e.message });
+        setMintStatus({ wait: false, message: e.error.message });
         setShowAlert(true);
       }
     }
@@ -205,7 +211,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
               <MainButton disable={saleStatus === 0 || !active || mintStatus.wait} callToAction={STRINGS.ethMint} primary action={mintHandler} />
             </Col>
             <Col>
-              <p className={css(styles.bottomPadding)}>{STRINGS.crossmintDisclaimer}</p>
+              <p className={css(styles.bottomPadding)}>{saleStatus === 2 ? STRINGS.crossmintDisclaimer : STRINGS.publicSaleNotActive}</p>
               <CrossmintPayButton
                 collectionTitle="Surge Passport"
                 collectionDescription="Grants you access to web3 perks"
