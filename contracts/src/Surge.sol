@@ -2,11 +2,11 @@
 pragma solidity ^0.8.0;
 
 // @title: Surge Women NFT Collection
-// @website : https://www.surgewomen.io/
+// @website: https://www.surgewomen.io/
 
 // █▀ █░█ █▀█ █▀▀ █▀▀   █░█░█ █▀█ █▀▄▀█ █▀▀ █▄░█
 // ▄█ █▄█ █▀▄ █▄█ ██▄   ▀▄▀▄▀ █▄█ █░▀░█ ██▄ █░▀█
-import "hardhat/console.sol";
+
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
@@ -16,27 +16,26 @@ import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     using Strings for uint256;
 
-    // Status of the token & token sale
+    // Status of the token sale
     enum SaleStatus {
         Paused,
         Presale,
         PublicSale,
         SoldOut
     }
-    
+
     event StatusUpdate(SaleStatus _status);
-    
+
     SaleStatus public status = SaleStatus.Paused;
     bytes32 public merkleRoot;
     string public baseTokenURI;
-    address private _crossmintAddress = 0xdAb1a1854214684acE522439684a145E62505233;
 
     uint64 public constant MAX_SUPPLY = 5000;
     uint64 public constant MAX_PER_USER = 5;
     uint128 public price;
 
     /**
-     * @dev it will not be ready to start sale upon deploy
+     * @dev Sale is paused by default upon deploy
      */
     constructor(
         string memory _name,
@@ -57,24 +56,25 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
     /*--------------------------------------------*/
 
     modifier verifyMaxPerUser(address to, uint256 _amountOfTokens) {
-        require(_mintedAmount[to] + _amountOfTokens <= MAX_PER_USER, "Already have Max");
+        require(_mintedAmount[to] + _amountOfTokens <= MAX_PER_USER, "Max amount minted");
         _;
     }
 
     modifier verifyMaxSupply(uint256 _amountOfTokens) {
-        require(_amountOfTokens + _totalMinted() <= MAX_SUPPLY, "Max minted tokens");
+        require(_amountOfTokens + _totalMinted() <= MAX_SUPPLY, "Collection sold out");
         _;
     }
 
     modifier isEnoughEth(uint256 _amountOfTokens) {
-        require(msg.value == _amountOfTokens * price, "Incorrect ETH value");
+        require(msg.value == _amountOfTokens * price, "Not enough ETH");
         _;
     }
 
     /*----------------------------------------------*/
     /*                  FUNCTIONS                  */
     /*--------------------------------------------*/
-    //public minting
+
+    // Public minting
     function mint(address to, uint256 _amountOfTokens)
         external
         payable
@@ -82,13 +82,13 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(status == SaleStatus.PublicSale, "Sale is not active");
+        require(status == SaleStatus.PublicSale, "Sale not active");
 
         _mintedAmount[to] += _amountOfTokens;
         _safeMint(to, _amountOfTokens);
     }
 
-    //presale minting
+    // Presale minting
     function presaleMint(uint256 _amountOfTokens, bytes32[] calldata _merkleProof)
         external
         payable
@@ -96,16 +96,16 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(status == SaleStatus.Presale, "Presale is not active");
+        require(status == SaleStatus.Presale, "Presale not active");
 
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
-        require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof!");
+        require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Not in presale list");
 
         _mintedAmount[msg.sender] += _amountOfTokens;
         _safeMint(msg.sender, _amountOfTokens);
     }
 
-    // batchMinting function allows the owner to mint maxReserved amount
+    // Batch minting allows the owner to mint for project's treasury
     function batchMinting(uint256 _amountOfTokens)
         external
         payable
@@ -117,7 +117,10 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         _safeMint(msg.sender, _amountOfTokens);
     }
 
-    /**************ADMIN BASE FUNCTIONS *************/
+    /*----------------------------------------------*/
+    /*            ADMIN BASE FUNCTIONS             */
+    /*--------------------------------------------*/
+
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;
     }
@@ -144,7 +147,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, PaymentSplitter {
         require(success);
     }
 
-    // // Allows us to recover ERC20 tokens sent to contract
+    // Allows us to recover any ERC20 tokens sent to the contract
     function withdrawTokens(IERC20 token) public onlyOwner {
         uint256 balance = token.balanceOf(address(this));
         token.transfer(msg.sender, balance);
