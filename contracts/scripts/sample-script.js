@@ -8,12 +8,11 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  //deploy escrow contract first
+  // deploy escrow contract first
   const Escrow = await hre.ethers.getContractFactory('Escrow');
-  const escrow = await Escrow.deploy(["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [20, 80]);
+  const escrow = await Escrow.deploy(["0x5c6B0f7Bf3E7ce046039Bd8FABdfD3f9F5021678", "0x14723A09ACff6D2A60DcdF7aA4AFf308FDDC160C"], [20, 80]);
 
   await escrow.deployed();
-  console.log('Escrow deployed to:', escrow.address);
 
   // We get the contract to deploy
   const name = 'Surge Women Passport';
@@ -28,7 +27,6 @@ async function main() {
 
   await surge.deployed();
   
-  console.log('Surge deployed to:', surge.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

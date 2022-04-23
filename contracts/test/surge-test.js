@@ -15,7 +15,7 @@ describe('Surge', function () {
   let name = 'Surge';
   let symbol = 'SRG';
   let uri = 'https://www.surgewomen.io/';
-  let multiSig = "0xD9A52b6506743cF5fAFf14C875cB443da9660e00";
+  let multiSig = "0x5c6B0f7Bf3E7ce046039Bd8FABdfD3f9F5021678";
   let royaltyAmount = 600; // Divided by 10000
   let MAX_PER_USER = 5;
   let MAX_SUPPLY = 5000;
@@ -29,14 +29,10 @@ describe('Surge', function () {
   };
 
   let whitelistAddresses = [
-    // Hardhat test addresses...
     "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
     "0x976EA74026E726554dB657fA54763abd0C3a0aa9",
     "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
     "0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f",
-    // my test addresses
-    "0xCdDB9663B53A9Fbe53f838339e8909441C0cd353",
-    "0x4Ea3674531C8Cf80C29fD590F1cd508d4CF8E2E9"
   ];
 
   beforeEach(async function () {

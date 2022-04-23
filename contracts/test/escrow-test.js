@@ -26,6 +26,7 @@ describe('Escrow', function () {
         it('Should set the correct payees', async function () {
           expect(await escrow.payee(1)).to.equal(payees[1]);
         });
+        
         it('Should set the correct shares', async function () {
           expect(await escrow.shares(payees[1])).to.equal(shares[1]);
         });
