@@ -211,42 +211,42 @@ describe('Surge', function () {
         5,
         merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
         {value: ethers.utils.parseEther(price.toString())},
-      )).to.be.revertedWith('Already have Max');
+      )).to.be.revertedWith('Max amount minted');
 
       // Sending an invalid mint amount
       await expect(surge.connect(addr1).presaleMint(
         1,
         merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
         {value: ethers.utils.parseEther((price + 1).toString())},
-      )).to.be.revertedWith('Incorrect ETH value');
+      )).to.be.revertedWith('Not enough ETH');
 
       // Sending insufficient funds
       await expect(surge.connect(addr1).presaleMint(
         1,
         merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
         {value: ethers.utils.parseEther((price + 1).toString())},
-      )).to.be.revertedWith('Incorrect ETH value');
+      )).to.be.revertedWith('Not enough ETH');
 
       // Pretending to be someone else
       await expect(surge.connect(addrs[9]).presaleMint(
         1,
         merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
         {value: ethers.utils.parseEther(price.toString())},
-      )).to.be.revertedWith('Invalid proof!');
+      )).to.be.revertedWith('Not in presale list');
 
       // Sending an invalid proof
       await expect(surge.connect(addrs[9]).presaleMint(
         1,
         merkleTree.getHexProof(keccak256(addrs[9].address)),
         {value: ethers.utils.parseEther(price.toString())},
-      )).to.be.revertedWith('Invalid proof!');
+      )).to.be.revertedWith('Not in presale list');
 
       // Sending no proof at all
       await expect(surge.connect(addr1).presaleMint(
         1,
         [],
         {value: ethers.utils.parseEther(price.toString())},
-      )).to.be.revertedWith('Invalid proof!');
+      )).to.be.revertedWith('Not in presale list');
 
       // Pause whitelist sale
       const pausePresaleTx = await surge.connect(owner).setStatus(SaleStatus.Paused);
@@ -302,7 +302,7 @@ describe('Surge', function () {
       await startSaleTx.wait();
       expect(await surge.status()).to.equal(SaleStatus.PublicSale);
 
-      expect(surge.connect(addr1).mint(addr1.address, amountOfTokens)).to.be.revertedWith('Incorrect ETH value');
+      expect(surge.connect(addr1).mint(addr1.address, amountOfTokens)).to.be.revertedWith('Not enough ETH');
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
@@ -403,7 +403,7 @@ describe('Surge', function () {
       const hexProof = merkleTree.getHexProof(keccak256(addr1.address));
 
       expect(surge.connect(addr1).presaleMint(1, hexProof, { value: ethers.utils.parseEther('0') })).to.be.revertedWith(
-        'Incorrect ETH value'
+        'Not enough ETH'
       );
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
@@ -483,7 +483,7 @@ describe('Surge', function () {
 
       const mintTx = await surge.connect(owner).batchMinting(amountOfTokens, {
         value: ethers.utils.parseEther(price.toString())});
-      await mintTx.wait();      
+      await mintTx.wait();
 
       expect(await surge.balanceOf(owner.address)).to.equal(amountOfTokens);
     });
