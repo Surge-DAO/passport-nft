@@ -2,11 +2,11 @@
 pragma solidity ^0.8.1;
 
 // @title: Surge Women NFT Collection
-// @website : https://www.surgewomen.io/
+// @website: https://www.surgewomen.io/
 
 // █▀ █░█ █▀█ █▀▀ █▀▀   █░█░█ █▀█ █▀▄▀█ █▀▀ █▄░█
 // ▄█ █▄█ █▀▄ █▄█ ██▄   ▀▄▀▄▀ █▄█ █░▀░█ ██▄ █░▀█
-import "hardhat/console.sol";
+
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
@@ -17,16 +17,16 @@ import "./ERC2981ContractWideRoyalties.sol";
 contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyalties {
     using Strings for uint256;
 
-    // Status of the token & token sale
+    // Status of the token sale
     enum SaleStatus {
         Paused,
         Presale,
         PublicSale,
         SoldOut
     }
-    
+
     event StatusUpdate(SaleStatus _status);
-    
+
     SaleStatus public status = SaleStatus.Paused;
     bytes32 public merkleRoot;
     string public baseTokenURI;
@@ -36,7 +36,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
     uint128 public price;
 
     /**
-     * @dev it will not be ready to start sale upon deploy
+     * @dev Sale is paused by default upon deploy
      */
     constructor(
         string memory _name,
@@ -59,23 +59,23 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
 
     /// @notice Verifies the amount of tokens the address has minted does not exceed MAX_PER_USER
     /// @param to Address to check the amount of tokens minted
-    /// @param _amountOfTokens Number of tokens to be minted
+    /// @param _amountOfTokens Amount of tokens to be minted
     modifier verifyMaxPerUser(address to, uint256 _amountOfTokens) {
-        require(_mintedAmount[to] + _amountOfTokens <= MAX_PER_USER, "Already have Max");
+        require(_mintedAmount[to] + _amountOfTokens <= MAX_PER_USER, "Max amount minted");
         _;
     }
 
-    /// @notice Verifies total number of minted tokens does not exceed MAX_SUPPLY
-    /// @param _amountOfTokens Number of tokens to be minted
+    /// @notice Verifies total amount of minted tokens does not exceed MAX_SUPPLY
+    /// @param _amountOfTokens Amount of tokens to be minted
     modifier verifyMaxSupply(uint256 _amountOfTokens) {
-        require(_amountOfTokens + _totalMinted() <= MAX_SUPPLY, "Max minted tokens");
+        require(_amountOfTokens + _totalMinted() <= MAX_SUPPLY, "Collection sold out");
         _;
     }
 
     /// @notice Verifies the address minting has enough ETH in their wallet to mint
-    /// @param _amountOfTokens Number of tokens to be minted
+    /// @param _amountOfTokens Amount of tokens to be minted
     modifier isEnoughEth(uint256 _amountOfTokens) {
-        require(msg.value == _amountOfTokens * price, "Incorrect ETH value");
+        require(msg.value == _amountOfTokens * price, "Not enough ETH");
         _;
     }
 
@@ -85,7 +85,7 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
 
     /// @notice Public sale minting
     /// @param to Address that will recieve minted token
-    /// @param _amountOfTokens Number of tokens to mint
+    /// @param _amountOfTokens Amount of tokens to mint
     function mint(address to, uint256 _amountOfTokens)
         external
         payable
@@ -93,14 +93,14 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(status == SaleStatus.PublicSale, "Sale is not active");
+        require(status == SaleStatus.PublicSale, "Sale not active");
 
         _mintedAmount[to] += _amountOfTokens;
         _safeMint(to, _amountOfTokens);
     }
 
     /// @notice Presale minting verifies callers address is in Merkle Root
-    /// @param _amountOfTokens Number of tokens to mint
+    /// @param _amountOfTokens Amount of tokens to mint
     /// @param _merkleProof Hash of the callers address used to verify the location of that address in the Merkle Root
     function presaleMint(uint256 _amountOfTokens, bytes32[] calldata _merkleProof)
         external
@@ -109,17 +109,17 @@ contract Surge is ERC721A, ReentrancyGuard, Ownable, ERC2981ContractWideRoyaltie
         verifyMaxSupply(_amountOfTokens)
         isEnoughEth(_amountOfTokens)
     {
-        require(status == SaleStatus.Presale, "Presale is not active");
+        require(status == SaleStatus.Presale, "Presale not active");
 
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
-        require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof!");
+        require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Not in presale list");
 
         _mintedAmount[msg.sender] += _amountOfTokens;
         _safeMint(msg.sender, _amountOfTokens);
     }
 
     /// @notice Allows the owner to mint for the organizations treasury
-    /// @param _amountOfTokens Number of tokens to mint
+    /// @param _amountOfTokens Amount of tokens to mint
     function batchMinting(uint256 _amountOfTokens)
         external
         payable
