@@ -24,5 +24,8 @@
     "solhint": "^3.3.6",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "hardhat-gas-reporter": "^1.0.8"
   }
 }
