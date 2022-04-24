@@ -9,7 +9,7 @@ export const roadMapItems: CardParams[] = [
     additionalSteps: [
       'We’ve created lots of <a href="https://www.surgewomen.io/learn-about-web3" style="color: #f86464; font-weight: 600;" target=”_blank”> educational content </a> for our community.',
       'We send out a <a href="https://newsletter.surgewomen.io/" style="color: #f86464; font-weight: 600;" target=”_blank”> weekly newsletter </a> with updates and educational insights.',
-      'We host a <a href="https://jobs.surgewomen.io/jobs" style="color: #f86464; font-weight: 600;" target=”_blank”> job board </a>connecting out female talent with top Web3 organizations.'
+      'We host a <a href="https://jobs.surgewomen.io/jobs" style="color: #f86464; font-weight: 600;" target=”_blank”> job board </a>connecting our female talent with top Web3 organizations.'
     ],
     active: true
   },
