@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify'
   },
   buttonContainer: {
-    marginTop: '12px',
+    marginTop: '6px',
     marginBottom: '12px'
   },
   link: {
@@ -58,7 +58,7 @@ export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Ele
               <div dangerouslySetInnerHTML={{__html: `${id + 1}. ${item.title}: ${item.description}`}} />
               {
                 <div className={css(styles.buttonContainer)}>
-                  <MainButton callToAction={item.buttonTitle} link={item.buttonURL} action={hide}/>
+                  <MainButton callToAction={item.buttonTitle} link={item.buttonURL} action={hide} customStyle={css(styles.buttonContainer)}/>
                 </div>
               }
             </div>
