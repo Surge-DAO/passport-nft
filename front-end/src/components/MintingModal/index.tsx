@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
-import { STRINGS } from '../../strings';
-import { Alert, Container, Col, Modal, Row } from 'react-bootstrap';
+import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui';
+import { Contract, ethers } from 'ethers';
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { Alert, Container, Col, Modal, Row, Spinner } from 'react-bootstrap';
+import { useWeb3React } from '@web3-react/core';
 import MainButton from '../MainButton';
 import Operator from '../Operator';
 import SquareButton from '../SquareButton';
-import { useWeb3React } from '@web3-react/core';
-import { ethers } from 'ethers';
+import { STRINGS } from '../../strings';
 import { abi, contractAddress } from '../../data/Contract';
-import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui';
 import themeVariables from '../../themeVariables.module.scss';
+import Allowlist from '../../lib/Allowlist';
 
 declare var window: any
 
@@ -51,29 +53,74 @@ const styles = StyleSheet.create({
     background: themeVariables.primaryColor,
     color: themeVariables.darkColor,
     ':hover': {
-      background: themeVariables.thirdColor,
+      background: themeVariables.lightColor,
       color: themeVariables.lightColor,
       fontWeight: 800
+    },
+    ':disabled': {
+      opacity: 0.65,
+      pointerEvents: 'none'
     }
   }
 })
 
-interface MintingParams {
+interface MintingModalParams {
   show: boolean;
   hide?: () => void;
 }
 
-export default function MintingModal(params: MintingParams): JSX.Element {
+interface MintingStatus {
+  wait: boolean;
+  message: string;
+}
+
+export default function MintingModal(params: MintingModalParams): JSX.Element {
   const { show, hide } = params;
 
-  const { active } = useWeb3React();
+  const { account, active } = useWeb3React();
+  const { ethereum } = window;
 
+  const initialMintStatus: MintingStatus = {
+    wait: false,
+    message: ''
+  };
+
+  const [signer, setSigner] = useState<JsonRpcSigner | undefined>(undefined);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [mintNumber, setMintNumber] = useState<number>(1);
-  const [mintingStatus, setMintingStatus] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
-  const [mintWait, setMintWait] = useState<boolean>(false);
   const [transactionHash, setTransactionHash] = useState<string>('');
+  const [mintStatus, setMintStatus] = useState<MintingStatus>(initialMintStatus);
+  const [saleStatus, setSaleStatus] = useState<number>(0);
+
+  useEffect(() => {
+    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
+    const signerReceived: JsonRpcSigner = provider.getSigner();
+
+    setSigner(signerReceived);
+  }, [ethereum]);
+
+  useEffect(() => {
+    getSaleStatus();
+  })
+
+  useEffect(() => {
+    if (signer) {
+      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
+      nftContract.on("StatusUpdate", (saleStatusUpdate) => {
+        setSaleStatus(saleStatusUpdate);
+      })
+    }
+  }, [signer]);
+
+  async function getSaleStatus() {
+    if (signer) {
+      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
+      const status = await nftContract.status();
+
+      setSaleStatus(status);
+    }
+  }
 
   function increaseMint() {
     return mintNumber <= 4 ? setMintNumber(mintNumber + 1) : null;
@@ -83,30 +130,55 @@ export default function MintingModal(params: MintingParams): JSX.Element {
     return mintNumber === 1 ? null : setMintNumber(mintNumber - 1);
   }
 
-  async function mintNFTHandler() {
-    const { ethereum } = window;
+  function mintHandler() {
+    if (saleStatus === 1) {
+      return presaleMintHandler();
+    } else if (saleStatus === 2) {
+      return publicSaleMintHandler();
+    } else if (saleStatus === 3) {
+      setError(true)
+      setMintStatus({ wait: true, message: STRINGS.soldOut });
+    }
+  }
 
+  async function presaleMintHandler() {
     if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
+      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
+      const price = await nftContract.price();
+
+      try {
+        setError(false);
+        setMintStatus({ wait: true, message: STRINGS.mintWait });
+        const merkleProof = Allowlist.getProofForAddress(account!);
+        const presaleMintTransaction = await nftContract.presaleMint(mintNumber, merkleProof, { value: price.mul(mintNumber) });
+        setTransactionHash(presaleMintTransaction.hash);
+        setShowAlert(true);
+        setMintStatus({ wait: false, message: STRINGS.mintWait });
+        await presaleMintTransaction.wait();
+        setMintStatus({ wait: true, message: `${STRINGS.mintSuccess} ${presaleMintTransaction.hash}` });
+      } catch (e: any) {
+        setMintStatus({ wait: false, message: e.error.message });
+        setError(true);
+        setShowAlert(true);
+      }
+    }
+  }
+
+  async function publicSaleMintHandler() {
+    if (ethereum) {
       const nftContract = new ethers.Contract(contractAddress, abi, signer);
       const price = await nftContract.price();
 
       try {
-        setMintWait(true);
-        const nftTransaction = await nftContract.mint(mintNumber, { value: price.mul(mintNumber) });
-        setError(false);
-        setMintingStatus(`Minting happening right now. Will let you know once the transaction goes through.`);
+        const nftTransaction = await nftContract.mint(account, mintNumber, { value: price.mul(mintNumber) });
+        setMintStatus({ wait: true, message: STRINGS.mintWait })
         setTransactionHash(nftTransaction.hash);
         setShowAlert(true);
         await nftTransaction.wait();
-        setMintWait(false);
-        setMintingStatus(`Minting successful! Transaction id: ${nftTransaction.hash}`);
+        setMintStatus({ wait: false, message: `${STRINGS.mintSuccess} ${nftTransaction.hash}` });
       } catch (e: any) {
-        setMintWait(true);
         setError(true);
-        setMintingStatus(e.error.message);
-        setMintWait(false);
+        setMintStatus({ wait: false, message: e.error.message });
         setShowAlert(true);
       }
     }
@@ -132,29 +204,14 @@ export default function MintingModal(params: MintingParams): JSX.Element {
           <SquareButton value={mintNumber} />
           <Operator text='+' action={increaseMint} />
         </div>
-        <Alert variant={error ? "danger" : "success"} show={showAlert} className={css(styles.alert)}>
-          <Alert.Heading>
-            {error ? STRINGS.whoops : STRINGS.mintingSuspense}
-          </Alert.Heading>
-          <hr />
-          <p className={`mb-0 ${css(styles.alertBodyP)}`}>
-            {mintingStatus}
-          </p>
-          {!error && (
-            <>
-              <br />
-              <Alert.Link href={`https://rinkeby.etherscan.io/tx/${transactionHash}`}>{STRINGS.findYourTxn}</Alert.Link>
-            </>
-          )}
-        </Alert>
         <Container>
           <Row>
             <Col>
-              {!active && <p className={css(styles.bottomPadding)}>{STRINGS.pleaseConnectWallet}</p>}
-              <MainButton disable={!active || mintWait} callToAction={STRINGS.ethMint} primary action={mintNFTHandler} />
+              <p className={css(styles.bottomPadding)}>{!active ? STRINGS.pleaseConnectWallet : STRINGS.mintETH}</p>
+              <MainButton disable={saleStatus === 0 || !active || mintStatus.wait} callToAction={STRINGS.ethMint} primary action={mintHandler} />
             </Col>
             <Col>
-              <p className={css(styles.bottomPadding)}>{STRINGS.crossmintDisclaimer}</p>
+              <p className={css(styles.bottomPadding)}>{saleStatus === 2 ? STRINGS.crossmintDisclaimer : STRINGS.publicSaleNotActive}</p>
               <CrossmintPayButton
                 collectionTitle="Surge Passport"
                 collectionDescription="Grants you access to web3 perks"
@@ -163,14 +220,30 @@ export default function MintingModal(params: MintingParams): JSX.Element {
                 mintConfig={{
                   price: "0.08",
                   type: "erc-721",
-                  amountOfTokens: mintNumber
+                  _amountOfTokens: mintNumber
                 }}
                 className={css(styles.crossMintBtn)}
+                disabled={saleStatus !== 2}
               />
             </Col>
           </Row>
         </Container>
         <br />
+        <Alert variant={error ? "danger" : "success"} show={showAlert} className={css(styles.alert)}>
+          <Alert.Heading>
+            {error ? STRINGS.whoops : STRINGS.mintingSuspense}
+          </Alert.Heading>
+          <hr />
+          <p className={`mb-0 ${css(styles.alertBodyP)}`}>
+            {mintStatus.message}
+          </p>
+          {!error && (
+            <>
+              <br />
+              <Alert.Link href={`https://rinkeby.etherscan.io/tx/${transactionHash}`}>{STRINGS.findYourTxn}</Alert.Link>
+            </>
+          )}
+        </Alert>
       </Modal.Body>
     </Modal>
   )

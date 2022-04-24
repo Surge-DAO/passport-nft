@@ -223,6 +223,19 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "enum Surge.SaleStatus",
+          "name": "_status",
+          "type": "uint8"
+        }
+      ],
+      "name": "StatusUpdate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": true,
           "internalType": "address",
           "name": "from",
@@ -278,19 +291,6 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "_amountOfTokens",
-          "type": "uint256"
-        }
-      ],
-      "name": "mint",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "address",
           "name": "to",
           "type": "address"
@@ -301,23 +301,9 @@
           "type": "uint256"
         }
       ],
-      "name": "mintTo",
+      "name": "mint",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "pausePresale",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "pauseSale",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -485,15 +471,14 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "startPresale",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "startSale",
+      "inputs": [
+        {
+          "internalType": "enum Surge.SaleStatus",
+          "name": "_status",
+          "type": "uint8"
+        }
+      ],
+      "name": "setStatus",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -535,30 +520,6 @@
       "type": "function"
     },
     {
-      "stateMutability": "payable",
-      "type": "receive"
-    },
-    {
-      "inputs": [],
-      "name": "withdrawAll",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "contract IERC20",
-          "name": "token",
-          "type": "address"
-        }
-      ],
-      "name": "withdrawTokens",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "string",
@@ -593,6 +554,30 @@
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "withdrawAll",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "withdrawTokens",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
     },
     {
       "inputs": [
@@ -774,19 +759,6 @@
     },
     {
       "inputs": [],
-      "name": "presaleIsActive",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "price",
       "outputs": [
         {
@@ -842,19 +814,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "saleIsActive",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "address",
@@ -868,6 +827,19 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "status",
+      "outputs": [
+        {
+          "internalType": "enum Surge.SaleStatus",
+          "name": "",
+          "type": "uint8"
         }
       ],
       "stateMutability": "view",
