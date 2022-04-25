@@ -40,12 +40,27 @@ export const Partners: PartnersParams[] = [
     logo: 'assets/images/partners/juno.png',
     link: 'https://www.yourjuno.co/',
     name: 'Juno'
-  }
-   // {
-  //   logo: 'assets/images/partners/herDao.jpeg',
-  //   link: 'https://www.herdrop.com/',
-  //   name: 'Her DAO'
-  // },
+  },
+   {
+    logo: 'assets/images/partners/HERDAO.jpeg',
+    link: 'https://www.herdrop.com/',
+    name: 'Her DAO'
+  },
+  {
+    logo: 'assets/images/partners/OpenSea.png',
+    link: 'https://opensea.io/',
+    name: 'OpenSea'
+  },
+  {
+    logo: 'assets/images/partners/nervos.png',
+    link: 'https://www.nervos.org/',
+    name: 'Nervos'
+  },
+  {
+    logo: 'assets/images/partners/AvaLabs.png',
+    link: 'https://www.avalabs.org/',
+    name: 'Ava Labs'
+  },
   // {
   //   logo: 'assets/images/partners/eve.jpeg',
   //   link: 'https://www.evewealth.com/',
