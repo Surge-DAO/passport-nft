@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 
 export default function MainButton(params: Params): JSX.Element {
   const { action, callToAction, customStyle, disable, fullWidth, primary, img, link } = params;
+
   const btnType = primary ? css(styles.primaryButton) : css(styles.secondaryButton);
   const width = fullWidth ? css(styles.fullWidth) : undefined;
 

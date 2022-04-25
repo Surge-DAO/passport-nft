@@ -43,17 +43,7 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
     try {
       const provider = new WalletConnectProvider({
         rpc: `https://rinkeby.infura.io/v3/${process.env.INFURA_PUBLIC_ID}`,
-        infuraId: process.env.INFURA_PUBLIC_ID,
-        qrcodeModalOptions: {
-          mobileLinks: [
-            "rainbow",
-            "metamask",
-            "argent",
-            "trust",
-            "imtoken",
-            "pillar"
-          ]
-        }
+        infuraId: process.env.INFURA_PUBLIC_ID
       });
 
       if (provider) activate(WalletConnect);
