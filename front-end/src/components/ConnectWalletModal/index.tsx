@@ -42,8 +42,8 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
   async function walletConnect() {
     try {
       const provider = new WalletConnectProvider({
-        rpc: `https://rinkeby.infura.io/v3/${process.env.INFURA_PUBLIC_ID}`,
-        infuraId: process.env.INFURA_PUBLIC_ID
+        rpc: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`,
+        infuraId: process.env.REACT_APP_INFURA_PUBLIC_ID
       });
 
       if (provider) activate(WalletConnect);
