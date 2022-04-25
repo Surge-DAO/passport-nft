@@ -55,12 +55,10 @@ export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Ele
         {whatIsMinting.map((item, id) => {
           return (
             <div key={id}>
-              <div dangerouslySetInnerHTML={{__html: `${id + 1}. ${item.title}: ${item.description}`}} />
-              {
-                <div className={css(styles.buttonContainer)}>
-                  <MainButton callToAction={item.buttonTitle} link={item.buttonURL} action={hide} customStyle={css(styles.buttonContainer)}/>
-                </div>
-              }
+              <div dangerouslySetInnerHTML={{ __html: `${id + 1}. ${item.title}: ${item.description}` }} />
+              <div className={css(styles.buttonContainer)}>
+                <MainButton callToAction={item.buttonTitle} link={item.buttonURL} action={hide} customStyle={css(styles.buttonContainer)}/>
+              </div>
             </div>
           );
         })}

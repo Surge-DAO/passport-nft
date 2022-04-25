@@ -12,6 +12,7 @@ import FAQBanner from './components/FAQBanner';
 import PerkBanner from './components/PerkBanner';
 import './App.scss';
 import CollapsableRoadmapBanner from './components/CollapsableRoadmapBanner';
+import MintForAFriendBanner from './components/MintForAFriendBanner';
 
 library.add(fab, faBars, faTimes);
 
@@ -19,6 +20,7 @@ function App() {
   return (
     <div className="App">
       <InitialBanner />
+      <MintForAFriendBanner />
       <PartnersBanner />
       <AboutCollectionBanner />
       <PerkBanner />
