@@ -4,7 +4,6 @@ coverage
 coverage.json
 typechain
 .vscode
-front-end/src/data/allowlists.json
 
 #Hardhat files
 cache

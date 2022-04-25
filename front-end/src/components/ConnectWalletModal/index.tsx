@@ -2,12 +2,13 @@ import { useWeb3React } from '@web3-react/core';
 import { StyleSheet, css } from 'aphrodite'
 import { Modal } from 'react-bootstrap';
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import { CoinbaseWallet, Injected, WalletConnect } from './Connectors';
+import MainButton from '../MainButton';
+import coinbaseLogo from '../../images/walletLogos/coinbase.png';
+import surgeLogo from '../../images/Logo.png';
 import metamaskLogo from '../../images/walletLogos/metamask.png';
 import walletConnectLogo from '../../images/walletLogos/walletConnect.png';
-import coinbaseLogo from '../../images/walletLogos/coinbase.png';
 import { STRINGS } from '../../strings';
-import MainButton from '../MainButton';
-import { CoinbaseWallet, Injected, WalletConnect } from './Connectors';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -22,6 +23,9 @@ const styles = StyleSheet.create({
   },
   boldFont: {
     fontWeight: 'bold'
+  },
+  createWalletBtn: {
+    fontWeight: 400
   }
 });
 
@@ -51,6 +55,7 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
           ]
         }
       });
+
       if (provider) activate(WalletConnect);
       await provider.enable();
     } catch (e: any) {
@@ -71,12 +76,12 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>
-        {account && <p className={css(styles.button)}><span className={css(styles.boldFont)}>Connected address:</span> {account}</p>}
-        {/* {window.ethereum?.networkVersion !== "1" && alert('You are in the wrong network. Please change into mainnet.')} */}
+        {account && <p className={css(styles.button)}><span className={css(styles.boldFont)}>{STRINGS.connectedAccount}</span> {account}</p>}
         <br />
         <MainButton action={() => {activate(Injected)}} callToAction="Metamask" img={metamaskLogo} customStyle={css(styles.button)} />
         <MainButton action={() => walletConnect()} callToAction="Wallet Connect" img={walletConnectLogo} customStyle={css(styles.button)} />
         <MainButton action={() => activate(CoinbaseWallet)} callToAction="Coinbase" img={coinbaseLogo} customStyle={css(styles.button)} />
+        <MainButton link="https://www.surgewomen.io/learn-about-web3/open-a-wallet-101-for-visual-learners" img={surgeLogo} callToAction={STRINGS.dontHaveAWallet} customStyle={`${css(styles.button)} ${css(styles.createWalletBtn)}`} />
         <br />
         {active && <MainButton primary action={deactivate} callToAction={STRINGS.logOut} />}
       </Modal.Body>

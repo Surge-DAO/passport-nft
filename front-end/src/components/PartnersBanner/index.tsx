@@ -3,6 +3,7 @@ import { StyleSheet, css } from 'aphrodite';
 import { Row, Col } from 'react-bootstrap';
 import themeVariables from '../../themeVariables.module.scss';
 import { Partners } from '../../data/PartnersItems';
+import { STRINGS } from '../../strings/index';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     marginTop: '20px',
     cursor: 'pointer',
     '@media (max-width: 768px)': {
-      padding: '0 20px'    
+      padding: '0 20px'
     }
   },
   imageContainer: {
@@ -32,9 +33,9 @@ const styles = StyleSheet.create({
 export default function PartnersBanner(): JSX.Element {
   return (
     <div>
-      <h2 className={css(styles.title)}>Our Partners </h2>
+      <h2 className={css(styles.title)}>{STRINGS.ourPartners}</h2>
         <div className={css(styles.container)}>
-          <Row xs={2} sm={2} md='auto' lg='auto' className='justify-content-md-center'>
+          <Row xs={2} sm={2} md="auto" lg="auto" className="justify-content-md-center">
             {Partners.map((partner, idx) => (
               <Col key={idx}>
                 <div className={css(styles.container)}>
@@ -45,6 +46,5 @@ export default function PartnersBanner(): JSX.Element {
         </Row>
       </div>
     </div>
-    
   );
 }

@@ -48,6 +48,10 @@ const styles = StyleSheet.create({
     ':hover': {
       color: themeVariables.primaryColor
     }
+  },
+  soldOutCaption: {
+    marginTop: '15px',
+    fontWeight: 400
   }
 });
 
@@ -97,21 +101,26 @@ export default function InitialComponent(): JSX.Element {
       <PassportBanner />
       <div className={css(styles.bannerFooter)}>
         {saleStatus === 3 &&
-          <MainButton callToAction={STRINGS.checkOutCollection} link={STRINGS.openSeaCollectionDomain} />
+          <MainButton primary callToAction={STRINGS.checkOutCollection} link={STRINGS.openSeaCollectionDomain} />
         }
         {[0, 1, 2].includes(saleStatus) &&
           <MainButton disable={!isMintOpen} callToAction={!isMintOpen ? STRINGS.presaleOpens : STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         }
         <MintingModal show={showModal} hide={() => setShowModal(false)} />
-        <div className={css(styles.mintingText)}>
-          <button className={css(styles.whatIsMintingModalButton)} onClick={() => setShowWhatIsMintingModal(!showWhatIsMintingModal)}>
-            {STRINGS.whatIs}
-            <span>
-              <strong> {STRINGS.minting}</strong>
-            </span>
-          </button>
-          <WhatIsMintingModal show={showWhatIsMintingModal} hide={() => setShowWhatIsMintingModal(false)}/>
-        </div>
+        {saleStatus === 3 &&
+          <p className={css(styles.soldOutCaption)} dangerouslySetInnerHTML={{ __html: STRINGS.soldOutCaption }} />
+        }
+        {saleStatus !== 3 && (
+          <div className={css(styles.mintingText)}>
+            <button className={css(styles.whatIsMintingModalButton)} onClick={() => setShowWhatIsMintingModal(!showWhatIsMintingModal)}>
+              {STRINGS.whatIs}
+              <span>
+                <strong> {STRINGS.minting}</strong>
+              </span>
+            </button>
+            <WhatIsMintingModal show={showWhatIsMintingModal} hide={() => setShowWhatIsMintingModal(false)}/>
+          </div>
+        )}
       </div>
     </div>
   );
