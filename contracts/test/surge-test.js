@@ -14,21 +14,25 @@ describe('Surge', function () {
   let addrs;
   let name = 'Surge';
   let symbol = 'SRG';
-  let uri = 'ipfs://QmWL5dFPbKTawmtuujgDr6X3vF2fne73Qf5P6FGgvFL9gZ/';
+  let uri = 'https://www.surgewomen.io/';
+  let multiSig = "0x5c6B0f7Bf3E7ce046039Bd8FABdfD3f9F5021678";
+  let royaltyAmount = 600; // Divided by 10000
   let MAX_PER_USER = 5;
   let MAX_SUPPLY = 5000;
-  let price = 50000000000000000n;
+  let price = 80000000000000000n;
   let decimals = 1000000000000000000;
+  const SaleStatus = {
+    Paused: 0,
+    Presale: 1,
+    PublicSale: 2,
+    SoldOut: 3
+  };
 
-  const whitelistAddresses = [
-    // Hardhat test addresses...
+  let whitelistAddresses = [
     "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
     "0x976EA74026E726554dB657fA54763abd0C3a0aa9",
     "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
     "0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f",
-    // my test addresses
-    "0xCdDB9663B53A9Fbe53f838339e8909441C0cd353",
-    "0x4Ea3674531C8Cf80C29fD590F1cd508d4CF8E2E9"
   ];
 
   beforeEach(async function () {
@@ -39,7 +43,7 @@ describe('Surge', function () {
     // To deploy our contract, we just have to call Token.deploy() and await
     // for it to be deployed(), which happens once its transaction has been
     // mined.
-    surge = await Surge.deploy(name, symbol, uri, price, ["0xD9A52b6506743cF5fAFf14C875cB443da9660e00", "0x187265c77d6df911036842f59382aD0589d1b336"], [2, 6]);
+    surge = await Surge.deploy(name, symbol, uri, price, multiSig, royaltyAmount);
     await surge.deployed();
   });
 
@@ -52,12 +56,9 @@ describe('Surge', function () {
       expect(await surge.MAX_PER_USER()).to.equal(MAX_PER_USER);
     });
 
-    it('Should set saleIsActive as false', async function () {
-      expect(await surge.saleIsActive()).to.equal(false);
-    });
-
-    it('Should set presaleIsActive as false', async function () {
-      expect(await surge.presaleIsActive()).to.equal(false);
+    it('Should set SaleStatus to Presale', async function () {
+      await surge.connect(owner).setStatus(SaleStatus.Presale);
+      expect(await surge.status()).to.equal(SaleStatus.Presale);
     });
 
     it('Should return the right MAX_SUPPLY', async function () {
@@ -102,153 +103,169 @@ describe('Surge', function () {
 
   describe('Start/Pause sale', function () {
     it('Should allow only owner to start sale', async function () {
-      const startSaleTx = await surge.connect(owner).startSale();
+      const startSaleTx = await surge.connect(owner).setStatus(SaleStatus.PublicSale);
       await startSaleTx.wait();
 
-      expect(await surge.saleIsActive()).to.equal(true);
+      expect(await surge.status()).to.equal(SaleStatus.PublicSale);
     });
 
     it('Should not allow any address to start sale', async function () {
-      expect(surge.connect(addr1).startSale()).to.be.revertedWith('Ownable: caller is not the owner');
+      expect(surge.connect(addr1).setStatus()).to.be.revertedWith('Ownable: caller is not the owner');
 
-      expect(await surge.saleIsActive()).to.equal(false);
-    });
-
-    describe('Withdraw ERC Tokens', function () {
-      it('Should not allow any address to withdraw ERC20 Tokens', async function () {
-        expect(surge.connect(addr1).withdrawTokens("0xdAC17F958D2ee523a2206206994597C13D831ec7")).to.be.revertedWith('Ownable: caller is not the owner');
-      });
-  
-      it('Should allow only owner to withdraw ERC20 tokens', async function () {
-        Token = await ethers.getContractFactory('ERC20TestToken');
-        token = await Token.deploy();
-        await token.deployed();
-        const withdrawTokensTx = await surge.connect(owner).withdrawTokens(token.address);
-        await withdrawTokensTx.wait();
-      });
+      expect(await surge.status()).to.equal(SaleStatus.Paused);
     });
 
     it('Should allow only owner to pause sale', async function () {
-      const startSaleTx = await surge.connect(owner).startSale();
-      await startSaleTx.wait();
+      const startPreSaleTx = await surge.connect(owner).setStatus(SaleStatus.PublicSale);
+      await startPreSaleTx.wait();
 
-      expect(await surge.saleIsActive()).to.equal(true);
+      expect(await surge.status()).to.equal(SaleStatus.PublicSale);
 
-      const pauseSaleTx = await surge.connect(owner).pauseSale();
+      const pauseSaleTx = await surge.connect(owner).setStatus(SaleStatus.Paused);
       await pauseSaleTx.wait();
 
-      expect(await surge.saleIsActive()).to.equal(false);
+      expect(await surge.status()).to.equal(SaleStatus.Paused);
     });
 
     it('Should not allow any address to pause sale', async function () {
-      expect(surge.connect(addr1).pauseSale()).to.be.revertedWith('Ownable: caller is not the owner');
+      expect(surge.connect(addr1).setStatus(SaleStatus.PublicSale)).to.be.revertedWith('Ownable: caller is not the owner');
 
-      expect(await surge.saleIsActive()).to.equal(false);
+      expect(await surge.status()).to.equal(SaleStatus.Paused);
+    });
+  });
+
+  describe('Withdraw ERC Tokens', function () {
+    it('Should not allow any address to withdraw ERC20 Tokens', async function () {
+      expect(surge.connect(addr1).withdrawTokens("0xdAC17F958D2ee523a2206206994597C13D831ec7")).to.be.revertedWith('Ownable: caller is not the owner');
+    });
+
+    it('Should allow only owner to withdraw ERC20 tokens', async function () {
+      Token = await ethers.getContractFactory('ERC20TestToken');
+      token = await Token.deploy();
+      await token.deployed();
+      const withdrawTokensTx = await surge.connect(owner).withdrawTokens(token.address);
+      await withdrawTokensTx.wait();
     });
   });
 
   describe('Start/Pause presale', function () {
     it('Should allow only owner to start presale', async function () {
-      const startPresaleTx = await surge.connect(owner).startPresale();
+      const startPresaleTx = await surge.connect(owner).setStatus(SaleStatus.Presale);
       await startPresaleTx.wait();
 
-      expect(await surge.presaleIsActive()).to.equal(true);
+      expect(await surge.status()).to.equal(SaleStatus.Presale);
     });
 
     it('Should not allow any address to start presale', async function () {
-      expect(surge.connect(addr1).startPresale()).to.be.revertedWith('Ownable: caller is not the owner');
+      expect(surge.connect(addr1).setStatus(SaleStatus.Presale)).to.be.revertedWith('Ownable: caller is not the owner');
 
-      expect(await surge.presaleIsActive()).to.equal(false);
+      expect(await surge.status()).to.equal(SaleStatus.Paused);
     });
 
     it('Should allow only owner to pause presale', async function () {
-      const startPresaleTx = await surge.connect(owner).startPresale();
+      const startPresaleTx = await surge.connect(owner).setStatus(SaleStatus.Presale);
       await startPresaleTx.wait();
 
-      expect(await surge.presaleIsActive()).to.equal(true);
+      expect(await surge.status()).to.equal(SaleStatus.Presale);
 
-      const pausePresaleTx = await surge.connect(owner).pausePresale();
+      const pausePresaleTx = await surge.connect(owner).setStatus(SaleStatus.Paused);
       await pausePresaleTx.wait();
 
-      expect(await surge.presaleIsActive()).to.equal(false);
+      expect(await surge.status()).to.equal(SaleStatus.Paused);
     });
 
     it('Should not allow any address to pause presale', async function () {
-      expect(surge.connect(addr1).pausePresale()).to.be.revertedWith('Ownable: caller is not the owner');
+      expect(surge.connect(addr1).setStatus(SaleStatus.Presale)).to.be.revertedWith('Ownable: caller is not the owner');
 
-      expect(await surge.presaleIsActive()).to.equal(false);
+      expect(await surge.status()).to.equal(SaleStatus.Paused);
     });
   });
-  // it('PreSaleMint sale', async function () {
-  //   // Build MerkleTree
-  //   const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
-  //   const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true });
-  //   const rootHash = merkleTree.getRoot();
-  //   // Update the root hash
-  //   await (await contract.setMerkleRoot('0x' + rootHash.toString('hex'))).wait();
 
-  //   await contract.startPresale();
+  describe('PreSaleMint sale', function () {
+    it('PreSaleMint sale', async function () {
+      let amountOfTokens = 1;
+      // Build MerkleTree
+      const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
+      const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
+      const rootHash = merkleTree.getRoot();
+      // Update the root hash
+      await (await surge.setMerkleRoot('0x' + rootHash.toString('hex'))).wait();
 
-  //   await contract.connect(whitelistedUser).presaleMint(
-  //     1,
-  //     merkleTree.getHexProof(keccak256(await whitelistedUser.getAddress())),
-  //     {value: getPrice(price, 1)},
-  //   );
-  //   // Trying to mint twice
-  //   await expect(contract.connect(whitelistedUser).whitelistMint(
-  //     1,
-  //     merkleTree.getHexProof(keccak256(await whitelistedUser.getAddress())),
-  //     {value: getPrice(price, 1)},
-  //   )).to.be.revertedWith('Address already claimed!');
-  //   // Sending an invalid mint amount
-  //   await expect(contract.connect(whitelistedUser).whitelistMint(
-  //     await (await contract.maxMintAmountPerTx()).add(1),
-  //     merkleTree.getHexProof(keccak256(await whitelistedUser.getAddress())),
-  //     {value: getPrice(price, await (await contract.maxMintAmountPerTx()).add(1).toNumber())},
-  //   )).to.be.revertedWith('Invalid mint amount!');
-  //   // Sending insufficient funds
-  //   await expect(contract.connect(whitelistedUser).whitelistMint(
-  //     1,
-  //     merkleTree.getHexProof(keccak256(await whitelistedUser.getAddress())),
-  //     {value: getPrice(price, 1).sub(1)},
-  //   )).to.be.rejectedWith(Error, 'insufficient funds for intrinsic transaction cost');
-  //   // Pretending to be someone else
-  //   await expect(contract.connect(holder).whitelistMint(
-  //     1,
-  //     merkleTree.getHexProof(keccak256(await whitelistedUser.getAddress())),
-  //     {value: getPrice(price, 1)},
-  //   )).to.be.revertedWith('Invalid proof!');
-  //   // Sending an invalid proof
-  //   await expect(contract.connect(holder).whitelistMint(
-  //     1,
-  //     merkleTree.getHexProof(keccak256(await holder.getAddress())),
-  //     {value: getPrice(price, 1)},
-  //   )).to.be.revertedWith('Invalid proof!');
-  //   // Sending no proof at all
-  //   await expect(contract.connect(holder).whitelistMint(
-  //     1,
-  //     [],
-  //     {value: getPrice(price, 1)},
-  //   )).to.be.revertedWith('Invalid proof!');
-    
-  //   // Pause whitelist sale
-  //   await contract.setWhitelistMintEnabled(false);
-  //   await contract.setCost(utils.parseEther(CollectionConfig.preSale.price.toString()));
+      const startPresaleTx = await surge.connect(owner).setStatus(SaleStatus.Presale);
+      await startPresaleTx.wait();
 
-  //   // Check balances
-  //   expect(await contract.balanceOf(await owner.getAddress())).to.equal(1);
-  //   expect(await contract.balanceOf(await whitelistedUser.getAddress())).to.equal(2);
-  //   expect(await contract.balanceOf(await holder.getAddress())).to.equal(0);
-  //   expect(await contract.balanceOf(await externalUser.getAddress())).to.equal(0);
-  // });
+      expect(await surge.status()).to.equal(SaleStatus.Presale);
+
+      let price = ((await surge.price()) * amountOfTokens) / decimals;
+
+      await surge.connect(addr1).presaleMint(
+        1,
+        merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
+        {value: ethers.utils.parseEther(price.toString())},
+      );
+
+      // Trying to mint twice
+      await expect(surge.connect(addr1).presaleMint(
+        5,
+        merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
+        {value: ethers.utils.parseEther(price.toString())},
+      )).to.be.revertedWith('Max amount minted');
+
+      // Sending an invalid mint amount
+      await expect(surge.connect(addr1).presaleMint(
+        1,
+        merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
+        {value: ethers.utils.parseEther((price + 1).toString())},
+      )).to.be.revertedWith('Not enough ETH');
+
+      // Sending insufficient funds
+      await expect(surge.connect(addr1).presaleMint(
+        1,
+        merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
+        {value: ethers.utils.parseEther((price + 1).toString())},
+      )).to.be.revertedWith('Not enough ETH');
+
+      // Pretending to be someone else
+      await expect(surge.connect(addrs[9]).presaleMint(
+        1,
+        merkleTree.getHexProof(keccak256(whitelistAddresses[0])),
+        {value: ethers.utils.parseEther(price.toString())},
+      )).to.be.revertedWith('Not in presale list');
+
+      // Sending an invalid proof
+      await expect(surge.connect(addrs[9]).presaleMint(
+        1,
+        merkleTree.getHexProof(keccak256(addrs[9].address)),
+        {value: ethers.utils.parseEther(price.toString())},
+      )).to.be.revertedWith('Not in presale list');
+
+      // Sending no proof at all
+      await expect(surge.connect(addr1).presaleMint(
+        1,
+        [],
+        {value: ethers.utils.parseEther(price.toString())},
+      )).to.be.revertedWith('Not in presale list');
+
+      // Pause whitelist sale
+      const pausePresaleTx = await surge.connect(owner).setStatus(SaleStatus.Paused);
+      await pausePresaleTx.wait();
+
+      expect(await surge.status()).to.equal(SaleStatus.Paused);
+
+      // Check balances
+      expect(await surge.balanceOf(owner.address)).to.equal(0);
+      expect(await surge.balanceOf(addr1.address)).to.equal(1);
+      expect(await surge.balanceOf(addrs[9].address)).to.equal(0);
+    });
+  });
 
   describe('Mint', function () {
     it('Should not allow to mint tokens is sale is not active', async function () {
       let amountOfTokens = 1;
 
-      expect(await surge.saleIsActive()).to.equal(false);
+      expect(await surge.status()).to.equal(SaleStatus.Paused);
 
-      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Sale is currently not active');
+      expect(surge.connect(addr1).mint(addr1.address, amountOfTokens)).to.be.revertedWith('Sale is currently not active');
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
@@ -256,21 +273,21 @@ describe('Surge', function () {
     it('Should not allow to mint more than 5 tokens per wallet', async function () {
       let amountOfTokens = MAX_PER_USER;
 
-      const startSaleTx = await surge.connect(owner).startSale();
+      const startSaleTx = await surge.connect(owner).setStatus(SaleStatus.PublicSale);
       await startSaleTx.wait();
-      expect(await surge.saleIsActive()).to.equal(true);
+      expect(await surge.status()).to.equal(SaleStatus.PublicSale);
 
       let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+      const mintTx = await surge.connect(addr1).mint(addr1.address, amountOfTokens, {
         value: ethers.utils.parseEther(price.toString())
       });
       await mintTx.wait();
 
       expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
 
-      expect(surge.connect(addr1).mint(1)).to.be.revertedWith(
-        'You already have maximum number of tokens allowed per wallet'
+      expect(surge.connect(addr1).mint(addr1.address, 1)).to.be.revertedWith(
+        'Already have Max'
       );
 
       expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
@@ -279,11 +296,11 @@ describe('Surge', function () {
     it('Should not allow to mint a token if user has not enough eth', async function () {
       let amountOfTokens = 1;
 
-      const startSaleTx = await surge.connect(owner).startSale();
+      const startSaleTx = await surge.connect(owner).setStatus(SaleStatus.PublicSale);
       await startSaleTx.wait();
-      expect(await surge.saleIsActive()).to.equal(true);
+      expect(await surge.status()).to.equal(SaleStatus.PublicSale);
 
-      expect(surge.connect(addr1).mint(amountOfTokens)).to.be.revertedWith('Incorrect ETH value');
+      expect(surge.connect(addr1).mint(addr1.address, amountOfTokens)).to.be.revertedWith('Not enough ETH');
 
       expect(await surge.balanceOf(addr1.address)).to.equal(0);
     });
@@ -291,13 +308,13 @@ describe('Surge', function () {
     it('Should not allow user to mint a token', async function () {
       let amountOfTokens = 1;
 
-      const startSaleTx = await surge.connect(owner).startSale();
+      const startSaleTx = await surge.connect(owner).setStatus(SaleStatus.PublicSale);
       await startSaleTx.wait();
-      expect(await surge.saleIsActive()).to.equal(true);
+      expect(await surge.status()).to.equal(SaleStatus.PublicSale);
 
       let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-      const mintTx = await surge.connect(addr1).mint(amountOfTokens, {
+      const mintTx = await surge.connect(addr1).mint(addr1.address, amountOfTokens, {
         value: ethers.utils.parseEther(price.toString())
       });
       await mintTx.wait();
@@ -317,125 +334,156 @@ describe('Surge', function () {
     });
   });
 
-  // describe('Presale Mint', function () {
-  //   it('Should not allow an address to presale mint tokens if presale is not active', async function () {
-  //     let amountOfTokens = 1;
+  describe('Presale Mint', function () {
+    it('Should not allow an address to presale mint tokens if presale is not active', async function () {
+      let amountOfTokens = 1;
 
-  //     const pausePresaleTx = await surge.connect(owner).pausePresale();
-  //     await pausePresaleTx.wait();
+      const pausePresaleTx = await surge.connect(owner).setStatus(SaleStatus.Paused);
+      await pausePresaleTx.wait();
 
-  //     expect(await surge.presaleIsActive()).to.equal(false);
+      expect(await surge.status()).to.equal(SaleStatus.Paused);
 
-  //     expect(surge.connect(addr1).presaleMint(amountOfTokens)).to.be.revertedWith('Presale is currently not active');
+      expect(surge.connect(addr1).presaleMint(amountOfTokens)).to.be.revertedWith('Presale is currently not active');
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(0);
-  //   });
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
 
-  //   it('Should not allow an address to presale mint more than 5 tokens per wallet', async function () {
-  //     let amountOfTokens = 5;
+    it('Should not allow an address to presale mint more than 5 tokens per wallet', async function () {
+      let amountOfTokens = 5;
 
-  //     const startPresaleTx = await surge.connect(owner).startPresale();
-  //     await startPresaleTx.wait();
+      const startPresaleTx = await surge.connect(owner).setStatus(SaleStatus.Presale);
+      await startPresaleTx.wait();
 
-  //     expect(await surge.presaleIsActive()).to.equal(true);
+      expect(await surge.status()).to.equal(SaleStatus.Presale);
 
-  //     const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
-  //     await addToPresaleTx.wait();
+      // Build MerkleTree
+      const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
+      const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
+      const rootHash = merkleTree.getRoot();
 
-  //     let price = ((await surge.price()) * amountOfTokens) / decimals;
+      // Update the root hash
+      await (await surge.setMerkleRoot('0x' + rootHash.toString('hex'))).wait();
 
-  //     const presaleMintTx = await surge.connect(addr1).presaleMint(amountOfTokens, {
-  //       value: ethers.utils.parseEther(price.toString())
-  //     });
-  //     await presaleMintTx.wait();
+      let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(5);
+      const hexProof = merkleTree.getHexProof(keccak256(addr1.address));
 
-  //     expect(surge.connect(addr1).presaleMint(1)).to.be.revertedWith(
-  //       'You already have maximum number of tokens allowed per wallet'
-  //     );
+      const presaleMintTx = await surge.connect(addr1).presaleMint(amountOfTokens, hexProof, {
+        value: ethers.utils.parseEther(price.toString())
+      });
+      await presaleMintTx.wait();
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(5);
-  //   });
+      expect(await surge.balanceOf(addr1.address)).to.equal(5);
 
-  //   it('Should not allow an address to presale mint tokens if not enough ETH', async function () {
-  //     let amountOfTokens = 1;
+      expect(surge.connect(addr1).presaleMint(1)).to.be.revertedWith(
+        'You already have maximum number of tokens allowed per wallet'
+      );
 
-  //     const startPresaleTx = await surge.connect(owner).startPresale();
-  //     await startPresaleTx.wait();
+      expect(await surge.balanceOf(addr1.address)).to.equal(5);
+    });
 
-  //     expect(await surge.presaleIsActive()).to.equal(true);
+    it('Should not allow an address to presale mint tokens if not enough ETH', async function () {
+      let amountOfTokens = 1;
 
-  //     const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
-  //     await addToPresaleTx.wait();
+      const startPresaleTx = await surge.connect(owner).setStatus(SaleStatus.Presale);
+      await startPresaleTx.wait();
 
-  //     expect(surge.connect(addr1).presaleMint(1, { value: ethers.utils.parseEther('0') })).to.be.revertedWith(
-  //       'Incorrect ETH value'
-  //     );
+      expect(await surge.status()).to.equal(SaleStatus.Presale);
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(0);
-  //   });
+      // Build MerkleTree
+      const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
+      const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
+      const rootHash = merkleTree.getRoot();
 
-  //   it('Should not allow an address to presale mint tokens if not presale approved', async function () {
-  //     let amountOfTokens = 1;
+      // Update the root hash
+      await (await surge.setMerkleRoot('0x' + rootHash.toString('hex'))).wait();
 
-  //     const startPresaleTx = await surge.connect(owner).startPresale();
-  //     await startPresaleTx.wait();
+      const hexProof = merkleTree.getHexProof(keccak256(addr1.address));
 
-  //     expect(await surge.presaleIsActive()).to.equal(true);
+      expect(surge.connect(addr1).presaleMint(1, hexProof, { value: ethers.utils.parseEther('0') })).to.be.revertedWith(
+        'Not enough ETH'
+      );
 
-  //     let price = ((await surge.price()) * amountOfTokens) / decimals;
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
 
-  //     expect(
-  //       surge.connect(addr1).presaleMint(1, { value: ethers.utils.parseEther(price.toString()) })
-  //     ).to.be.revertedWith('You are not in the pre-sale');
+    it('Should not allow an address to presale mint tokens if not presale approved', async function () {
+      let amountOfTokens = 1;
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(0);
-  //   });
+      const startPresaleTx = await surge.connect(owner).setStatus(SaleStatus.Presale);
+      await startPresaleTx.wait();
 
-  //   it('Should allow an address to presale mint a token if address is approved', async function () {
-  //     let amountOfTokens = 1;
+      expect(await surge.status()).to.equal(SaleStatus.Presale);
 
-  //     const startPresaleTx = await surge.connect(owner).startPresale();
-  //     await startPresaleTx.wait();
+      // Build MerkleTree
+      const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
+      const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
+      const rootHash = merkleTree.getRoot();
 
-  //     expect(await surge.presaleIsActive()).to.equal(true);
+      // Update the root hash
+      await (await surge.setMerkleRoot('0x' + rootHash.toString('hex'))).wait();
 
-  //     const addToPresaleTx = await surge.connect(owner).addToPresale(addr1.address);
-  //     await addToPresaleTx.wait();
+      let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-  //     let price = ((await surge.price()) * amountOfTokens) / decimals;
+      const hexProof = merkleTree.getHexProof(keccak256(addr1.address));
 
-  //     const presaleMintTx = await surge.connect(addr1).presaleMint(amountOfTokens, {
-  //       value: ethers.utils.parseEther(price.toString())
-  //     });
-  //     await presaleMintTx.wait();
+      expect(
+        surge.connect(addr1).presaleMint(1, hexProof, { value: ethers.utils.parseEther(price.toString()) })
+      ).to.be.revertedWith('You are not in the pre-sale');
 
-  //     expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
-  //   });
-  // });
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
+
+    it('Should allow an address to presale mint a token if address is approved', async function () {
+      let amountOfTokens = 1;
+
+      const startPresaleTx = await surge.connect(owner).setStatus(SaleStatus.Presale);
+      await startPresaleTx.wait();
+
+      expect(await surge.status()).to.equal(SaleStatus.Presale);
+
+      // Build MerkleTree
+      const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
+      const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true});
+      const rootHash = merkleTree.getRoot();
+
+      // Update the root hash
+      await (await surge.setMerkleRoot('0x' + rootHash.toString('hex'))).wait();
+
+      let price = ((await surge.price()) * amountOfTokens) / decimals;
+
+      const hexProof = merkleTree.getHexProof(keccak256(addr1.address));
+
+      const presaleMintTx = await surge.connect(addr1).presaleMint(amountOfTokens, hexProof, {
+        value: ethers.utils.parseEther(price.toString())
+      });
+      await presaleMintTx.wait();
+
+      expect(await surge.balanceOf(addr1.address)).to.equal(amountOfTokens);
+    });
+  });
 
   describe('Batch Mint', function () {
     //Figure out why it does not think batchMinting is a method
-    // it('Should not allow any address to batch mint tokens', async function () {
-    //   let amountOfTokens = 1;
-    //   let price = ((await surge.price()) * amountOfTokens) / decimals;
+    it('Should not allow any address to batch mint tokens', async function () {
+      let amountOfTokens = 1;
+      let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-    //   expect(surge.connect(addr1).batchMinting(amountOfTokens, {
-    //     value: ethers.utils.parseEther(price.toString())})).to.be.revertedWith('Ownable: caller is not the owner');
+      expect(surge.connect(addr1).batchMinting(amountOfTokens, {
+        value: ethers.utils.parseEther(price.toString())})).to.be.revertedWith('Ownable: caller is not the owner');
 
-    //   expect(await surge.balanceOf(addr1.address)).to.equal(0);
-    // });
+      expect(await surge.balanceOf(addr1.address)).to.equal(0);
+    });
 
-    // it('Should allow owner to batch mint tokens', async function () {
-    //   let amountOfTokens = 20;
-    //   let price = ((await surge.price()) * amountOfTokens) / decimals;
+    it('Should allow owner to batch mint tokens', async function () {
+      let amountOfTokens = 20;
+      let price = ((await surge.price()) * amountOfTokens) / decimals;
 
-    //   const mintTx = await surge.connect(owner).batchMinting(amountOfTokens, {
-    //     value: ethers.utils.parseEther(price.toString())});
-    //   await mintTx.wait();      
+      const mintTx = await surge.connect(owner).batchMinting(amountOfTokens, {
+        value: ethers.utils.parseEther(price.toString())});
+      await mintTx.wait();
 
-    //   expect(await surge.balanceOf(owner)).to.equal(amountOfTokens);
-    // });
+      expect(await surge.balanceOf(owner.address)).to.equal(amountOfTokens);
+    });
   });
 });
