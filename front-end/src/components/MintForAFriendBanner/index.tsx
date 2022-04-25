@@ -8,7 +8,7 @@ import MintingForAFriendModal from '../MintForAFriendModal';
 const styles = StyleSheet.create({
   friendMintBanner: {
     backgroundColor: themeVariables.secondaryColor,
-    padding: '2%',
+    padding: '50px',
     textAlign: 'left',
     display: 'flex',
     '@media (max-width: 768px)': {
@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     }
   },
   title: {
-    textAlign: 'left'
+    textAlign: 'left',
+    color: themeVariables.primaryColor
   },
   text: {
     flex: 1,

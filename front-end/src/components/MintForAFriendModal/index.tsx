@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import { Contract, ethers } from 'ethers';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
@@ -50,7 +50,14 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   errorText: {
-    color: themeVariables.primaryColor
+    color: themeVariables.primaryColor,
+    marginTop: '5px'
+  },
+  marginLeft: {
+    marginLeft: '10px',
+    '@media (max-width: 768px)': {
+      marginTop: '14px'
+    }
   }
 })
 
@@ -68,14 +75,12 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
   const { show, hide } = params;
 
   const { active } = useWeb3React();
-  const { ethereum } = window;
 
   const initialMintStatus: MintingStatus = {
     wait: false,
     message: ''
   };
 
-  const [signer, setSigner] = useState<JsonRpcSigner | undefined>(undefined);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [transactionHash, setTransactionHash] = useState<string>('');
@@ -84,20 +89,18 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
   const [friendAddress, setFriendAddress] = useState<string>('');
 
   useEffect(() => {
+    const { ethereum } = window;
+
     const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signerReceived: JsonRpcSigner = provider.getSigner();
+    const signer: JsonRpcSigner = provider.getSigner();
 
-    setSigner(signerReceived);
-  }, [ethereum]);
-
-  useEffect(() => {
     if (signer) {
       const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
       nftContract.on('StatusUpdate', (saleStatusUpdate) => {
         setSaleStatus(saleStatusUpdate);
       })
     }
-  }, [signer]);
+  }, []);
 
   async function switchNetwork() {
     await window.ethereum.request({
@@ -111,6 +114,11 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
   })
 
   async function getSaleStatus() {
+    const { ethereum } = window;
+
+    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
+    const signer: JsonRpcSigner = provider.getSigner();
+
     if (signer) {
       const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
       const status = await nftContract.status();
@@ -129,8 +137,14 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
   }
 
   async function publicSaleMintHandler() {
+    const { ethereum } = window;
+
     if (ethereum) {
       const { networkVersion } = ethereum;
+
+      const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
+      const signer: JsonRpcSigner = provider.getSigner();
+
       const nftContract = new ethers.Contract(contractAddress, abi, signer);
       const price = await nftContract.price();
 
@@ -178,6 +192,9 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
           <br />
           {saleStatus === 2 && !active && <p className={css(styles.font15)}>{STRINGS.connectWalletToMint}</p>}
           <MainButton disable={saleStatus !== 2 || !active || mintStatus.wait} callToAction={STRINGS.mint1NFT} primary action={mintHandler} />
+          {saleStatus !== 2 && (
+            <MainButton customStyle={css(styles.marginLeft)} callToAction="Remind me of public sale" link="https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform?edit2=2_ABaOnudgPdqoswMrXFA8sprW6TB_najCsj8Co2qCuDNUQ81Qj0Y6aOw-OICOWfSquQ" />
+          )}
         </Container>
         <Alert variant={error ? "danger" : "success"} show={showAlert} className={css(styles.alert)}>
           <Alert.Heading>

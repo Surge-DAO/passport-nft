@@ -84,15 +84,13 @@ interface MintingStatus {
 export default function MintingModal(params: MintingModalParams): JSX.Element {
   const { show, hide } = params;
 
-  const { account, active } = useWeb3React();
-  const { ethereum } = window;
-
   const initialMintStatus: MintingStatus = {
     wait: false,
     message: ''
   };
 
-  const [signer, setSigner] = useState<JsonRpcSigner | undefined>(undefined);
+  const { account, active } = useWeb3React();
+
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [mintNumber, setMintNumber] = useState<number>(1);
   const [error, setError] = useState<boolean>(false);
@@ -101,20 +99,23 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
   const [saleStatus, setSaleStatus] = useState<number>(0);
 
   useEffect(() => {
+    const { ethereum } = window;
+    ethereum && window.ethereum.enable();
+
     const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signerReceived: JsonRpcSigner = provider.getSigner();
+    const signer: JsonRpcSigner = provider.getSigner();
 
-    setSigner(signerReceived);
-  }, [ethereum]);
+    if (signer) {
+      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
+      nftContract.on('StatusUpdate', (saleStatusUpdate) => {
+        setSaleStatus(saleStatusUpdate);
+      })
+    }
+  }, []);
 
-    useEffect(() => {
-      if (signer) {
-        const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-        nftContract.on('StatusUpdate', (saleStatusUpdate) => {
-          setSaleStatus(saleStatusUpdate);
-        })
-      }
-    }, [signer]);
+  useEffect(() => {
+    getSaleStatus();
+  }, [])
 
   async function switchNetwork() {
     await window.ethereum.request({
@@ -123,16 +124,21 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
     })
   }
 
-  useEffect(() => {
-    getSaleStatus();
-  })
-
   async function getSaleStatus() {
+    const { ethereum } = window;
+    ethereum && window.ethereum.enable();
+
+    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
+    const signer: JsonRpcSigner = provider.getSigner();
+
     if (signer) {
       const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-      const status = await nftContract.status();
-
-      setSaleStatus(status);
+      try {
+        const status = await nftContract.status();
+        setSaleStatus(status);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -156,6 +162,12 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
   }
 
   async function presaleMintHandler() {
+    const { ethereum } = window;
+    ethereum && window.ethereum.enable();
+
+    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
+    const signer: JsonRpcSigner = provider.getSigner();
+
     if (ethereum) {
       const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
       const price = await nftContract.price();
@@ -179,6 +191,12 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
   }
 
   async function publicSaleMintHandler() {
+    const { ethereum } = window;
+    ethereum && window.ethereum.enable();
+
+    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
+    const signer: JsonRpcSigner = provider.getSigner();
+
     if (ethereum) {
       const { networkVersion } = ethereum;
       const nftContract = new ethers.Contract(contractAddress, abi, signer);

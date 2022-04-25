@@ -56,39 +56,43 @@ const styles = StyleSheet.create({
 });
 
 export default function InitialComponent(): JSX.Element {
-  const { ethereum } = window;
-
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState<boolean>(false);
   const [saleStatus, setSaleStatus] = useState<number>(0);
-  const [signer, setSigner] = useState<JsonRpcSigner>();
-
-  useEffect(() => {
-    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signerReceived: JsonRpcSigner = provider.getSigner();
-
-    setSigner(signerReceived);
-  }, [ethereum]);
 
   useEffect(() => {
     getSaleStatus();
   })
 
   useEffect(() => {
+    const { ethereum } = window;
+    ethereum && window.ethereum.enable();
+
+    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
+    const signer: JsonRpcSigner = provider.getSigner();
+
     if (signer) {
       const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-      nftContract.on("StatusUpdate", (saleStatusUpdate) => {
+      nftContract.on('StatusUpdate', (saleStatusUpdate) => {
         setSaleStatus(saleStatusUpdate);
       })
     }
-  }, [signer]);
+  });
 
   async function getSaleStatus() {
-    if (signer) {
-      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-      const status = await nftContract.status();
+    const { ethereum } = window;
+    ethereum && ethereum.enable();
+    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
+    const signer: JsonRpcSigner = provider.getSigner();
 
-      setSaleStatus(status);
+    if (ethereum && signer) {
+      try {
+        const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
+        const status = await nftContract.status();
+        setSaleStatus(status);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -115,7 +119,7 @@ export default function InitialComponent(): JSX.Element {
             <button className={css(styles.whatIsMintingModalButton)} onClick={() => setShowWhatIsMintingModal(!showWhatIsMintingModal)}>
               {STRINGS.whatIs}
               <span>
-                <strong> {STRINGS.minting}</strong>
+                <strong> {STRINGS.mint}</strong>
               </span>
             </button>
             <WhatIsMintingModal show={showWhatIsMintingModal} hide={() => setShowWhatIsMintingModal(false)}/>

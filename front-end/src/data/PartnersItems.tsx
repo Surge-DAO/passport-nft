@@ -42,7 +42,7 @@ export const Partners: PartnersParams[] = [
     name: 'Juno'
   },
    {
-    logo: 'assets/images/partners/HERDAO.jpeg',
+    logo: 'assets/images/partners/herDao.jpeg',
     link: 'https://www.herdrop.com/',
     name: 'Her DAO'
   },
