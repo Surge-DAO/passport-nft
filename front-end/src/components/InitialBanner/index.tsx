@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import { Contract, ethers } from 'ethers';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import MainButton from '../MainButton';
 import Navbar from '../Navbar';
 import MintingModal from '../MintingModal';
 import WhatIsMintingModal from '../WhatIsMintingModal';
 import PassportBanner from '../PassportBanner';
 import { STRINGS } from '../../strings';
-import { abi, contractAddress } from '../../data/Contract';
 import gradientBackground from '../../images/gradient-background.png';
 import themeVariables from '../../themeVariables.module.scss';
 
@@ -55,46 +53,16 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function InitialComponent(): JSX.Element {
+export interface Params {
+  provider: JsonRpcProvider | undefined;
+  saleStatus: number;
+}
+
+export default function InitialComponent(params: Params): JSX.Element {
+  const { provider, saleStatus } = params;
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState<boolean>(false);
-  const [saleStatus, setSaleStatus] = useState<number>(0);
-
-  useEffect(() => {
-    getSaleStatus();
-  })
-
-  useEffect(() => {
-    const { ethereum } = window;
-    ethereum && window.ethereum.enable();
-
-    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signer: JsonRpcSigner = provider.getSigner();
-
-    if (signer) {
-      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-      nftContract.on('StatusUpdate', (saleStatusUpdate) => {
-        setSaleStatus(saleStatusUpdate);
-      })
-    }
-  });
-
-  async function getSaleStatus() {
-    const { ethereum } = window;
-    ethereum && ethereum.enable();
-    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signer: JsonRpcSigner = provider.getSigner();
-
-    if (ethereum && signer) {
-      try {
-        const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-        const status = await nftContract.status();
-        setSaleStatus(status);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }
 
   const isMintOpen = saleStatus && [1, 2].includes(saleStatus);
 
@@ -110,7 +78,7 @@ export default function InitialComponent(): JSX.Element {
         {[0, 1, 2].includes(saleStatus) &&
           <MainButton disable={!isMintOpen} callToAction={!isMintOpen ? STRINGS.presaleOpens : STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         }
-        <MintingModal show={showModal} hide={() => setShowModal(false)} />
+        <MintingModal show={showModal} hide={() => setShowModal(false)} provider={provider} saleStatus={saleStatus} />
         {saleStatus === 3 &&
           <p className={css(styles.soldOutCaption)} dangerouslySetInnerHTML={{ __html: STRINGS.soldOutCaption }} />
         }

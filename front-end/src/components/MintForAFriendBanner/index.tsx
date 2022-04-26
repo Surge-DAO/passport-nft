@@ -4,6 +4,7 @@ import themeVariables from '../../themeVariables.module.scss';
 import { STRINGS } from '../../strings/index';
 import MainButton from '../MainButton';
 import MintingForAFriendModal from '../MintForAFriendModal';
+import { Params } from '../InitialBanner';
 
 const styles = StyleSheet.create({
   friendMintBanner: {
@@ -29,7 +30,9 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function MintForAFriendBanner(): JSX.Element {
+export default function MintForAFriendBanner(params: Params): JSX.Element {
+  const { provider, saleStatus } = params;
+
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
@@ -42,7 +45,7 @@ export default function MintForAFriendBanner(): JSX.Element {
       <div className={css(styles.btn)}>
         <MainButton fullWidth callToAction={STRINGS.giftPassport} action={() => setShowModal(true)} />
       </div>
-      <MintingForAFriendModal show={showModal} hide={() => setShowModal(false)} />
+      <MintingForAFriendModal show={showModal} hide={() => setShowModal(false)} provider={provider} saleStatus={saleStatus} />
     </div>
   );
 }

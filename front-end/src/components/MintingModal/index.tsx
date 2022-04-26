@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui';
 import { Contract, ethers } from 'ethers';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { Alert, Container, Col, Modal, Row } from 'react-bootstrap';
 import { useWeb3React } from '@web3-react/core';
 import MainButton from '../MainButton';
@@ -12,8 +12,6 @@ import { STRINGS } from '../../strings';
 import { abi, contractAddress } from '../../data/Contract';
 import themeVariables from '../../themeVariables.module.scss';
 import Allowlist from '../../lib/Allowlist';
-
-declare var window: any
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -74,6 +72,8 @@ const styles = StyleSheet.create({
 interface MintingModalParams {
   show: boolean;
   hide?: () => void;
+  provider: JsonRpcProvider | undefined;
+  saleStatus: number;
 }
 
 interface MintingStatus {
@@ -82,7 +82,7 @@ interface MintingStatus {
 }
 
 export default function MintingModal(params: MintingModalParams): JSX.Element {
-  const { show, hide } = params;
+  const { show, hide, provider, saleStatus } = params;
 
   const initialMintStatus: MintingStatus = {
     wait: false,
@@ -96,51 +96,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
   const [error, setError] = useState<boolean>(false);
   const [transactionHash, setTransactionHash] = useState<string>('');
   const [mintStatus, setMintStatus] = useState<MintingStatus>(initialMintStatus);
-  const [saleStatus, setSaleStatus] = useState<number>(0);
-
-  useEffect(() => {
-    const { ethereum } = window;
-    ethereum && window.ethereum.enable();
-
-    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signer: JsonRpcSigner = provider.getSigner();
-
-    if (signer) {
-      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-      nftContract.on('StatusUpdate', (saleStatusUpdate) => {
-        setSaleStatus(saleStatusUpdate);
-      })
-    }
-  }, []);
-
-  useEffect(() => {
-    getSaleStatus();
-  }, [])
-
-  async function switchNetwork() {
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: '0x1' }],
-    })
-  }
-
-  async function getSaleStatus() {
-    const { ethereum } = window;
-    ethereum && window.ethereum.enable();
-
-    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signer: JsonRpcSigner = provider.getSigner();
-
-    if (signer) {
-      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-      try {
-        const status = await nftContract.status();
-        setSaleStatus(status);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }
 
   function increaseMint() {
     return mintNumber <= 4 ? setMintNumber(mintNumber + 1) : null;
@@ -162,13 +117,9 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
   }
 
   async function presaleMintHandler() {
-    const { ethereum } = window;
-    ethereum && window.ethereum.enable();
+    const signer: JsonRpcSigner | undefined = provider && provider.getSigner();
 
-    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signer: JsonRpcSigner = provider.getSigner();
-
-    if (ethereum) {
+    if (signer) {
       const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
       const price = await nftContract.price();
 
@@ -191,19 +142,13 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
   }
 
   async function publicSaleMintHandler() {
-    const { ethereum } = window;
-    ethereum && window.ethereum.enable();
+    const signer: JsonRpcSigner | undefined = provider && provider.getSigner();
 
-    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signer: JsonRpcSigner = provider.getSigner();
-
-    if (ethereum) {
-      const { networkVersion } = ethereum;
+    if (signer) {
       const nftContract = new ethers.Contract(contractAddress, abi, signer);
       const price = await nftContract.price();
 
       try {
-        networkVersion !== 4 && switchNetwork();
         setError(false);
         const nftTransaction = await nftContract.mint(account, mintNumber, { value: price.mul(mintNumber) });
         setMintStatus({ wait: true, message: STRINGS.mintWait })

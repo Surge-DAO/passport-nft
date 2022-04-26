@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
-import { Contract, ethers } from 'ethers';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
+import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { Alert, Container, InputGroup, FormControl, Modal } from 'react-bootstrap';
 import { useWeb3React } from '@web3-react/core';
 import MainButton from '../MainButton';
@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
 interface MintingModalParams {
   show: boolean;
   hide?: () => void;
+  provider: JsonRpcProvider | undefined;
+  saleStatus: number;
 }
 
 interface MintingStatus {
@@ -72,7 +74,7 @@ interface MintingStatus {
 }
 
 export default function MintingForAFriendModal(params: MintingModalParams): JSX.Element {
-  const { show, hide } = params;
+  const { show, hide, provider, saleStatus } = params;
 
   const { active } = useWeb3React();
 
@@ -85,47 +87,7 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
   const [error, setError] = useState<boolean>(false);
   const [transactionHash, setTransactionHash] = useState<string>('');
   const [mintStatus, setMintStatus] = useState<MintingStatus>(initialMintStatus);
-  const [saleStatus, setSaleStatus] = useState<number>(0);
   const [friendAddress, setFriendAddress] = useState<string>('');
-
-  useEffect(() => {
-    const { ethereum } = window;
-
-    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signer: JsonRpcSigner = provider.getSigner();
-
-    if (signer) {
-      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-      nftContract.on('StatusUpdate', (saleStatusUpdate) => {
-        setSaleStatus(saleStatusUpdate);
-      })
-    }
-  }, []);
-
-  async function switchNetwork() {
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: '0x1' }],
-    })
-  }
-
-  useEffect(() => {
-    getSaleStatus();
-  })
-
-  async function getSaleStatus() {
-    const { ethereum } = window;
-
-    const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-    const signer: JsonRpcSigner = provider.getSigner();
-
-    if (signer) {
-      const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-      const status = await nftContract.status();
-
-      setSaleStatus(status);
-    }
-  }
 
   function mintHandler() {
     if (saleStatus === 2) {
@@ -140,16 +102,12 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
     const { ethereum } = window;
 
     if (ethereum) {
-      const { networkVersion } = ethereum;
-
-      const provider: Web3Provider = new ethers.providers.Web3Provider(ethereum);
-      const signer: JsonRpcSigner = provider.getSigner();
+      const signer: JsonRpcSigner | undefined = provider && provider.getSigner();
 
       const nftContract = new ethers.Contract(contractAddress, abi, signer);
       const price = await nftContract.price();
 
       try {
-        networkVersion !== 4 && switchNetwork();
         setError(false);
         const nftTransaction = await nftContract.mint(friendAddress, 1, { value: price.mul(1) });
         setMintStatus({ wait: true, message: STRINGS.mintWait })
