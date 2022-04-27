@@ -151,7 +151,7 @@ export default function MintingModal(params: MintingParams): JSX.Element {
           <Row>
             <Col>
               {!active && <p className={css(styles.bottomPadding)}>{STRINGS.pleaseConnectWallet}</p>}
-              <MainButton disable={!active || mintWait} callToAction={STRINGS.ethMint} primary action={mintNFTHandler} />
+              <MainButton disable callToAction={STRINGS.ethMint} primary action={mintNFTHandler} />
             </Col>
             <Col>
               <p className={css(styles.bottomPadding)}>{STRINGS.crossmintDisclaimer}</p>
