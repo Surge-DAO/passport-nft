@@ -52,9 +52,6 @@ const styles = StyleSheet.create({
      }
   },
   policy: {
-    marginLeft: '8px'
-  },
-  policyMain: {
     verticalAlign: 'middle',
     marginTop: '24px',
     padding: '24px',
@@ -80,10 +77,8 @@ export default function Footer(): JSX.Element {
         />
         <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
       </div>      
-      <div className={css(styles.policyMain)}>
-        <a href ={STRINGS.surgeURL} className={css(styles.policy)}>{STRINGS.terms}</a>
-        <a href ={STRINGS.surgeURL} className={css(styles.policy)}>{STRINGS.conditions}</a>
-        <a href ={STRINGS.surgeURL} className={css(styles.policy)}>{STRINGS.disclosures}</a>
+      <div className={css(styles.policy)}>
+        <a href ={STRINGS.termsUrl} target='_blank' rel='noreferrer'>{STRINGS.terms}</a>
       </div>
       <div className={css(styles.socials)}>
         {socialMedia.map((platform, idx) => {
