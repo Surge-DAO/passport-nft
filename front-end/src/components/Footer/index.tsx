@@ -46,7 +46,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: '24px'
-  }
+  },
+  policy: {
+    marginLeft: '8px'
+  },
+  policyMain: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: '24px',
+    marginTop: '18px',
+    '@media (max-width: 768px)': {
+      marginTop: '0'
+     }
+  },
 });
 
 export default function Footer(): JSX.Element {
@@ -62,6 +74,11 @@ export default function Footer(): JSX.Element {
           onClick={() => window.open(STRINGS.surgeURL)}
         />
         <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
+      </div>      
+      <div className={css(styles.policyMain)}>
+        <a href ={STRINGS.surgeURL} className={css(styles.policy)}>{STRINGS.terms}</a>
+        <a href ={STRINGS.surgeURL} className={css(styles.policy)}>{STRINGS.conditions}</a>
+        <a href ={STRINGS.surgeURL} className={css(styles.policy)}>{STRINGS.disclosures}</a>
       </div>
       <div className={css(styles.socials)}>
         {socialMedia.map((platform, idx) => {
