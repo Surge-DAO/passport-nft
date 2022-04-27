@@ -52,6 +52,9 @@ const styles = StyleSheet.create({
   soldOutCaption: {
     marginTop: '15px',
     fontWeight: 400
+  },
+  mint: {
+    marginLeft: '8px'
   }
 });
 
@@ -119,7 +122,7 @@ export default function InitialComponent(): JSX.Element {
             <button className={css(styles.whatIsMintingModalButton)} onClick={() => setShowWhatIsMintingModal(!showWhatIsMintingModal)}>
               {STRINGS.whatIs}
               <span>
-                <strong> {STRINGS.mint}</strong>
+                <strong className={css(styles.mint)}><u>{STRINGS.mint}</u> </strong>
               </span>
             </button>
             <WhatIsMintingModal show={showWhatIsMintingModal} hide={() => setShowWhatIsMintingModal(false)}/>
