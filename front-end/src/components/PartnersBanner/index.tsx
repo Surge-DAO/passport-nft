@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     marginTop: '20px',
     cursor: 'pointer',
     '@media (max-width: 768px)': {
-      padding: '0 20px'    
+      padding: '0 20px'
     }
   },
   imageContainer: {
