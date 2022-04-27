@@ -87,6 +87,11 @@ const styles = StyleSheet.create({
       marginTop: '12px'
     }
   },
+  navToggler: {
+    '@media (max-width: 575px)': {
+      border: 'none'
+    }
+  },
   containerOverride: {
     paddingRight: '40px',
     paddingLeft: '40px'
@@ -138,8 +143,11 @@ export default function NavBar(params: Params): JSX.Element {
             </Nav>
           </div>
         </Navbar.Collapse>
-        <Navbar.Toggle aria-controls="offcanvasNavbar">
-          <FontAwesomeIcon icon="bars"/>
+        <Navbar.Toggle aria-controls="offcanvasNavbar" className={css(styles.navToggler)}>
+          <div className={css(styles.connectBtn)}>
+            <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary customStyle={css(styles.smallbtn)} />
+            <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
+          </div>
         </Navbar.Toggle>
         <Navbar.Offcanvas
           id="offcanvasNavbar"
