@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import { JsonRpcProvider } from '@ethersproject/providers';
 import themeVariables from '../../themeVariables.module.scss';
 import { STRINGS } from '../../strings/index';
 import MainButton from '../MainButton';
@@ -31,13 +30,12 @@ const styles = StyleSheet.create({
 });
 
 export interface Params {
-  provider?: JsonRpcProvider;
   saleStatus: number;
   addresses: string[];
 }
 
 export default function MintForAFriendBanner(params: Params): JSX.Element {
-  const { addresses, provider, saleStatus } = params;
+  const { addresses, saleStatus } = params;
 
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -49,9 +47,9 @@ export default function MintForAFriendBanner(params: Params): JSX.Element {
         <p>{STRINGS.helpOnboard}</p>
       </div>
       <div className={css(styles.btn)}>
-        <MainButton fullWidth callToAction={STRINGS.giftPassport} action={() => setShowModal(true)} />
+        <MainButton disable={!addresses.length} fullWidth callToAction={STRINGS.giftPassport} action={() => setShowModal(true)} />
       </div>
-      <MintingForAFriendModal show={showModal} hide={() => setShowModal(false)} provider={provider} saleStatus={saleStatus} addresses={addresses} />
+      <MintingForAFriendModal show={showModal} hide={() => setShowModal(false)} saleStatus={saleStatus} addresses={addresses} />
     </div>
   );
 }

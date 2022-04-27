@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import MainButton from '../MainButton';
 import Navbar from '../Navbar';
 import MintingModal from '../MintingModal';
@@ -50,19 +49,20 @@ const styles = StyleSheet.create({
   soldOutCaption: {
     marginTop: '15px',
     fontWeight: 400
+  },
+  textUnderline: {
+    textDecoration: 'underline'
   }
 });
 
 interface Params {
   addresses: string[];
   saleStatus: number;
-  setAddresses: () => void;
-  signer?: JsonRpcSigner;
-  provider?: JsonRpcProvider;
+  setAddresses: (addresses: string[]) => any;
 }
 
 export default function InitialComponent(params: Params): JSX.Element {
-  const { addresses, provider, saleStatus, setAddresses, signer } = params;
+  const { addresses, saleStatus, setAddresses } = params;
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState<boolean>(false);
@@ -71,7 +71,7 @@ export default function InitialComponent(params: Params): JSX.Element {
 
   return (
     <div className={css(styles.banner)}>
-      <Navbar provider={provider} addresses={addresses} setAddresses={() => setAddresses} signer={signer} />
+      <Navbar addresses={addresses} setAddresses={setAddresses} />
       <h1 className={css(styles.title)}>{STRINGS.surgePassportNFT}</h1>
       <PassportBanner />
       <div className={css(styles.bannerFooter)}>
@@ -79,19 +79,18 @@ export default function InitialComponent(params: Params): JSX.Element {
           <MainButton primary callToAction={STRINGS.checkOutCollection} link={STRINGS.openSeaCollectionDomain} />
         }
         {[0, 1, 2].includes(saleStatus) &&
-          <MainButton disable={!isMintOpen} callToAction={!isMintOpen ? STRINGS.presaleOpens : STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
+          <MainButton disable={!isMintOpen || !addresses.length} callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         }
-        <MintingModal show={showModal} hide={() => setShowModal(false)} provider={provider} saleStatus={saleStatus} address={addresses} signer={signer} />
+        <MintingModal show={showModal} hide={() => setShowModal(false)} saleStatus={saleStatus} address={addresses} />
         {saleStatus === 3 &&
           <p className={css(styles.soldOutCaption)} dangerouslySetInnerHTML={{ __html: STRINGS.soldOutCaption }} />
         }
         {saleStatus !== 3 && (
           <div className={css(styles.mintingText)}>
+            {STRINGS.wait}
             <button className={css(styles.whatIsMintingModalButton)} onClick={() => setShowWhatIsMintingModal(!showWhatIsMintingModal)}>
-              {STRINGS.whatIs}
-              <span>
-                <strong> {STRINGS.mint}</strong>
-              </span>
+              {STRINGS.howDoI}
+              <span className={css(styles.textUnderline)}><strong>{STRINGS.mint}</strong></span>
             </button>
             <WhatIsMintingModal show={showWhatIsMintingModal} hide={() => setShowWhatIsMintingModal(false)}/>
           </div>

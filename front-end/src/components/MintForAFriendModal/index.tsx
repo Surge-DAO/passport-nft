@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
-import { ethers } from 'ethers';
-import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { Alert, Container, InputGroup, FormControl, Modal } from 'react-bootstrap';
 import MainButton from '../MainButton';
 import { STRINGS } from '../../strings';
-import { abi, contractAddress } from '../../data/Contract';
 import themeVariables from '../../themeVariables.module.scss';
+import { errorHandler } from '../../utils/helpers';
+
+declare let window: any;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -63,7 +63,6 @@ interface MintingModalParams {
   hide?: () => void;
   saleStatus: number;
   show: boolean;
-  provider: JsonRpcProvider | undefined;
 }
 
 interface MintingStatus {
@@ -72,7 +71,7 @@ interface MintingStatus {
 }
 
 export default function MintingForAFriendModal(params: MintingModalParams): JSX.Element {
-  const { addresses, show, hide, provider, saleStatus } = params;
+  const { addresses, show, hide, saleStatus } = params;
 
   const initialMintStatus: MintingStatus = {
     wait: false,
@@ -96,14 +95,11 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
 
   async function publicSaleMintHandler() {
     if (!!addresses.length) {
-      const signer: JsonRpcSigner | undefined = provider && provider.getSigner();
-
-      const nftContract = new ethers.Contract(contractAddress, abi, signer);
-      const price = await nftContract.price();
+      const price = await window.contract.price();
 
       try {
         setError(false);
-        const nftTransaction = await nftContract.mint(friendAddress, 1, { value: price.mul(1) });
+        const nftTransaction = await window.contract.mint(friendAddress, 1, { value: price.mul(1) });
         setMintStatus({ wait: true, message: STRINGS.mintWait })
         setTransactionHash(nftTransaction.hash);
         setShowAlert(true);
@@ -111,7 +107,7 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
         setMintStatus({ wait: false, message: `${STRINGS.mintSuccess} ${nftTransaction.hash}` });
       } catch (e: any) {
         setError(true);
-        setMintStatus({ wait: false, message: STRINGS.errorBadAddress });
+        setMintStatus({ wait: false, message: errorHandler(e) });
         setShowAlert(true);
       }
     }

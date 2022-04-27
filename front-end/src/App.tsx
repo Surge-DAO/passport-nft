@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Contract, ethers } from 'ethers';
-import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
 import { abi, contractAddress } from './data/Contract';
 import AboutCollectionBanner from './components/AboutCollectionBanner';
 import AboutSurgeBanner from './components/AboutSurgeBanner';
@@ -17,48 +16,62 @@ import CollapsableRoadmapBanner from './components/CollapsableRoadmapBanner';
 import MintForAFriendBanner from './components/MintForAFriendBanner';
 import './App.scss';
 
+declare let window: any;
+
 library.add(fab, faBars, faTimes);
 
 function App() {
   const [saleStatus, setSaleStatus] = useState<number>(0);
   const [addresses, setAddresses] = useState<string[]>([]);
-  const [provider, setProvider] = useState<JsonRpcProvider>();
-  const [signer, setSigner] = useState<JsonRpcSigner>();
-  const [wallet, setWallet] = useState<string>('');
 
-  const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
-  setProvider(ethersProvider);
+  useEffect(() => {
+    if (window.ethereum) {
+      instantiateEthereum();
+      getStatusUpdate();
+    }
+    addWalletListener();
+  }, []);
 
-  const providerSigner = provider?.getSigner();
-  setSigner(providerSigner);
+  useEffect(() => {
+    if (!!addresses.length) {
+      getSaleStatus();
+    }
+  }, [addresses])
 
   function addWalletListener() {
     if (window.ethereum) {
-      window.ethereum.on("accountsChanged", (accounts: any) => {
-        if (accounts.length > 0) {
-          setWallet(accounts[0]);
+      window.ethereum.on('accountsChanged', (accounts: any) => {
+        if (!!accounts.length) {
+          setAddresses(accounts);
         } else {
-          setWallet("");
+          setAddresses([]);
         }
       })
     }
   }
 
-  useEffect(() => {
-    addWalletListener();
-    // getSaleStatus();
-  }, []);
+  function instantiateEthereum() {
+    window.ethers = ethers;
+    window.provider = new ethers.providers.Web3Provider(window.ethereum);
+    window.signer = window.provider?.getSigner();
+    window.contract = new ethers.Contract(contractAddress, abi, window.signer);
+  }
 
   async function getSaleStatus() {
-    const contract = new ethers.Contract(contractAddress, abi, provider);
-    const status: number = await contract?.status();
+    const status: number = await window.contract.status();
     setSaleStatus(status);
+  }
+
+  function getStatusUpdate() {
+    window.contract.on('StatusUpdate', (saleStatusUpdate: number) => {
+      setSaleStatus(saleStatusUpdate);
+    })
   }
 
   return (
     <div className="App">
-      <InitialBanner addresses={addresses} provider={provider} saleStatus={saleStatus} setAddresses={() => setAddresses} signer={signer} />
-      <MintForAFriendBanner provider={provider} saleStatus={saleStatus} addresses={addresses} />
+      <InitialBanner addresses={addresses} saleStatus={saleStatus} setAddresses={setAddresses} />
+      <MintForAFriendBanner saleStatus={saleStatus} addresses={addresses} />
       <PartnersBanner />
       <AboutCollectionBanner />
       <PerkBanner />

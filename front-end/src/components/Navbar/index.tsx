@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { STRINGS } from '../../strings';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
@@ -96,13 +95,11 @@ const styles = StyleSheet.create({
 
 interface Params {
   addresses: string[];
-  provider?: JsonRpcProvider;
-  setAddresses: () => void;
-  signer?: JsonRpcSigner;
+  setAddresses: (addresses: string[]) => any;
 }
 
 export default function NavBar(params: Params): JSX.Element {
-  const { addresses, setAddresses, signer, provider } = params;
+  const { addresses, setAddresses } = params;
 
   const [showConnectWalletModal, setShowConnectWalletModal] = useState<boolean>(false);
   const [callToAction, setCallToAction] = useState<string>(STRINGS.connectWallet.toUpperCase());
@@ -136,7 +133,7 @@ export default function NavBar(params: Params): JSX.Element {
               </div>
               <div className={css(styles.connectBtn)}>
                 <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary customStyle={css(styles.smallbtn)} />
-                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={() => setAddresses} provider={provider} signer={signer} />
+                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
               </div>
             </Nav>
           </div>
@@ -169,7 +166,7 @@ export default function NavBar(params: Params): JSX.Element {
               <SocialMediaIcons />
               <div className={css(styles.connectBtn)}>
                 <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary />
-                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={() => setAddresses} provider={provider} />
+                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
               </div>
             </div>
           </Offcanvas.Body>

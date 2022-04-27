@@ -2,9 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import { StyleSheet, css } from 'aphrodite'
 import { Alert, Modal } from 'react-bootstrap';
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { ethers } from 'ethers';
-import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
-import { CoinbaseWallet, Injected, WalletConnect } from './Connectors';
+import { CoinbaseWallet, WalletConnect } from './Connectors';
 import MainButton from '../MainButton';
 import coinbaseLogo from '../../images/walletLogos/coinbase.png';
 import surgeLogo from '../../images/Logo.png';
@@ -13,13 +11,16 @@ import walletConnectLogo from '../../images/walletLogos/walletConnect.png';
 import { STRINGS } from '../../strings';
 import { useState } from 'react';
 
+declare let window: any;
+
 const styles = StyleSheet.create({
   wrapper: {
     display: 'flex',
     flexDirection: 'column'
   },
   button: {
-    marginBottom: '10px'
+    marginBottom: '10px',
+    maxWidth: '100%'
   },
   bottomMargin: {
     marginBottom: '30px'
@@ -36,13 +37,11 @@ interface Params {
   addresses: string[];
   show: boolean;
   onHide: () => void;
-  setAddresses: (addresses: string[]) => void;
-  signer?: JsonRpcSigner;
-  provider?: JsonRpcProvider;
+  setAddresses: (addresses: string[]) => any;
 }
 
 export default function ConnectWalletModal(params: Params): JSX.Element {
-  const { addresses, show, onHide, setAddresses, provider, signer } = params;
+  const { addresses, show, onHide, setAddresses } = params;
 
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
@@ -68,12 +67,15 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
     if (isSafari) {
       setShowAlert(true);
     } else {
-        activate(Injected);
-        await provider?.send("eth_requestAccounts", []);
-        const signer = provider?.getSigner();
-        const address = await signer?.getAddress();
-        setAddresses([address || '']);
+      await window.provider?.send('eth_requestAccounts', []);
+      const address = await window.signer?.getAddress();
+      setAddresses([address]);
     }
+  }
+
+  function logOut() {
+    deactivate();
+    setAddresses([]);
   }
 
   return (
@@ -89,23 +91,27 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>
-        {!!addresses.length && <p className={css(styles.button)}><span className={css(styles.boldFont)}>{STRINGS.connectedAccount}</span> {addresses[0]}</p>}
+        {!!addresses.length && (
+          <p className={css(styles.button)}><span className={css(styles.boldFont)}>{STRINGS.connectedAccount} </span>
+            {addresses[0]}
+          </p>
+        )}
         <br />
         <Alert variant="danger" show={showAlert}>
           <Alert.Heading>
-            {STRINGS.safari}
+            {STRINGS.browser}
           </Alert.Heading>
           <hr />
           <p className="mb-0">
-            {STRINGS.safariNotSupported}
-          </p>
+            {STRINGS.browserNotSupported}
+        </p>
         </Alert>
         <MainButton action={() => metamaskConnect()} callToAction="Metamask" img={metamaskLogo} customStyle={css(styles.button)} />
         <MainButton action={() => walletConnect()} callToAction="Wallet Connect" img={walletConnectLogo} customStyle={css(styles.button)} />
         <MainButton action={() => activate(CoinbaseWallet)} callToAction="Coinbase" img={coinbaseLogo} customStyle={css(styles.button)} />
         <MainButton link="https://www.surgewomen.io/learn-about-web3/open-a-wallet-101-for-visual-learners" img={surgeLogo} callToAction={STRINGS.dontHaveAWallet} customStyle={`${css(styles.button)} ${css(styles.createWalletBtn)}`} />
         <br />
-        {!!addresses.length && <MainButton primary action={deactivate} callToAction={STRINGS.logOut} />}
+        {!!addresses.length && <MainButton primary action={logOut} callToAction={STRINGS.logOut} />}
       </Modal.Body>
     </Modal>
   )
