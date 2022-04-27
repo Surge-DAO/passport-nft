@@ -4,3 +4,7 @@ services:
     build: .
     ports:
       - 3000:3000
+    environment:
+      REACT_APP_INFURA_PUBLIC_ID: "04309b888ef74a748b5b333202789a73"
+      REACT_APP_INFURA_SECRET_KEY: "eece17fbf257485c8fa9e9e1175bea43"
+      REACT_APP_CROSSMINT_CLIENT_ID: "83b8ac08-313a-4615-8700-e8ec4658dc39"

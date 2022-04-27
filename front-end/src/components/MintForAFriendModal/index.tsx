@@ -3,13 +3,10 @@ import { StyleSheet, css } from 'aphrodite'
 import { ethers } from 'ethers';
 import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { Alert, Container, InputGroup, FormControl, Modal } from 'react-bootstrap';
-import { useWeb3React } from '@web3-react/core';
 import MainButton from '../MainButton';
 import { STRINGS } from '../../strings';
 import { abi, contractAddress } from '../../data/Contract';
 import themeVariables from '../../themeVariables.module.scss';
-
-declare var window: any
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -62,10 +59,11 @@ const styles = StyleSheet.create({
 })
 
 interface MintingModalParams {
-  show: boolean;
+  addresses: string[];
   hide?: () => void;
-  provider: JsonRpcProvider | undefined;
   saleStatus: number;
+  show: boolean;
+  provider: JsonRpcProvider | undefined;
 }
 
 interface MintingStatus {
@@ -74,9 +72,7 @@ interface MintingStatus {
 }
 
 export default function MintingForAFriendModal(params: MintingModalParams): JSX.Element {
-  const { show, hide, provider, saleStatus } = params;
-
-  const { active } = useWeb3React();
+  const { addresses, show, hide, provider, saleStatus } = params;
 
   const initialMintStatus: MintingStatus = {
     wait: false,
@@ -99,9 +95,7 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
   }
 
   async function publicSaleMintHandler() {
-    const { ethereum } = window;
-
-    if (ethereum) {
+    if (!!addresses.length) {
       const signer: JsonRpcSigner | undefined = provider && provider.getSigner();
 
       const nftContract = new ethers.Contract(contractAddress, abi, signer);
@@ -148,8 +142,8 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
           </InputGroup>
           {[0, 1].includes(saleStatus) && <p className={css(styles.errorText)}>{STRINGS.onlyAvailablePublicSale}</p>}
           <br />
-          {saleStatus === 2 && !active && <p className={css(styles.font15)}>{STRINGS.connectWalletToMint}</p>}
-          <MainButton disable={saleStatus !== 2 || !active || mintStatus.wait} callToAction={STRINGS.mint1NFT} primary action={mintHandler} />
+          {saleStatus === 2 && !addresses.length && <p className={css(styles.font15)}>{STRINGS.connectWalletToMint}</p>}
+          <MainButton disable={saleStatus !== 2 || !addresses.length || mintStatus.wait} callToAction={STRINGS.mint1NFT} primary action={mintHandler} />
           {saleStatus !== 2 && (
             <MainButton customStyle={css(styles.marginLeft)} callToAction="Remind me of public sale" link="https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform?edit2=2_ABaOnudgPdqoswMrXFA8sprW6TB_najCsj8Co2qCuDNUQ81Qj0Y6aOw-OICOWfSquQ" />
           )}

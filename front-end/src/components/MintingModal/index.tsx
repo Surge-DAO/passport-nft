@@ -4,7 +4,6 @@ import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui';
 import { Contract, ethers } from 'ethers';
 import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { Alert, Container, Col, Modal, Row } from 'react-bootstrap';
-import { useWeb3React } from '@web3-react/core';
 import MainButton from '../MainButton';
 import Operator from '../Operator';
 import SquareButton from '../SquareButton';
@@ -70,9 +69,10 @@ const styles = StyleSheet.create({
 })
 
 interface MintingModalParams {
+  address: string[];
   show: boolean;
   hide?: () => void;
-  provider: JsonRpcProvider | undefined;
+  provider?: JsonRpcProvider;
   saleStatus: number;
 }
 
@@ -82,14 +82,12 @@ interface MintingStatus {
 }
 
 export default function MintingModal(params: MintingModalParams): JSX.Element {
-  const { show, hide, provider, saleStatus } = params;
+  const { address, show, hide, provider, saleStatus } = params;
 
   const initialMintStatus: MintingStatus = {
     wait: false,
     message: ''
   };
-
-  const { account, active } = useWeb3React();
 
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [mintNumber, setMintNumber] = useState<number>(1);
@@ -107,9 +105,19 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
 
   function mintHandler() {
     if (saleStatus === 1) {
-      return presaleMintHandler();
+      try {
+        presaleMintHandler();
+      } catch (e) {
+        setError(true);
+        setMintStatus({ wait: false, message: 'Presale is not open.' });
+      }
     } else if (saleStatus === 2) {
-      return publicSaleMintHandler();
+      try {
+        return publicSaleMintHandler();
+      } catch (e) {
+        setError(true);
+        setMintStatus({ wait: false, message: 'Public sale is not open.' });
+      }
     } else if (saleStatus === 3) {
       setError(true)
       setMintStatus({ wait: true, message: STRINGS.soldOut });
@@ -121,12 +129,12 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
 
     if (signer) {
       const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
-      const price = await nftContract.price();
+      const price = nftContract && await nftContract.price();
 
       try {
         setError(false);
         setMintStatus({ wait: true, message: STRINGS.mintWait });
-        const merkleProof = Allowlist.getProofForAddress(account!);
+        const merkleProof = Allowlist.getProofForAddress(address[0]);
         const presaleMintTransaction = await nftContract.presaleMint(mintNumber, merkleProof, { value: price.mul(mintNumber) });
         setTransactionHash(presaleMintTransaction.hash);
         setShowAlert(true);
@@ -143,6 +151,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
 
   async function publicSaleMintHandler() {
     const signer: JsonRpcSigner | undefined = provider && provider.getSigner();
+    provider && signer?.connect(provider);
 
     if (signer) {
       const nftContract = new ethers.Contract(contractAddress, abi, signer);
@@ -150,7 +159,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
 
       try {
         setError(false);
-        const nftTransaction = await nftContract.mint(account, mintNumber, { value: price.mul(mintNumber) });
+        const nftTransaction = await nftContract.mint(address[0], mintNumber, { value: price.mul(mintNumber) });
         setMintStatus({ wait: true, message: STRINGS.mintWait })
         setTransactionHash(nftTransaction.hash);
         setShowAlert(true);
@@ -158,7 +167,8 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
         setMintStatus({ wait: false, message: `${STRINGS.mintSuccess} ${nftTransaction.hash}` });
       } catch (e: any) {
         setError(true);
-        setMintStatus({ wait: false, message: e.error.message });
+        console.log(e);
+        setMintStatus({ wait: false, message: e });
         setShowAlert(true);
       }
     }
@@ -188,8 +198,8 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
         <Container>
           <Row>
             <Col>
-              <p className={css(styles.bottomPadding)}>{!active ? STRINGS.pleaseConnectWallet : STRINGS.mintETH}</p>
-              <MainButton disable={saleStatus === 0 || !active || mintStatus.wait} callToAction={`Mint ${mintNumber} NFT${mintNumber > 1 ? 's' : ''} with ETH`} primary action={mintHandler} />
+              <p className={css(styles.bottomPadding)}>{!!address.length ? STRINGS.pleaseConnectWallet : STRINGS.mintETH}</p>
+              <MainButton disable={saleStatus === 0 || !address.length || mintStatus.wait} callToAction={`Mint ${mintNumber} NFT${mintNumber > 1 ? 's' : ''} with ETH`} primary action={mintHandler} />
             </Col>
             <Col>
               <p className={css(styles.bottomPadding)}>{saleStatus === 2 ? STRINGS.crossmintDisclaimer : STRINGS.publicSaleNotActive}</p>

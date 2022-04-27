@@ -53,13 +53,15 @@ const styles = StyleSheet.create({
   }
 });
 
-export interface Params {
-  provider: JsonRpcProvider | undefined;
+interface Params {
+  addresses: string[];
   saleStatus: number;
+  setAddresses: () => void;
+  provider?: JsonRpcProvider;
 }
 
 export default function InitialComponent(params: Params): JSX.Element {
-  const { provider, saleStatus } = params;
+  const { addresses, provider, saleStatus, setAddresses } = params;
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState<boolean>(false);
@@ -68,7 +70,7 @@ export default function InitialComponent(params: Params): JSX.Element {
 
   return (
     <div className={css(styles.banner)}>
-      <Navbar />
+      <Navbar provider={provider} addresses={addresses} setAddresses={() => setAddresses} />
       <h1 className={css(styles.title)}>{STRINGS.surgePassportNFT}</h1>
       <PassportBanner />
       <div className={css(styles.bannerFooter)}>
@@ -78,7 +80,7 @@ export default function InitialComponent(params: Params): JSX.Element {
         {[0, 1, 2].includes(saleStatus) &&
           <MainButton disable={!isMintOpen} callToAction={!isMintOpen ? STRINGS.presaleOpens : STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         }
-        <MintingModal show={showModal} hide={() => setShowModal(false)} provider={provider} saleStatus={saleStatus} />
+        <MintingModal show={showModal} hide={() => setShowModal(false)} provider={provider} saleStatus={saleStatus} address={addresses} />
         {saleStatus === 3 &&
           <p className={css(styles.soldOutCaption)} dangerouslySetInnerHTML={{ __html: STRINGS.soldOutCaption }} />
         }

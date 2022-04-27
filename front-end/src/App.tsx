@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Contract, ethers } from 'ethers';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import { abi, contractAddress } from './data/Contract';
 import AboutCollectionBanner from './components/AboutCollectionBanner';
 import AboutSurgeBanner from './components/AboutSurgeBanner';
@@ -18,35 +19,41 @@ import MintForAFriendBanner from './components/MintForAFriendBanner';
 
 library.add(fab, faBars, faTimes);
 
+export const AddressContext = React.createContext(['']);
+
 function App() {
-  let provider: any;
-  let contract: Contract;
-
   const [saleStatus, setSaleStatus] = useState<number>(0);
+  const [contract, setContract] = useState<Contract>();
+  const [provider, setProvider] = useState<JsonRpcProvider>();
+  const [addresses, setAddresses] = useState<string[]>([]);
 
-  try {
-    provider = new ethers.providers.JsonRpcProvider(`https://rinkeby.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`);
-    contract = new ethers.Contract(contractAddress, abi, provider);
+  useEffect(() => {
+    getProvider();
 
-    if (contract) {
-      contract && getSaleStatus(contract);
-      contract && contract.once('StatusUpdate', (saleStatusUpdate, event) => {
-        setSaleStatus(saleStatusUpdate);
-      })
+    try {
+      const nftContract: Contract = new ethers.Contract(contractAddress, abi, provider);
+      setContract(contract);
+      getSaleStatus(nftContract);
+    } catch (e) {
+      console.error(e);
     }
-  } catch (e) {
-    console.error(e);
+  }, [provider, contract]);
+
+  async function getProvider() {
+    let provider;
+    await window.ethereum.enable().then(provider = new ethers.providers.Web3Provider(window.ethereum));
+    setProvider(provider);
   }
 
-  async function getSaleStatus(contract: Contract) {
-    const status = await contract.status();
+  async function getSaleStatus(contract?: Contract) {
+    const status: number = contract && await contract.status();
     setSaleStatus(status);
   }
 
   return (
     <div className="App">
-      <InitialBanner provider={provider} saleStatus={saleStatus} />
-      <MintForAFriendBanner provider={provider} saleStatus={saleStatus} />
+      <InitialBanner addresses={addresses} provider={provider} saleStatus={saleStatus} setAddresses={() => setAddresses} />
+      <MintForAFriendBanner provider={provider} saleStatus={saleStatus} addresses={addresses} />
       <PartnersBanner />
       <AboutCollectionBanner />
       <PerkBanner />

@@ -1,14 +1,16 @@
 import { useWeb3React } from '@web3-react/core';
 import { StyleSheet, css } from 'aphrodite'
-import { Modal } from 'react-bootstrap';
+import { Alert, Modal } from 'react-bootstrap';
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { CoinbaseWallet, Injected, WalletConnect } from './Connectors';
+import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
+import { CoinbaseWallet, WalletConnect } from './Connectors';
 import MainButton from '../MainButton';
 import coinbaseLogo from '../../images/walletLogos/coinbase.png';
 import surgeLogo from '../../images/Logo.png';
 import metamaskLogo from '../../images/walletLogos/metamask.png';
 import walletConnectLogo from '../../images/walletLogos/walletConnect.png';
 import { STRINGS } from '../../strings';
+import { useState } from 'react';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -30,19 +32,26 @@ const styles = StyleSheet.create({
 });
 
 interface Params {
+  addresses: string[];
   show: boolean;
   onHide: () => void;
-  setWalletStatus?: (c: string) => void;
+  setAddresses: (addresses: string[]) => void;
+  provider?: JsonRpcProvider;
 }
 
 export default function ConnectWalletModal(params: Params): JSX.Element {
-  const { show, onHide } = params;
-  const { active, account, activate, deactivate } = useWeb3React();
+  const { addresses, show, onHide, setAddresses, provider } = params;
+
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+
+  const { activate, deactivate } = useWeb3React();
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   async function walletConnect() {
     try {
       const provider = new WalletConnectProvider({
-        rpc: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`,
+        rpc: `https://rinkeby.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`,
         infuraId: process.env.REACT_APP_INFURA_PUBLIC_ID
       });
 
@@ -50,6 +59,18 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
       await provider.enable();
     } catch (e: any) {
       console.error(STRINGS.walletNotConnected, e);
+    }
+  }
+
+  async function metamaskConnect() {
+    if (isSafari) {
+      setShowAlert(true);
+    } else {
+      if (provider) {
+        const signer: JsonRpcSigner = provider.getSigner();
+        const signedAddress: string = await signer.getAddress();
+        setAddresses([signedAddress]);
+      }
     }
   }
 
@@ -66,14 +87,23 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>
-        {account && <p className={css(styles.button)}><span className={css(styles.boldFont)}>{STRINGS.connectedAccount}</span> {account}</p>}
+        {!!addresses.length && <p className={css(styles.button)}><span className={css(styles.boldFont)}>{STRINGS.connectedAccount}</span> {addresses[0]}</p>}
         <br />
-        <MainButton action={() => {activate(Injected)}} callToAction="Metamask" img={metamaskLogo} customStyle={css(styles.button)} />
+        <Alert variant="danger" show={showAlert}>
+          <Alert.Heading>
+            {STRINGS.safari}
+          </Alert.Heading>
+          <hr />
+          <p className="mb-0">
+            {STRINGS.safariNotSupported}
+          </p>
+        </Alert>
+        <MainButton action={() => metamaskConnect()} callToAction="Metamask" img={metamaskLogo} customStyle={css(styles.button)} />
         <MainButton action={() => walletConnect()} callToAction="Wallet Connect" img={walletConnectLogo} customStyle={css(styles.button)} />
         <MainButton action={() => activate(CoinbaseWallet)} callToAction="Coinbase" img={coinbaseLogo} customStyle={css(styles.button)} />
         <MainButton link="https://www.surgewomen.io/learn-about-web3/open-a-wallet-101-for-visual-learners" img={surgeLogo} callToAction={STRINGS.dontHaveAWallet} customStyle={`${css(styles.button)} ${css(styles.createWalletBtn)}`} />
         <br />
-        {active && <MainButton primary action={deactivate} callToAction={STRINGS.logOut} />}
+        {!!addresses.length && <MainButton primary action={deactivate} callToAction={STRINGS.logOut} />}
       </Modal.Body>
     </Modal>
   )
