@@ -29,7 +29,14 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function MintForAFriendBanner(): JSX.Element {
+export interface Params {
+  saleStatus: number;
+  addresses: string[];
+}
+
+export default function MintForAFriendBanner(params: Params): JSX.Element {
+  const { addresses, saleStatus } = params;
+
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
@@ -40,9 +47,9 @@ export default function MintForAFriendBanner(): JSX.Element {
         <p>{STRINGS.helpOnboard}</p>
       </div>
       <div className={css(styles.btn)}>
-        <MainButton fullWidth callToAction={STRINGS.giftPassport} action={() => setShowModal(true)} />
+        <MainButton disable={!addresses.length} fullWidth callToAction={STRINGS.giftPassport} action={() => setShowModal(true)} />
       </div>
-      <MintingForAFriendModal show={showModal} hide={() => setShowModal(false)} />
+      <MintingForAFriendModal show={showModal} hide={() => setShowModal(false)} saleStatus={saleStatus} addresses={addresses} />
     </div>
   );
 }

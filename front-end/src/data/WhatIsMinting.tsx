@@ -34,7 +34,7 @@ export interface WhatIsMinting {
       title: '<span style="font-weight: bold;">More help?</span>',
       description: 'Need more detailed pointers? We got you!',
       buttonTitle: 'What is minting article',
-      buttonURL: 'https://surgewomen.io'
+      buttonURL: 'https://surgewomen.iohttps://www.surgewomen.io/learn-about-web3/how-to-mint-the-surge-passport-nft'
     },
     {
       title: '<span style="font-weight: bold;">Still Can’t Mint?</span>',

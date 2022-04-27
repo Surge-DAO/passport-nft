@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { STRINGS } from '../../strings';
 import { StyleSheet, css } from 'aphrodite';
@@ -94,15 +93,20 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function NavBar(): JSX.Element {
-  const [showConnectWalletModal, setShowConnectWalletModal] = useState<boolean>(false);
-  const [walletStatus, setWalletStatus] = useState<string>(STRINGS.connectWallet.toUpperCase());
+interface Params {
+  addresses: string[];
+  setAddresses: (addresses: string[]) => any;
+}
 
-  const { account } = useWeb3React();
+export default function NavBar(params: Params): JSX.Element {
+  const { addresses, setAddresses } = params;
+
+  const [showConnectWalletModal, setShowConnectWalletModal] = useState<boolean>(false);
+  const [callToAction, setCallToAction] = useState<string>(STRINGS.connectWallet.toUpperCase());
 
   useEffect(() => {
-    account ? setWalletStatus(`Connected ${account.substring(0, 10)}..`) : setWalletStatus(walletStatus);
-  }, [account, walletStatus])
+    addresses[0] ? setCallToAction(`Connected ${addresses[0].substring(0, 10)}..`) : setCallToAction('Connect Wallet');
+  }, [addresses])
 
   return (
     <Navbar bg="transparent" expand="sm" collapseOnSelect>
@@ -128,8 +132,8 @@ export default function NavBar(): JSX.Element {
                 <SocialMediaIcons />
               </div>
               <div className={css(styles.connectBtn)}>
-                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary customStyle={css(styles.smallbtn)} />
-                <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
+                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary customStyle={css(styles.smallbtn)} />
+                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
               </div>
             </Nav>
           </div>
@@ -141,7 +145,7 @@ export default function NavBar(): JSX.Element {
           id="offcanvasNavbar"
           aria-labelledby="offcanvasNavbarLabel"
           placement="end"
-          className={`${css(styles.navMobile)}`}
+          className={css(styles.navMobile)}
         >
           <Offcanvas.Header closeButton className={css(styles.closeBtn)}>
             <Offcanvas.Title id="offcanvasNavbarLabel"></Offcanvas.Title>
@@ -161,8 +165,8 @@ export default function NavBar(): JSX.Element {
             <div className={css(styles.paddingTop30)}>
               <SocialMediaIcons />
               <div className={css(styles.connectBtn)}>
-                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary />
-                <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
+                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary />
+                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
               </div>
             </div>
           </Offcanvas.Body>
