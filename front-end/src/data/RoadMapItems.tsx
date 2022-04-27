@@ -44,7 +44,7 @@ export const roadMapItems: CardParams[] = [
     title: 'Partnerships Kick-off',
     stepNo: 5,
     description:
-      'Immediately after minting, token-holders can start to claim their perks. We have set up a Perks Dashboard where users redeem perks and make the most out of their Passport!',
+      'Immediately after minting, token-holders can start to claim their perks. We have set up a <a href="https://perks.surgewomen.io/" style="color: #f86464; font-weight: 600;" target=”_blank”> Perks Dashboard </a> where users redeem perks and make the most out of their Passport!',
     additionalSteps: [],
     active: false
   },
