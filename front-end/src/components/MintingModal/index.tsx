@@ -74,6 +74,7 @@ interface MintingModalParams {
   hide?: () => void;
   provider?: JsonRpcProvider;
   saleStatus: number;
+  signer?: JsonRpcSigner;
 }
 
 interface MintingStatus {
@@ -82,7 +83,7 @@ interface MintingStatus {
 }
 
 export default function MintingModal(params: MintingModalParams): JSX.Element {
-  const { address, show, hide, provider, saleStatus } = params;
+  const { address, show, hide, saleStatus, signer } = params;
 
   const initialMintStatus: MintingStatus = {
     wait: false,
@@ -125,8 +126,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
   }
 
   async function presaleMintHandler() {
-    const signer: JsonRpcSigner | undefined = provider && provider.getSigner();
-
     if (signer) {
       const nftContract: Contract = new ethers.Contract(contractAddress, abi, signer);
       const price = nftContract && await nftContract.price();
@@ -150,9 +149,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
   }
 
   async function publicSaleMintHandler() {
-    const signer: JsonRpcSigner | undefined = provider && provider.getSigner();
-    provider && signer?.connect(provider);
-
     if (signer) {
       const nftContract = new ethers.Contract(contractAddress, abi, signer);
       const price = await nftContract.price();

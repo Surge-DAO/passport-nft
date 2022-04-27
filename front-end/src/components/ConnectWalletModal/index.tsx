@@ -2,8 +2,9 @@ import { useWeb3React } from '@web3-react/core';
 import { StyleSheet, css } from 'aphrodite'
 import { Alert, Modal } from 'react-bootstrap';
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import { ethers } from 'ethers';
 import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
-import { CoinbaseWallet, WalletConnect } from './Connectors';
+import { CoinbaseWallet, Injected, WalletConnect } from './Connectors';
 import MainButton from '../MainButton';
 import coinbaseLogo from '../../images/walletLogos/coinbase.png';
 import surgeLogo from '../../images/Logo.png';
@@ -36,11 +37,12 @@ interface Params {
   show: boolean;
   onHide: () => void;
   setAddresses: (addresses: string[]) => void;
+  signer?: JsonRpcSigner;
   provider?: JsonRpcProvider;
 }
 
 export default function ConnectWalletModal(params: Params): JSX.Element {
-  const { addresses, show, onHide, setAddresses, provider } = params;
+  const { addresses, show, onHide, setAddresses, provider, signer } = params;
 
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
@@ -66,11 +68,11 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
     if (isSafari) {
       setShowAlert(true);
     } else {
-      if (provider) {
-        const signer: JsonRpcSigner = provider.getSigner();
-        const signedAddress: string = await signer.getAddress();
-        setAddresses([signedAddress]);
-      }
+        activate(Injected);
+        await provider?.send("eth_requestAccounts", []);
+        const signer = provider?.getSigner();
+        const address = await signer?.getAddress();
+        setAddresses([address || '']);
     }
   }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { JsonRpcProvider } from '@ethersproject/providers';
+import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { STRINGS } from '../../strings';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
@@ -98,10 +98,11 @@ interface Params {
   addresses: string[];
   provider?: JsonRpcProvider;
   setAddresses: () => void;
+  signer?: JsonRpcSigner;
 }
 
 export default function NavBar(params: Params): JSX.Element {
-  const { addresses, setAddresses, provider } = params;
+  const { addresses, setAddresses, signer, provider } = params;
 
   const [showConnectWalletModal, setShowConnectWalletModal] = useState<boolean>(false);
   const [callToAction, setCallToAction] = useState<string>(STRINGS.connectWallet.toUpperCase());
@@ -135,7 +136,7 @@ export default function NavBar(params: Params): JSX.Element {
               </div>
               <div className={css(styles.connectBtn)}>
                 <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary customStyle={css(styles.smallbtn)} />
-                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={() => setAddresses} provider={provider} />
+                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={() => setAddresses} provider={provider} signer={signer} />
               </div>
             </Nav>
           </div>

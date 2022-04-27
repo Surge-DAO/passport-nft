@@ -3,7 +3,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Contract, ethers } from 'ethers';
-import { JsonRpcProvider } from '@ethersproject/providers';
+import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import { abi, contractAddress } from './data/Contract';
 import AboutCollectionBanner from './components/AboutCollectionBanner';
 import AboutSurgeBanner from './components/AboutSurgeBanner';
@@ -13,46 +13,51 @@ import PartnersBanner from './components/PartnersBanner';
 import TeamMembersBanner from './components/TeamMembersBanner';
 import FAQBanner from './components/FAQBanner';
 import PerkBanner from './components/PerkBanner';
-import './App.scss';
 import CollapsableRoadmapBanner from './components/CollapsableRoadmapBanner';
 import MintForAFriendBanner from './components/MintForAFriendBanner';
+import './App.scss';
 
 library.add(fab, faBars, faTimes);
 
-export const AddressContext = React.createContext(['']);
-
 function App() {
   const [saleStatus, setSaleStatus] = useState<number>(0);
-  const [contract, setContract] = useState<Contract>();
-  const [provider, setProvider] = useState<JsonRpcProvider>();
   const [addresses, setAddresses] = useState<string[]>([]);
+  const [provider, setProvider] = useState<JsonRpcProvider>();
+  const [signer, setSigner] = useState<JsonRpcSigner>();
+  const [wallet, setWallet] = useState<string>('');
 
-  useEffect(() => {
-    getProvider();
+  const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+  setProvider(ethersProvider);
 
-    try {
-      const nftContract: Contract = new ethers.Contract(contractAddress, abi, provider);
-      setContract(contract);
-      getSaleStatus(nftContract);
-    } catch (e) {
-      console.error(e);
+  const providerSigner = provider?.getSigner();
+  setSigner(providerSigner);
+
+  function addWalletListener() {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", (accounts: any) => {
+        if (accounts.length > 0) {
+          setWallet(accounts[0]);
+        } else {
+          setWallet("");
+        }
+      })
     }
-  }, [provider, contract]);
-
-  async function getProvider() {
-    let provider;
-    await window.ethereum.enable().then(provider = new ethers.providers.Web3Provider(window.ethereum));
-    setProvider(provider);
   }
 
-  async function getSaleStatus(contract?: Contract) {
-    const status: number = contract && await contract.status();
+  useEffect(() => {
+    addWalletListener();
+    // getSaleStatus();
+  }, []);
+
+  async function getSaleStatus() {
+    const contract = new ethers.Contract(contractAddress, abi, provider);
+    const status: number = await contract?.status();
     setSaleStatus(status);
   }
 
   return (
     <div className="App">
-      <InitialBanner addresses={addresses} provider={provider} saleStatus={saleStatus} setAddresses={() => setAddresses} />
+      <InitialBanner addresses={addresses} provider={provider} saleStatus={saleStatus} setAddresses={() => setAddresses} signer={signer} />
       <MintForAFriendBanner provider={provider} saleStatus={saleStatus} addresses={addresses} />
       <PartnersBanner />
       <AboutCollectionBanner />

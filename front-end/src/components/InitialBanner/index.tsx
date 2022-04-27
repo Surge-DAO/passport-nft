@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import { JsonRpcProvider } from '@ethersproject/providers';
+import { JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers';
 import MainButton from '../MainButton';
 import Navbar from '../Navbar';
 import MintingModal from '../MintingModal';
@@ -57,11 +57,12 @@ interface Params {
   addresses: string[];
   saleStatus: number;
   setAddresses: () => void;
+  signer?: JsonRpcSigner;
   provider?: JsonRpcProvider;
 }
 
 export default function InitialComponent(params: Params): JSX.Element {
-  const { addresses, provider, saleStatus, setAddresses } = params;
+  const { addresses, provider, saleStatus, setAddresses, signer } = params;
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState<boolean>(false);
@@ -70,7 +71,7 @@ export default function InitialComponent(params: Params): JSX.Element {
 
   return (
     <div className={css(styles.banner)}>
-      <Navbar provider={provider} addresses={addresses} setAddresses={() => setAddresses} />
+      <Navbar provider={provider} addresses={addresses} setAddresses={() => setAddresses} signer={signer} />
       <h1 className={css(styles.title)}>{STRINGS.surgePassportNFT}</h1>
       <PassportBanner />
       <div className={css(styles.bannerFooter)}>
@@ -80,7 +81,7 @@ export default function InitialComponent(params: Params): JSX.Element {
         {[0, 1, 2].includes(saleStatus) &&
           <MainButton disable={!isMintOpen} callToAction={!isMintOpen ? STRINGS.presaleOpens : STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         }
-        <MintingModal show={showModal} hide={() => setShowModal(false)} provider={provider} saleStatus={saleStatus} address={addresses} />
+        <MintingModal show={showModal} hide={() => setShowModal(false)} provider={provider} saleStatus={saleStatus} address={addresses} signer={signer} />
         {saleStatus === 3 &&
           <p className={css(styles.soldOutCaption)} dangerouslySetInnerHTML={{ __html: STRINGS.soldOutCaption }} />
         }
