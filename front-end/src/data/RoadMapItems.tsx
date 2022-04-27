@@ -60,7 +60,7 @@ export const roadMapItems: CardParams[] = [
     title: 'Surge Future',
     stepNo: 7,
     description:
-      'With a north start of bringing more women into Web3, we have a few items on our roadmap',
+      'With a north star of bringing more women into Web3, we have a few items on our roadmap',
     additionalSteps: [
       'Continue providing perks to token-holders in Seasons',
       'Set up Surge IRL events around the world for community members (not just token-holders)',
