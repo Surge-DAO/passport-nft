@@ -94,4 +94,13 @@ button.crossmintButton-0-2-1 p {
   font-weight: bolder;
   text-transform: uppercase;
   font-size: 1rem;
+  border: '2px solid #f7c2ca';
+}
+
+button.crossmintButton-0-2-1:hover {
+  background: white;
+}
+
+button.crossmintButton-0-2-1:hover p {
+  color:#f86464;
 }
