@@ -30,11 +30,6 @@ const styles = StyleSheet.create({
       display: 'none'
     }
   },
-  showSm: {
-    '@media (max-width: 375px)': {
-      display: 'block'
-    }
-  },
   hideSocial: {
     '@media (max-width: 768px)': {
       display: 'none'
@@ -132,7 +127,7 @@ export default function NavBar(): JSX.Element {
               <div className={`${css(styles.paddingTop20)} ${css(styles.hideSocial)}`}>
                 <SocialMediaIcons />
               </div>
-              <div className={`${css(styles.connectBtn)} ${css(styles.showSm)}`}>
+              <div className={css(styles.connectBtn)}>
                 <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary customStyle={css(styles.smallbtn)} />
                 <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
               </div>
@@ -165,7 +160,7 @@ export default function NavBar(): JSX.Element {
             </Nav>
             <div className={css(styles.paddingTop30)}>
               <SocialMediaIcons />
-              <div className={`${css(styles.connectBtn)} ${css(styles.showSm)}`}>
+              <div className={css(styles.connectBtn)}>
                 <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary />
                 <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
               </div>
