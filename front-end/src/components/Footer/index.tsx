@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      marginTop: '8px'
     }
   },
   image: {
@@ -45,8 +46,21 @@ const styles = StyleSheet.create({
   socials: {
     display: 'flex',
     flexDirection: 'row',
-    padding: '24px'
-  }
+    padding: '24px',
+    '@media (max-width: 768px)': {
+      paddingTop: '8px'
+     }
+  },
+  policy: {
+    verticalAlign: 'middle',
+    marginTop: '24px',
+    padding: '24px',
+    '@media (max-width: 768px)': {
+      marginTop: '0',
+      fontSize: '16px',
+      paddingTop: '8px'
+     }
+  },
 });
 
 export default function Footer(): JSX.Element {
@@ -62,6 +76,9 @@ export default function Footer(): JSX.Element {
           onClick={() => window.open(STRINGS.surgeURL)}
         />
         <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
+      </div>      
+      <div className={css(styles.policy)}>
+        <a href ={STRINGS.termsUrl} target='_blank' rel='noreferrer'>{STRINGS.terms}</a>
       </div>
       <div className={css(styles.socials)}>
         {socialMedia.map((platform, idx) => {

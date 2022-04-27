@@ -73,6 +73,8 @@ export const STRINGS = {
   surgeURL: 'https://surgewomen.io',
   targetAudience: 'The Surge Passport NFT is the <strong>perfect gift</strong> for people who want to get into crypto, but don\'t know where to begin.',
   team: 'Team',
+  terms: 'Terms, Conditions and Disclosures',
+  termsUrl: 'https://www.surgewomen.io/terms-conditions',
   walletNotConnected: 'Your wallet was not connected succesfully',
   howDoI: 'how do I',
   wait: 'Wait, ',

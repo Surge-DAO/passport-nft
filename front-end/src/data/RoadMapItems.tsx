@@ -36,7 +36,7 @@ export const roadMapItems: CardParams[] = [
   {
     title: 'Minting Begins',
     stepNo: 4,
-    description: 'Minting will start on April 28th.',
+    description: 'Minting will start on April 28th for those on the presale list. Minting will open to the public on April 30th. Sign up for reminders <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform?edit2=2_ABaOnudgPdqoswMrXFA8sprW6TB_najCsj8Co2qCuDNUQ81Qj0Y6aOw-OICOWfSquQ" style="color: #f86464; font-weight: 600;" target=”_blank”> here </a>',
     additionalSteps: [],
     active: false
   },
@@ -44,7 +44,7 @@ export const roadMapItems: CardParams[] = [
     title: 'Partnerships Kick-off',
     stepNo: 5,
     description:
-      'Immediately after minting, token-holders can start to claim their perks. We have set up a Perks Dashboard where users redeem perks and make the most out of their Passport!',
+      'Immediately after minting, token-holders can start to claim their perks. We have set up a <a href="https://perks.surgewomen.io/" style="color: #f86464; font-weight: 600;" target=”_blank”> Perks Dashboard </a> where users redeem perks and make the most out of their Passport!',
     additionalSteps: [],
     active: false
   },
@@ -60,7 +60,7 @@ export const roadMapItems: CardParams[] = [
     title: 'Surge Future',
     stepNo: 7,
     description:
-      'With a north start of bringing more women into Web3, we have a few items on our roadmap',
+      'With a north star of bringing more women into Web3, we have a few items on our roadmap',
     additionalSteps: [
       'Continue providing perks to token-holders in Seasons',
       'Set up Surge IRL events around the world for community members (not just token-holders)',
