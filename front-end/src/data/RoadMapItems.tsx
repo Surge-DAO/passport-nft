@@ -36,7 +36,7 @@ export const roadMapItems: CardParams[] = [
   {
     title: 'Minting Begins',
     stepNo: 4,
-    description: 'Minting will start on April 28th.',
+    description: 'Minting will start on April 28th for those on the presale list. Minting will open to the public on April 30th. Sign up for reminders <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform?edit2=2_ABaOnudgPdqoswMrXFA8sprW6TB_najCsj8Co2qCuDNUQ81Qj0Y6aOw-OICOWfSquQ" style="color: #f86464; font-weight: 600;" target=”_blank”> here </a>',
     additionalSteps: [],
     active: false
   },
