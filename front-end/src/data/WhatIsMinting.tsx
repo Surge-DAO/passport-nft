@@ -15,7 +15,7 @@ export interface WhatIsMinting {
     },
     {
       title: '<span style="font-weight: bold;">Enough amount</span>',
-      description: 'Check your wallet has 0.08 ETH (<a href="https://www.surgewomen.io/learn-about-web3/what-is-ethereum" target=”_blank”>Ethereum cryptocurrency</a>) to mint, or “purchase” the NFT.',
+      description: 'Check your wallet has 0.08 ETH (<a href="https://www.surgewomen.io/learn-about-web3/what-is-ethereum" target=”_blank”>Ethereum cryptocurrency</a>) per NFT you’d like to mint or “purchase”, plus an additional amount for gas fees (what are gas fees article) .... see section below',
       buttonTitle: 'Step-by-step guide to purchasing ETH',
       buttonURL: 'https://www.surgewomen.io/learn-about-web3/how-to-purchase-cryptocurrency'
     },

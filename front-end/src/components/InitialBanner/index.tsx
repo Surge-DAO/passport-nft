@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     fontWeight: 400
   },
   mint: {
-    marginLeft: '8px'
+    marginLeft: '8px',
+    color: themeVariables.primaryColor
   }
 });
 
