@@ -178,6 +178,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
           <h4>{STRINGS.mintPassport}</h4>
         </Modal.Title>
       </Modal.Header>
+
       <Modal.Body className={css(styles.wrapper)}>
         <p className={css(styles.boldText)}>{STRINGS.howManyPassport}</p>
         <p className={css(styles.smallText)}>{STRINGS.nftPrice}</p>
@@ -187,7 +188,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
           <Operator text='+' action={increaseMint} />
         </div>
         <Container>
-          <Row xs={1}>
+          <Row>
             <Col>
               <p className={css(styles.bottomPadding)}>{STRINGS.mintETH}</p>
               <MainButton disable={saleStatus === 0 || !address.length || mintStatus.wait} callToAction={`Mint ${mintNumber} NFT${mintNumber > 1 ? 's' : ''} with ETH`} primary action={mintHandler} />
