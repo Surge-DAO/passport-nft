@@ -1,3 +1,4 @@
+/* eslint-disable new-parens */
 import allowlistAddresses from '../data/allowlists.json';
 import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
@@ -10,7 +11,7 @@ export default new class Allowlist {
       const leafNodes = allowlistAddresses.map(addr => keccak256(addr));
 
       this.merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true });
-    }
+    } 
 
     return this.merkleTree;
   }

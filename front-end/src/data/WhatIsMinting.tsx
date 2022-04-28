@@ -40,6 +40,6 @@ export interface WhatIsMinting {
       title: '<span style="font-weight: bold;">Still Can’t Mint?</span>',
       description: `You might be trying to mint during the ‘presale’ mint period without a presale spot. Sign up for public sale reminders <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform?edit2=2_ABaOnudgPdqoswMrXFA8sprW6TB_najCsj8Co2qCuDNUQ81Qj0Y6aOw-OICOWfSquQ" style="color: #f86464; font-weight: 600;" target=”_blank”>here</a>, or reach out to a Surge moderator on  <a href="https://discord.com/invite/m3BWTHDMdD" style="color: #f86464; font-weight: 600;" target=”_blank”> Discord</a>  to help trouble-shoot.`,
       buttonTitle: 'Sign up for public sale reminders',
-      buttonURL: 'https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform?edit2=2_ABaOnudgPdqoswMrXFA8sprW6TB_najCsj8Co2qCuDNUQ81Qj0Y6aOw-OICOWfSquQ'
+      buttonURL: 'https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform'
     },
   ];
