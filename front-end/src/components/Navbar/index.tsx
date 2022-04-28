@@ -147,36 +147,6 @@ export default function NavBar(params: Params): JSX.Element {
             <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
           </div>
         </Navbar.Toggle>
-        {/* <Navbar.Offcanvas
-          id="offcanvasNavbar"
-          aria-labelledby="offcanvasNavbarLabel"
-          placement="end"
-          className={css(styles.navMobile)}
-        >
-          <Offcanvas.Header closeButton className={css(styles.closeBtn)}>
-            <Offcanvas.Title id="offcanvasNavbarLabel"></Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Nav className="justify-content-end flex-grow-1 pe-3">
-              {navBarItems.map((item, idx) => {
-                return (
-                  <Nav.Item key={idx}>
-                    <Nav.Link href={item.link} className={css(styles.navLinks)}>
-                      {item.name}
-                    </Nav.Link>
-                  </Nav.Item>
-                );
-              })}
-            </Nav>
-            <div className={css(styles.paddingTop30)}>
-              <SocialMediaIcons />
-              <div className={css(styles.connectBtn)}>
-                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary />
-                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
-              </div>
-            </div>
-          </Offcanvas.Body>
-        </Navbar.Offcanvas> */}
       </Container>
     </Navbar>
   );

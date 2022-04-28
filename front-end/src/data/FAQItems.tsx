@@ -10,10 +10,9 @@ export const faqItems: FAQParams[] = [
   },
   {
     question: 'What happens if I miss the mint date? Or it sells out?',
-    answer: `Don’t you worry! When the mint closes, it just means the generative algorithm won’t generate
-    new NFTs, but it doesn’t mean you can’t buy a Surge Passport.
+    answer: `Don’t you worry! When the mint closes, it just means the generative algorithm won’t generate new NFTs, but it doesn’t mean you can’t buy a Surge Passport.
 
-    You can always purchase one through secondary sales on <a href="https://opensea.io" style="color: #f86464;" target=”_blank”>OpenSea</a>.`
+    You can always purchase one through secondary sales on <a href="https://opensea.io/collection/surge-passport" style="color: #f86464;" target=”_blank”>OpenSea</a>.`
   },
   {
     question: 'What NFT platforms can I view my NFT on?',
