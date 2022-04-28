@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { STRINGS } from '../../strings';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
@@ -8,7 +7,6 @@ import Image from 'react-bootstrap/Image';
 import MainButton from '../MainButton';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Offcanvas from 'react-bootstrap/Offcanvas';
 import SocialMediaIcons from './SocialMediaIcons';
 import { navBarItems } from '../../data/NavBarItems';
 import ConnectWalletModal from '../ConnectWalletModal';
@@ -110,7 +108,7 @@ export default function NavBar(params: Params): JSX.Element {
   const [callToAction, setCallToAction] = useState<string>(STRINGS.connectWallet.toUpperCase());
 
   useEffect(() => {
-    addresses[0] ? setCallToAction(`Connected ${addresses[0].substring(0, 10)}..`) : setCallToAction('Connect Wallet');
+    addresses[0] ? setCallToAction(`${addresses[0].substring(0, 5)}..${addresses[0].substring(34, 39)}`) : setCallToAction('Connect Wallet');
   }, [addresses])
 
   return (
@@ -149,7 +147,7 @@ export default function NavBar(params: Params): JSX.Element {
             <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
           </div>
         </Navbar.Toggle>
-        <Navbar.Offcanvas
+        {/* <Navbar.Offcanvas
           id="offcanvasNavbar"
           aria-labelledby="offcanvasNavbarLabel"
           placement="end"
@@ -178,7 +176,7 @@ export default function NavBar(params: Params): JSX.Element {
               </div>
             </div>
           </Offcanvas.Body>
-        </Navbar.Offcanvas>
+        </Navbar.Offcanvas> */}
       </Container>
     </Navbar>
   );

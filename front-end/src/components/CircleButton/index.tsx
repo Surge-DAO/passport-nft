@@ -27,14 +27,16 @@ const styles = StyleSheet.create({
 });
 
 interface CircleParams {
-  img: string;
+  img?: string;
   link: string;
+  imgLink?: string;
+  style?: string;
 }
 
 export default function CircleButton(params: CircleParams): JSX.Element {
   return (
-    <a href={params.link} target="_blank" rel="noreferrer" className={css(styles.circle)}>
-      <img className={css(styles.img)} src={require(`../../images/${params.img}.svg`).default} alt="social-icons" />
+    <a href={params.link} target="_blank" rel="noreferrer" className={`${css(styles.circle)} ${params.style}`}>
+      <img className={css(styles.img)} src={params.img ? require(`../../images/${params.img}.svg`).default : params.imgLink} alt="social-icons" />
     </a>
   );
 }

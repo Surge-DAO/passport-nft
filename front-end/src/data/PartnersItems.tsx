@@ -66,9 +66,24 @@ export const Partners: PartnersParams[] = [
   //   link: 'https://www.evewealth.com/',
   //   name: 'Eve Wealth'
   // },
+  {
+    logo: 'assets/images/partners/filecoin.png',
+    link: 'https://filecoin.io/',
+    name: 'Filecoin'
+  },
+  {
+    logo: 'assets/images/partners/Blockworks.png',
+    link: 'https://blockworks.co/',
+    name: 'Blockworks'
+  },
+  {
+    logo: 'assets/images/partners/Hedera.png',
+    link: 'https://hedera.com/',
+    name: 'Hedera'
+  }
   // {
-  //   logo: 'assets/images/partners/filecoin.png',
-  //   link: 'https://filecoin.io/',
-  //   name: 'Filecoin'
+  //   logo: 'assets/images/partners/eve-wealth.jpeg',
+  //   link: 'https://www.evewealth.com/',
+  //   name: 'Eve Wealth'
   // }
 ];

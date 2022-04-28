@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     ':hover': {
       fontWeight: 'bold'
     }
+  },
+  gray: {
+    color: 'dark-gray'
   }
 })
 
@@ -46,12 +49,12 @@ export default function WhatIsMintingModal(params: WhatIsMintingParams): JSX.Ele
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          <h4>{STRINGS.whatIsMinting}</h4>
+          <h4>{STRINGS.howToMint}</h4>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>
         <p>{STRINGS.mintingMeans}</p>
-        <h5>{STRINGS.howToMint}</h5>
+        <h5>{STRINGS.stepByStep}</h5>
         {whatIsMinting.map((item, id) => {
           return (
             <div key={id}>
