@@ -125,7 +125,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
 
   async function presaleMintHandler() {
     const price = await window.contract.price();
-    console.log({ price });
 
     try {
       setError(false);

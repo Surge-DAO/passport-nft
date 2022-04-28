@@ -64,13 +64,11 @@ const styles = StyleSheet.create({
   },
   flexColumn: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    margin: 'auto'
   },
   smallFont: {
     fontSize: '13px'
-  },
-  mainBtn: {
-    backgroundColor: themeVariables.primaryColor
   }
 });
 
@@ -86,16 +84,16 @@ export default function Footer(): JSX.Element {
           alt="logo"
           onClick={() => window.open(STRINGS.surgeURL)}
         />
-        <div className={css(styles.flexColumn)}>
-          <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
-          <a href={STRINGS.termsUrl} target="_blank" rel="noreferrer" className={css(styles.smallFont)}>{STRINGS.terms}</a>
-        </div>
+      </div>
+      <div className={css(styles.flexColumn)}>
+        <p className={css(styles.tagline)}>{STRINGS.securingWomen}</p>
+        <a href={STRINGS.termsUrl} target="_blank" rel="noreferrer" className={css(styles.smallFont)}>{STRINGS.terms}</a>
       </div>
       <div className={css(styles.socials)}>
         {socialMedia.map((platform, idx) => {
           return <CircleButton link={platform.link} key={idx} img={platform.name} />;
         })}
-        <CircleButton style={css(styles.mainBtn)} link="https://opensea.io/collection/surge-passport" imgLink="https://uploads-ssl.webflow.com/6233b4e039fbe3281ef62943/623d7512d384c3dde3f42333_opensea-white.svg" />
+        <CircleButton opensea link={STRINGS.openSeaCollectionDomain} imgLink="https://uploads-ssl.webflow.com/6233b4e039fbe3281ef62943/623d7512d384c3dde3f42333_opensea-white.svg" />
       </div>
     </div>
   );
