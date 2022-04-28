@@ -32,7 +32,10 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     paddingBottom: '3%',
-    fontSize: '15px'
+    fontSize: '15px',
+    '@media (max-width: 768px)': {
+      fontSize: '13px'
+    }
   },
   alert: {
     marginTop: '20px',
@@ -184,7 +187,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
           <Operator text='+' action={increaseMint} />
         </div>
         <Container>
-          <Row>
+          <Row xs={1}>
             <Col>
               <p className={css(styles.bottomPadding)}>{STRINGS.mintETH}</p>
               <MainButton disable={saleStatus === 0 || !address.length || mintStatus.wait} callToAction={`Mint ${mintNumber} NFT${mintNumber > 1 ? 's' : ''} with ETH`} primary action={mintHandler} />
@@ -196,7 +199,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
                 collectionDescription={STRINGS.surgeCollectionDescription}
                 collectionPhoto="https://res.cloudinary.com/dacofvu8m/image/upload/v1650844376/Surge/surge-willow_flffp2.png"
                 clientId={process.env.REACT_APP_CROSSMINT_CLIENT_ID || ''}
-                environment="staging"
+                environment="production"
                 mintConfig={{
                   price: "0.08",
                   type: "erc-721",
