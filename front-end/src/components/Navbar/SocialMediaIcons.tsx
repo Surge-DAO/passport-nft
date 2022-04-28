@@ -3,6 +3,7 @@ import { StyleSheet, css } from 'aphrodite';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { socialMedia } from '../../data/surgePlatforms';
 import themeVariables from '../../themeVariables.module.scss';
+import openSeaBlackLogo from '../../images/open-sea-black.png';
 
 const styles = StyleSheet.create({
   flex: {
@@ -22,6 +23,12 @@ const styles = StyleSheet.create({
     ':hover': {
       color: themeVariables.secondaryColor
     }
+  },
+  openSea: {
+    width: '19px',
+    ':hover': {
+      width: '23px'
+    }
   }
 });
 
@@ -37,6 +44,11 @@ export default function SocialMediaIcons(): JSX.Element {
           </li>
         );
       })}
+      <li className={css(styles.icon)}>
+        <a href="https://opensea.io/collection/surge-passport">
+          <img src={openSeaBlackLogo} alt="OpenSea" className={css(styles.openSea)}/>
+        </a>
+      </li>
     </ul>
   );
 }

@@ -44,7 +44,7 @@ export const roadMapItems: CardParams[] = [
     title: 'Partnerships Kick-off',
     stepNo: 5,
     description:
-      'Immediately after minting, token-holders can start to claim their perks. We have set up a <a href="https://perks.surgewomen.io/" style="color: #f86464; font-weight: 600;" target=”_blank”> Perks Dashboard </a> where users redeem perks and make the most out of their Passport!',
+      'Immediately after minting, token-holders can start to claim their perks. We have set up a <a href="https://perks.surgewomen.io/" style="color: #f86464; font-weight: 600;" target=”_blank”> Perks Dashboard</a> where users redeem perks and make the most out of their Passport!',
     additionalSteps: [],
     active: false
   },
@@ -52,7 +52,7 @@ export const roadMapItems: CardParams[] = [
     title: 'Future Drops',
     stepNo: 6,
     description:
-      'The Surge team will continue to add perks for holders as time goes by. HODLing pays off 😛 and we’ll be working in Seasons. We\'ll be releasing batches of new perks and partnerships every couple of months 😉 .',
+      'The Surge team will continue to add perks for holders as time goes by. HODLing pays off 😛 and we’ll be working in Seasons. We\'ll be releasing batches of new perks and partnerships every couple of months.',
     additionalSteps: [],
     active: false
   },
@@ -60,13 +60,13 @@ export const roadMapItems: CardParams[] = [
     title: 'Surge Future',
     stepNo: 7,
     description:
-      'With a north star of bringing more women into Web3, we have a few items on our roadmap',
+      'With a North Star of bringing more women into Web3, we have a few items on our roadmap',
     additionalSteps: [
-      'Continue providing perks to token-holders in Seasons',
-      'Set up Surge IRL events around the world for community members (not just token-holders)',
-      'Gamifying, innovating, and increasing our educational content both sync and asynchronously',
-      'Focus more on research to increase the value we can unlock for women in the space',
-      'Boosting our software products to make it even easier for women to come into Web3'
+      'Continue providing perks to token - holders in Seasons.',
+      'Set up Surge IRL events around the world for community members(not just token- holders).',
+      'Gamify, innovate, and expand our educational content. - not sure what it means sync and async and not sure many others will know.',
+      'Focus more on research to increase the value we can unlock for women in the space.',
+      'Boost our software products to make it even easier for women to come into Web3.'
     ],
     lastLine: 'Along with the innovative ideas our community keeps bringing along - stay tuned for more!',
     active: false

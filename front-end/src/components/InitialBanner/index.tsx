@@ -67,8 +67,6 @@ export default function InitialComponent(params: Params): JSX.Element {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState<boolean>(false);
 
-  const isMintOpen = saleStatus && [1, 2].includes(saleStatus);
-
   return (
     <div className={css(styles.banner)}>
       <Navbar addresses={addresses} setAddresses={setAddresses} />
@@ -79,7 +77,7 @@ export default function InitialComponent(params: Params): JSX.Element {
           <MainButton primary callToAction={STRINGS.checkOutCollection} link={STRINGS.openSeaCollectionDomain} />
         }
         {[0, 1, 2].includes(saleStatus) &&
-          <MainButton disable={!isMintOpen || !addresses.length} callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
+          <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         }
         <MintingModal show={showModal} hide={() => setShowModal(false)} saleStatus={saleStatus} address={addresses} />
         {saleStatus === 3 &&

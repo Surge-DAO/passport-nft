@@ -1,8 +1,8 @@
 export const STRINGS = {
   about: 'About',
-  aboutDescription: `6 months ago, a group of women came together and decided to work on balancing gender inequality within crypto.
+  aboutDescription: `Six months ago, a group of women came together and decided to work on balancing gender inequality within crypto.
 
-  Today, the Surge Passport is your golden ticket to Web3. It is designed strategically to serve both as a point of entry and an accelerator to your Web3 development. And a beautiful art collection piece of course!
+  Today, the Surge Passport is your golden ticket to Web3. It is designed strategically to serve both as a point of entry and an accelerator to your Web3 development. And the art is BEAUTIFUL, of course!
 
   With the Passport, you get access to educational courses, scholarships, mentorships, discounts, digital tools, subscriptions, IRL experiences… <strong>and this is just the beginning.</strong>
   `,
@@ -12,20 +12,20 @@ export const STRINGS = {
 
   To do so, we operate as creators of original educational content, curators of existing media, facilitators of Web3 careers for community members, and partners to mission-aligned Web3 platforms.
 
-  Surge’s ultimate goal is to tie together an enhanced ecosystem of compensated opportunities for women in Web3, by working with other mission-aligned organizations..
+  Surge’s ultimate goal is to tie together an enhanced ecosystem of compensated opportunities for women in Web3, by working with other mission-aligned organizations.
   `,
   checkOutCollection: 'Check out the collection',
   clickToMint: 'Click to Mint',
   connectedAccount: 'Connected account: ',
   connectWallet: 'Connect Wallet',
   connectWalletToMint: 'Connect wallet to mint',
-  crossmintDisclaimer: 'Incurs a 4.5% fee and you will only be able to mint 1 at a time. Then, you can export your NFT to a crypto wallet (for free) and claim perks.',
+  crossmintDisclaimer: 'Incurs a 4.5% fee and you will only be able to mint 1 at a time. Then, you can export your NFT to a crypto wallet (for free) and claim perks!',
   createAWallet: 'Don\'t have a one? Create a Metamask wallet',
   dontHaveAWallet: 'Don\'t have a wallet? Create one here',
   ethMint: 'Mint with ETH',
   errorBadAddress: 'Your transaction did not go through. This could be either because the address you added is not a real one, you or your friend have already minted 5, or you don\'t have enough funds.',
   findYourTxn: 'You can find your transaction on Etherscan here',
-  finishedAndMintingFriend: 'Already minting yours? Gift to a friend 🎁',
+  finishedAndMintingFriend: 'Already minted yours? Gift to a friend 🎁',
   frequentlyAskedQuestions: 'Frequently Asked Questions',
   friendETHAdress: 'Your friend\'s ETH address',
   faq: 'FAQ',
@@ -41,7 +41,7 @@ export const STRINGS = {
   mintActive: 'mint',
   mint1NFT: 'Mint 1 NFT for your friend',
   mint1ForFriend: 'Mint 1 NFT directly to your friend\'s address!',
-  mintETH: 'Connect your crypto wallet to mint up to 5 NFTs with ETH (less gass than  minting 1 at a time). You\'ll immediately have access to claim all perks!',
+  mintETH: 'Connect your wallet to mint up to 5 NFTs with ETH at the same time (and save up on gas). You\'ll immediately have access to claim all perks!',
   mintForAFriend: 'Mint and airdrop a Surge Passport to a friend! 🎁',
   mintingSuspense: 'Minting taking place',
   mintWait: 'Minting happening right now. Will let you know once the transaction goes through.',
@@ -54,7 +54,7 @@ export const STRINGS = {
   openSeaCollectionDomain: 'https://opensea.io/collection/surge-passport',
   ourPartners: 'Our Partners',
   passportPerks: 'Passport Perks',
-  passportPerksDescription: 'Here are some of the amazing goodies you get when owning a Surge NFT',
+  passportPerksDescription: 'Here are some of the amazing goodies you get when you own the Surge Passport NFT',
   perks: 'Perks',
   presaleOpens: 'Presale mint opens April 28th',
   presaleNotOpen: 'Presale is not open.',
@@ -68,6 +68,7 @@ export const STRINGS = {
   seePerks: 'SEE PERKS',
   soldOut: 'Collection is sold out, but you can still buy an NFT on OpenSea.',
   soldOutCaption: 'The Surge Passport NFT collection is sold out, but you can still purchase through <a href={STRINGS.openSeaCollectionDomain}>OpenSea</a>.',
+  stepByStep: 'Step by step',
   surgeCollectionDescription: 'Each Surge woman is of two worlds: pixel and pen, URL and IRL. Through a bundle of ecosystem perks, the Surge Passport is a golden ticket into Web3. Each feature of the art, though hand-sketched, has been layered algorithmically to form a whole. The Surge Passport collection represents our belief that beautiful things have a human touch.',
   surgePassportNFT: 'Surge Passport NFT',
   surgeURL: 'https://surgewomen.io',
