@@ -10,10 +10,9 @@ export const faqItems: FAQParams[] = [
   },
   {
     question: 'What happens if I miss the mint date? Or it sells out?',
-    answer: `Don’t you worry! When the mint closes, it just means the generative algorithm won’t generate
-    new NFTs, but it doesn’t mean you can’t buy a Surge Passport.
+    answer: `Don’t you worry! When the mint closes, it just means the generative algorithm won’t generate new NFTs, but it doesn’t mean you can’t buy a Surge Passport.
 
-    You can always purchase one through secondary sales on <a href="https://opensea.io" style="color: #f86464;" target=”_blank”>OpenSea</a>.`
+    You can always purchase one through secondary sales on <a href="https://opensea.io/collection/surge-passport" style="color: #f86464;" target=”_blank”>OpenSea</a>.`
   },
   {
     question: 'What NFT platforms can I view my NFT on?',
@@ -30,11 +29,11 @@ export const faqItems: FAQParams[] = [
     answer: `<ul> <li> Make sure you store your wallet’s seed phrase somewhere safe. We recommend this to be offline- pen and paper for the win here!</li>
     <li>Never reveal your seed phrase to anyone for any reason.</li>
     <li>Store your NFT in a wallet protected by a physical wallet, like Ledger, for an extra layer of protection.</li>
-    <li>Store your NFTs in a “bunker wallet”, meaning an address that you don’t use to interact with any sites and simply store your most valuable NFTs in.</li></ul>`
+    <li>Store your NFTs in a “bunker wallet” - an address that you don’t use to interact with any sites. This address should be used only to store your most valuable NFTs in.</li></ul>`
   },
   {
     question: 'What happens to my unclaimed perks when I sell my NFT?',
-    answer: `You lose them unfortunately. Only token holders have access to the Surge Passport perks.`
+    answer: `Unfortunately, you’ll lose the unclaimed perks. Only token-holders have access to the Surge Passport perks.`
   },
   {
     question: 'How do I claim my perks?',

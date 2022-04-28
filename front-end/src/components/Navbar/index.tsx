@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { STRINGS } from '../../strings';
 import { StyleSheet, css } from 'aphrodite';
 import themeVariables from '../../themeVariables.module.scss';
@@ -9,7 +7,6 @@ import Image from 'react-bootstrap/Image';
 import MainButton from '../MainButton';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Offcanvas from 'react-bootstrap/Offcanvas';
 import SocialMediaIcons from './SocialMediaIcons';
 import { navBarItems } from '../../data/NavBarItems';
 import ConnectWalletModal from '../ConnectWalletModal';
@@ -88,21 +85,31 @@ const styles = StyleSheet.create({
       marginTop: '12px'
     }
   },
+  navToggler: {
+    '@media (max-width: 575px)': {
+      border: 'none'
+    }
+  },
   containerOverride: {
     paddingRight: '40px',
     paddingLeft: '40px'
   }
 });
 
-export default function NavBar(): JSX.Element {
-  const [showConnectWalletModal, setShowConnectWalletModal] = useState<boolean>(false);
-  const [walletStatus, setWalletStatus] = useState<string>(STRINGS.connectWallet.toUpperCase());
+interface Params {
+  addresses: string[];
+  setAddresses: (addresses: string[]) => any;
+}
 
-  const { account } = useWeb3React();
+export default function NavBar(params: Params): JSX.Element {
+  const { addresses, setAddresses } = params;
+
+  const [showConnectWalletModal, setShowConnectWalletModal] = useState<boolean>(false);
+  const [callToAction, setCallToAction] = useState<string>(STRINGS.connectWallet.toUpperCase());
 
   useEffect(() => {
-    account ? setWalletStatus(`Connected ${account.substring(0, 10)}..`) : setWalletStatus(walletStatus);
-  }, [account, walletStatus])
+    addresses[0] ? setCallToAction(`${addresses[0].substring(0, 5)}..${addresses[0].substring(34, 39)}`) : setCallToAction('Connect Wallet');
+  }, [addresses])
 
   return (
     <Navbar bg="transparent" expand="sm" collapseOnSelect>
@@ -128,45 +135,18 @@ export default function NavBar(): JSX.Element {
                 <SocialMediaIcons />
               </div>
               <div className={css(styles.connectBtn)}>
-                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary customStyle={css(styles.smallbtn)} />
-                <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
+                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary customStyle={css(styles.smallbtn)} />
+                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
               </div>
             </Nav>
           </div>
         </Navbar.Collapse>
-        <Navbar.Toggle aria-controls="offcanvasNavbar">
-          <FontAwesomeIcon icon="bars"/>
+        <Navbar.Toggle aria-controls="offcanvasNavbar" className={css(styles.navToggler)}>
+          <div className={css(styles.connectBtn)}>
+            <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary customStyle={css(styles.smallbtn)} />
+            <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
+          </div>
         </Navbar.Toggle>
-        <Navbar.Offcanvas
-          id="offcanvasNavbar"
-          aria-labelledby="offcanvasNavbarLabel"
-          placement="end"
-          className={`${css(styles.navMobile)}`}
-        >
-          <Offcanvas.Header closeButton className={css(styles.closeBtn)}>
-            <Offcanvas.Title id="offcanvasNavbarLabel"></Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Nav className="justify-content-end flex-grow-1 pe-3">
-              {navBarItems.map((item, idx) => {
-                return (
-                  <Nav.Item key={idx}>
-                    <Nav.Link href={item.link} className={css(styles.navLinks)}>
-                      {item.name}
-                    </Nav.Link>
-                  </Nav.Item>
-                );
-              })}
-            </Nav>
-            <div className={css(styles.paddingTop30)}>
-              <SocialMediaIcons />
-              <div className={css(styles.connectBtn)}>
-                <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={walletStatus} primary />
-                <ConnectWalletModal show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setWalletStatus={setWalletStatus} />
-              </div>
-            </div>
-          </Offcanvas.Body>
-        </Navbar.Offcanvas>
       </Container>
     </Navbar>
   );

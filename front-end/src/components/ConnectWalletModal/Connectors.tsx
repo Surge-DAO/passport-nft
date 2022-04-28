@@ -3,7 +3,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 
 export const WalletConnect = new WalletConnectConnector({
-  rpc: `https://rinkeby.infura.io/v3/${process.env.INFURA_KEY}`,
+  rpc: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`,
   bridge: "https://bridge.walletconnect.org",
   supportedChainIds: [1, 3, 4, 5, 42]
 });
@@ -13,7 +13,7 @@ export const Injected = new InjectedConnector({
 });
 
 export const CoinbaseWallet = new WalletLinkConnector({
-  url: `https://rinkeby.infura.io/v3/${process.env.INFURA_KEY}`,
+  url: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`,
   appName: "Surge Passport NFT",
-  supportedChainIds: [1, 3, 4, 5, 42],
+  supportedChainIds: [1, 3, 4, 5, 42]
 });
