@@ -193,7 +193,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
                 collectionTitle={STRINGS.surgePassportNFT}
                 collectionDescription={STRINGS.surgeCollectionDescription}
                 collectionPhoto="https://res.cloudinary.com/dacofvu8m/image/upload/v1650844376/Surge/surge-willow_flffp2.png"
-                clientId={process.env.REACT_APP_CROSSMINT_CLIENT_ID || ''}
+                clientId="83b8ac08-313a-4615-8700-e8ec4658dc39"
                 mintConfig={{
                   price: "0.08",
                   type: "erc-721",
