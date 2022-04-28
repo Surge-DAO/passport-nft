@@ -57,10 +57,6 @@ const styles = StyleSheet.create({
       background: themeVariables.primaryColor,
       color: themeVariables.lightColor,
       fontWeight: 800
-    },
-    ':disabled': {
-      opacity: 0.65,
-      pointerEvents: 'none'
     }
   },
   smallText: {
@@ -177,8 +173,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
           <h4>{STRINGS.mintPassport}</h4>
         </Modal.Title>
       </Modal.Header>
-
-
       <Modal.Body className={css(styles.wrapper)}>
         <p className={css(styles.boldText)}>{STRINGS.howManyPassport}</p>
         <p className={css(styles.smallText)}>{STRINGS.nftPrice}</p>
@@ -199,14 +193,13 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
                 collectionTitle={STRINGS.surgePassportNFT}
                 collectionDescription={STRINGS.surgeCollectionDescription}
                 collectionPhoto="https://res.cloudinary.com/dacofvu8m/image/upload/v1650844376/Surge/surge-willow_flffp2.png"
-                clientId={process.env.REACT_APP_CROSSMINT_CLIENT_ID || ''}
+                clientId="83b8ac08-313a-4615-8700-e8ec4658dc39"
                 mintConfig={{
                   price: "0.08",
                   type: "erc-721",
                   _amountOfTokens: mintNumber
                 }}
                 className={css(styles.crossMintBtn)}
-                disabled={saleStatus !== 2}
               />
             </Col>
           </Row>
