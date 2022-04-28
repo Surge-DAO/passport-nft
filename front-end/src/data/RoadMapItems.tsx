@@ -63,8 +63,8 @@ export const roadMapItems: CardParams[] = [
       'With a North Star of bringing more women into Web3, we have a few items on our roadmap',
     additionalSteps: [
       'Continue providing perks to token - holders in Seasons.',
-      'Set up Surge IRL events around the world for community members(not just token- holders).',
-      'Gamify, innovate, and expand our educational content. - not sure what it means sync and async and not sure many others will know.',
+      'Set up Surge IRL events around the world for community members(not just token-holders).',
+      'Gamify, innovate, and expand our educational content.',
       'Focus more on research to increase the value we can unlock for women in the space.',
       'Boost our software products to make it even easier for women to come into Web3.'
     ],
