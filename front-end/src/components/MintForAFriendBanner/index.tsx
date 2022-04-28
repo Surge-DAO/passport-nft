@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
   btn: {
     width: '300px',
     marginTop: '13px'
+  },
+  smallFont: {
+    fontSize: '15px'
   }
 });
 
@@ -43,8 +46,8 @@ export default function MintForAFriendBanner(params: Params): JSX.Element {
     <div className={css(styles.friendMintBanner)}>
       <div className={css(styles.text)}>
         <h4 className={css(styles.title)}>{STRINGS.finishedAndMintingFriend}</h4>
-        <p dangerouslySetInnerHTML={{ __html: STRINGS.targetAudience }} />
-        <p>{STRINGS.helpOnboard}</p>
+        <p className={css(styles.smallFont)} dangerouslySetInnerHTML={{ __html: STRINGS.targetAudience }} />
+        <p className={css(styles.smallFont)}>{STRINGS.helpOnboard}</p>
       </div>
       <div className={css(styles.btn)}>
         <MainButton disable={!addresses.length} fullWidth callToAction={STRINGS.giftPassport} action={() => setShowModal(true)} />

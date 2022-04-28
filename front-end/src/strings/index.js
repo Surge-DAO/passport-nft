@@ -77,7 +77,7 @@ export const STRINGS = {
   terms: 'Terms, Conditions and Disclosures',
   termsUrl: 'https://www.surgewomen.io/terms-conditions',
   walletNotConnected: 'Your wallet was not connected succesfully',
-  howDoI: 'how do I',
+  howDoI: 'how do I ',
   wait: 'Wait, ',
   whatIsMinting: 'What is minting?',
   whoops: 'Whoops!'

@@ -155,7 +155,7 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
           {!error && (
             <>
               <br />
-              <Alert.Link href={`https://rinkeby.etherscan.io/tx/${transactionHash}`}>{STRINGS.findYourTxn}</Alert.Link>
+              <Alert.Link href={`https://etherscan.io/tx/${transactionHash}`}>{STRINGS.findYourTxn}</Alert.Link>
             </>
           )}
         </Alert>

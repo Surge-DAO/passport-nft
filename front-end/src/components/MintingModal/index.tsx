@@ -32,7 +32,10 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     paddingBottom: '3%',
-    fontSize: '15px'
+    fontSize: '15px',
+    '@media (max-width: 768px)': {
+      fontSize: '13px'
+    }
   },
   alert: {
     marginTop: '20px',
@@ -125,7 +128,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
 
   async function presaleMintHandler() {
     const price = await window.contract.price();
-    console.log({ price });
 
     try {
       setError(false);
@@ -176,6 +178,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
           <h4>{STRINGS.mintPassport}</h4>
         </Modal.Title>
       </Modal.Header>
+
       <Modal.Body className={css(styles.wrapper)}>
         <p className={css(styles.boldText)}>{STRINGS.howManyPassport}</p>
         <p className={css(styles.smallText)}>{STRINGS.nftPrice}</p>
@@ -197,7 +200,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
                 collectionDescription={STRINGS.surgeCollectionDescription}
                 collectionPhoto="https://res.cloudinary.com/dacofvu8m/image/upload/v1650844376/Surge/surge-willow_flffp2.png"
                 clientId={process.env.REACT_APP_CROSSMINT_CLIENT_ID || ''}
-                environment="staging"
+                environment="production"
                 mintConfig={{
                   price: "0.08",
                   type: "erc-721",
