@@ -140,7 +140,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
       await presaleMintTransaction.wait();
       setMintStatus({ wait: false, message: `${STRINGS.mintSuccess} ${presaleMintTransaction.hash}` });
     } catch (e: any) {
-      console.log({ e });
       setMintStatus({ wait: false, message: errorHandler(e) });
       setError(true);
       setShowAlert(true);
@@ -179,6 +178,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
         </Modal.Title>
       </Modal.Header>
 
+
       <Modal.Body className={css(styles.wrapper)}>
         <p className={css(styles.boldText)}>{STRINGS.howManyPassport}</p>
         <p className={css(styles.smallText)}>{STRINGS.nftPrice}</p>
@@ -200,7 +200,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
                 collectionDescription={STRINGS.surgeCollectionDescription}
                 collectionPhoto="https://res.cloudinary.com/dacofvu8m/image/upload/v1650844376/Surge/surge-willow_flffp2.png"
                 clientId={process.env.REACT_APP_CROSSMINT_CLIENT_ID || ''}
-                environment="production"
                 mintConfig={{
                   price: "0.08",
                   type: "erc-721",
@@ -223,7 +222,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
           {!error && (
             <>
               <br />
-              <Alert.Link href={`https://rinkeby.etherscan.io/tx/${transactionHash}`}>{STRINGS.findYourTxn}</Alert.Link>
+              <Alert.Link href={`https://etherscan.io/tx/${transactionHash}`}>{STRINGS.findYourTxn}</Alert.Link>
             </>
           )}
         </Alert>
