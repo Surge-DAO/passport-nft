@@ -57,10 +57,6 @@ const styles = StyleSheet.create({
       background: themeVariables.primaryColor,
       color: themeVariables.lightColor,
       fontWeight: 800
-    },
-    ':disabled': {
-      opacity: 0.65,
-      pointerEvents: 'none'
     }
   },
   smallText: {
@@ -177,8 +173,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
           <h4>{STRINGS.mintPassport}</h4>
         </Modal.Title>
       </Modal.Header>
-
-
       <Modal.Body className={css(styles.wrapper)}>
         <p className={css(styles.boldText)}>{STRINGS.howManyPassport}</p>
         <p className={css(styles.smallText)}>{STRINGS.nftPrice}</p>
@@ -206,7 +200,6 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
                   _amountOfTokens: mintNumber
                 }}
                 className={css(styles.crossMintBtn)}
-                disabled={saleStatus !== 2}
               />
             </Col>
           </Row>

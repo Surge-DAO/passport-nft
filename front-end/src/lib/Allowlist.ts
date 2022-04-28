@@ -11,7 +11,7 @@ export default new class Allowlist {
       const leafNodes = allowlistAddresses.map(addr => keccak256(addr));
 
       this.merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true });
-    } 
+    }
 
     return this.merkleTree;
   }
