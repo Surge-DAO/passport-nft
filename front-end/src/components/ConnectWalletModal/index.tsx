@@ -1,13 +1,12 @@
 import { useWeb3React } from '@web3-react/core';
 import { StyleSheet, css } from 'aphrodite'
 import { Alert, Modal } from 'react-bootstrap';
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { CoinbaseWallet, WalletConnect } from './Connectors';
+import { WalletLinkConnector } from '@web3-react/walletlink-connector';
+import { CoinbaseWallet } from './Connectors';
 import MainButton from '../MainButton';
 import coinbaseLogo from '../../images/walletLogos/coinbase.png';
 import surgeLogo from '../../images/Logo.png';
 import metamaskLogo from '../../images/walletLogos/metamask.png';
-import walletConnectLogo from '../../images/walletLogos/walletConnect.png';
 import { STRINGS } from '../../strings';
 import { useState } from 'react';
 
@@ -47,24 +46,52 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
 
   const { activate, deactivate } = useWeb3React();
 
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  // async function walletConnect() {
+  //   try {
+  //     const provider = new WalletConnectProvider({
+  //       rpc: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`,
+  //       infuraId: process.env.REACT_APP_INFURA_PUBLIC_ID
+  //     });
 
-  async function walletConnect() {
+  //     if (provider && window.ethereum){
+  //       activate(WalletConnect);
+  //       await provider.enable();
+  //       window.ethereum.request({ method: 'eth_requestAccounts' }).then((response: any) => {
+  //         const accounts: string[] = response as string[];
+  //         setAddresses(accounts);
+  //       });
+  //     } else {
+  //       setShowAlert(true);
+  //     }
+  //   } catch (e: any) {
+  //     console.error(STRINGS.walletNotConnected, e);
+  //   }
+  // }
+
+  async function coinbaseWallet() {
     try {
-      const provider = new WalletConnectProvider({
-        rpc: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`,
-        infuraId: process.env.REACT_APP_INFURA_PUBLIC_ID
+      const provider = new WalletLinkConnector({
+        url: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`,
+        appName: "Surge Passport NFT",
+        supportedChainIds: [1, 3, 4, 5, 42]
       });
 
-      if (provider) activate(WalletConnect);
-      await provider.enable();
+      if (provider && window.ethereum) {
+        activate(CoinbaseWallet);
+        window.ethereum.request({ method: 'eth_requestAccounts' }).then((response: any) => {
+          const accounts: string[] = response as string[];
+          setAddresses(accounts);
+        });
+      } else {
+        setShowAlert(true);
+      }
     } catch (e: any) {
       console.error(STRINGS.walletNotConnected, e);
     }
   }
 
   async function metamaskConnect() {
-    if (isSafari) {
+    if (!window.ethereum) {
       setShowAlert(true);
     } else {
       await window.provider?.send('eth_requestAccounts', []);
@@ -107,8 +134,8 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
         </p>
         </Alert>
         <MainButton action={() => metamaskConnect()} callToAction="Metamask" img={metamaskLogo} customStyle={css(styles.button)} />
-        <MainButton action={() => walletConnect()} callToAction="Wallet Connect" img={walletConnectLogo} customStyle={css(styles.button)} />
-        <MainButton action={() => activate(CoinbaseWallet)} callToAction="Coinbase" img={coinbaseLogo} customStyle={css(styles.button)} />
+        {/* <MainButton action={() => walletConnect()} callToAction="Wallet Connect" img={walletConnectLogo} customStyle={css(styles.button)} /> */}
+        <MainButton action={() => coinbaseWallet()} callToAction="Coinbase" img={coinbaseLogo} customStyle={css(styles.button)} />
         <MainButton link="https://www.surgewomen.io/learn-about-web3/open-a-wallet-101-for-visual-learners" img={surgeLogo} callToAction={STRINGS.dontHaveAWallet} customStyle={`${css(styles.button)} ${css(styles.createWalletBtn)}`} />
         <br />
         {!!addresses.length && <MainButton primary action={logOut} callToAction={STRINGS.logOut} />}

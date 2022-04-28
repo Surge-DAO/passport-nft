@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
   },
   smallFont: {
     fontSize: '15px'
+  },
+  textAlign: {
+    textAlign: 'center'
   }
 });
 
@@ -51,6 +54,7 @@ export default function MintForAFriendBanner(params: Params): JSX.Element {
       </div>
       <div className={css(styles.btn)}>
         <MainButton disable={!addresses.length} fullWidth callToAction={STRINGS.giftPassport} action={() => setShowModal(true)} />
+        <p className={`${css(styles.smallFont)} ${css(styles.textAlign)}`}>After connecting your wallet 😉</p>
       </div>
       <MintingForAFriendModal show={showModal} hide={() => setShowModal(false)} saleStatus={saleStatus} addresses={addresses} />
     </div>
