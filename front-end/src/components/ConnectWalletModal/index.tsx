@@ -1,13 +1,17 @@
 import { useWeb3React } from '@web3-react/core';
 import { StyleSheet, css } from 'aphrodite'
-import { Modal } from 'react-bootstrap';
+import { Alert, Modal } from 'react-bootstrap';
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import { CoinbaseWallet, WalletConnect } from './Connectors';
+import MainButton from '../MainButton';
+import coinbaseLogo from '../../images/walletLogos/coinbase.png';
+import surgeLogo from '../../images/Logo.png';
 import metamaskLogo from '../../images/walletLogos/metamask.png';
 import walletConnectLogo from '../../images/walletLogos/walletConnect.png';
-import coinbaseLogo from '../../images/walletLogos/coinbase.png';
 import { STRINGS } from '../../strings';
-import MainButton from '../MainButton';
-import { CoinbaseWallet, Injected, WalletConnect } from './Connectors';
+import { useState } from 'react';
+
+declare let window: any;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -15,47 +19,63 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   button: {
-    marginBottom: '10px'
+    marginBottom: '10px',
+    maxWidth: '100%'
   },
   bottomMargin: {
     marginBottom: '30px'
   },
   boldFont: {
     fontWeight: 'bold'
+  },
+  createWalletBtn: {
+    fontWeight: 400
   }
 });
 
 interface Params {
+  addresses: string[];
   show: boolean;
   onHide: () => void;
-  setWalletStatus?: (c: string) => void;
+  setAddresses: (addresses: string[]) => any;
 }
 
 export default function ConnectWalletModal(params: Params): JSX.Element {
-  const { show, onHide } = params;
-  const { active, account, activate, deactivate } = useWeb3React();
+  const { addresses, show, onHide, setAddresses } = params;
+
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+
+  const { activate, deactivate } = useWeb3React();
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   async function walletConnect() {
     try {
       const provider = new WalletConnectProvider({
-        rpc: `https://rinkeby.infura.io/v3/${process.env.INFURA_PUBLIC_ID}`,
-        infuraId: process.env.INFURA_PUBLIC_ID,
-        qrcodeModalOptions: {
-          mobileLinks: [
-            "rainbow",
-            "metamask",
-            "argent",
-            "trust",
-            "imtoken",
-            "pillar"
-          ]
-        }
+        rpc: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_PUBLIC_ID}`,
+        infuraId: process.env.REACT_APP_INFURA_PUBLIC_ID
       });
+
       if (provider) activate(WalletConnect);
       await provider.enable();
     } catch (e: any) {
       console.error(STRINGS.walletNotConnected, e);
     }
+  }
+
+  async function metamaskConnect() {
+    if (isSafari) {
+      setShowAlert(true);
+    } else {
+      await window.provider?.send('eth_requestAccounts', []);
+      const address = await window.signer?.getAddress();
+      setAddresses([address]);
+    }
+  }
+
+  function logOut() {
+    deactivate();
+    setAddresses([]);
   }
 
   return (
@@ -71,14 +91,27 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>
-        {account && <p className={css(styles.button)}><span className={css(styles.boldFont)}>Connected address:</span> {account}</p>}
-        {/* {window.ethereum?.networkVersion !== "1" && alert('You are in the wrong network. Please change into mainnet.')} */}
+        {!!addresses.length && (
+          <p className={css(styles.button)}><span className={css(styles.boldFont)}>{STRINGS.connectedAccount} </span>
+            {addresses[0]}
+          </p>
+        )}
         <br />
-        <MainButton action={() => {activate(Injected)}} callToAction="Metamask" img={metamaskLogo} customStyle={css(styles.button)} />
+        <Alert variant="danger" show={showAlert}>
+          <Alert.Heading>
+            {STRINGS.browser}
+          </Alert.Heading>
+          <hr />
+          <p className="mb-0">
+            {STRINGS.browserNotSupported}
+        </p>
+        </Alert>
+        <MainButton action={() => metamaskConnect()} callToAction="Metamask" img={metamaskLogo} customStyle={css(styles.button)} />
         <MainButton action={() => walletConnect()} callToAction="Wallet Connect" img={walletConnectLogo} customStyle={css(styles.button)} />
         <MainButton action={() => activate(CoinbaseWallet)} callToAction="Coinbase" img={coinbaseLogo} customStyle={css(styles.button)} />
+        <MainButton link="https://www.surgewomen.io/learn-about-web3/open-a-wallet-101-for-visual-learners" img={surgeLogo} callToAction={STRINGS.dontHaveAWallet} customStyle={`${css(styles.button)} ${css(styles.createWalletBtn)}`} />
         <br />
-        {active && <MainButton primary action={deactivate} callToAction={STRINGS.logOut} />}
+        {!!addresses.length && <MainButton primary action={logOut} callToAction={STRINGS.logOut} />}
       </Modal.Body>
     </Modal>
   )

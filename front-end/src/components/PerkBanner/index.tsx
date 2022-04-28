@@ -36,18 +36,15 @@ const styles = StyleSheet.create({
 export default function PerkBanner(): JSX.Element {
   return (
     <div className={css(styles.wrapper)} id={STRINGS.perks}>
-
       <div className={css(styles.header)}>
         <h2 className={css(styles.header)}>{STRINGS.passportPerks}</h2>
         <p className={css(styles.description)}>{STRINGS.passportPerksDescription}</p>
       </div>
-
       <div className={css(styles.perkContainer)}>
-          {PerkBannerItems.map((perk, idx) => {
-            return <PerkCard perk={perk} key={idx} />;
-          })}
+        {PerkBannerItems.map((perk, idx) => {
+          return <PerkCard perk={perk} key={idx} />;
+        })}
       </div>
-
     </div>
   );
 }

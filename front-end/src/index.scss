@@ -84,8 +84,16 @@ h3 {
 .navbar-nav {
   margin-left: 20px;
 }
+
 .modal-content{
   border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+  h4 {
+    font-size: 20px;
+    line-height: 35px;
+  }
 }
 
 // Crossmint overrides
@@ -94,4 +102,14 @@ button.crossmintButton-0-2-1 p {
   font-weight: bolder;
   text-transform: uppercase;
   font-size: 1rem;
+  border: '2px solid #f7c2ca';
+  color:#f86464;
+}
+
+button.crossmintButton-0-2-1:hover {
+  background:#f86464;
+}
+
+button.crossmintButton-0-2-1:hover p {
+  color: white;
 }
