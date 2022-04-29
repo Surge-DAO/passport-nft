@@ -64,11 +64,15 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: 700
+  },
+  redText: {
+    color: themeVariables.primaryColor,
+    fontWeight: 'bold'
   }
 })
 
 interface MintingModalParams {
-  address: string[];
+  address: string;
   show: boolean;
   hide?: () => void;
   saleStatus: number;
@@ -128,7 +132,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
     try {
       setError(false);
       setMintStatus({ wait: true, message: STRINGS.mintWait });
-      const merkleProof = Allowlist.getProofForAddress(address[0]);
+      const merkleProof = Allowlist.getProofForAddress(address);
       const presaleMintTransaction = await window.contract.presaleMint(mintNumber, merkleProof, { value: price.mul(mintNumber) });
       setTransactionHash(presaleMintTransaction.hash);
       setShowAlert(true);
@@ -147,7 +151,7 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
 
     try {
       setError(false);
-      const nftTransaction = await window.contract.mint(address[0], mintNumber, { value: price.mul(mintNumber) });
+      const nftTransaction = await window.contract.mint(address, mintNumber, { value: price.mul(mintNumber) });
       setMintStatus({ wait: true, message: STRINGS.mintWait })
       setTransactionHash(nftTransaction.hash);
       setShowAlert(true);
@@ -184,10 +188,12 @@ export default function MintingModal(params: MintingModalParams): JSX.Element {
         <Container>
           <Row>
             <Col>
+              {!address && <p className={css(styles.redText)}>{STRINGS.connectWalletToContinue}</p>}
               <p className={css(styles.bottomPadding)}>{STRINGS.mintETH}</p>
-              <MainButton disable={saleStatus === 0 || !address.length || mintStatus.wait} callToAction={`Mint ${mintNumber} NFT${mintNumber > 1 ? 's' : ''} with ETH`} primary action={mintHandler} />
+              <MainButton disable={saleStatus === 0 || !address || mintStatus.wait} callToAction={`Mint ${mintNumber} NFT${mintNumber > 1 ? 's' : ''} with ETH`} primary action={mintHandler} />
             </Col>
             <Col>
+              {!address && <p className={css(styles.redText)}>{STRINGS.payWithCard}</p>}
               <p className={css(styles.bottomPadding)}>{saleStatus === 2 ? STRINGS.crossmintDisclaimer : STRINGS.publicSaleNotActive}</p>
               <CrossmintPayButton
                 collectionTitle={STRINGS.surgePassportNFT}

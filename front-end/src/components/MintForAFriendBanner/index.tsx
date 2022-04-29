@@ -37,11 +37,11 @@ const styles = StyleSheet.create({
 
 export interface Params {
   saleStatus: number;
-  addresses: string[];
+  address: string;
 }
 
 export default function MintForAFriendBanner(params: Params): JSX.Element {
-  const { addresses, saleStatus } = params;
+  const { address, saleStatus } = params;
 
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -53,10 +53,10 @@ export default function MintForAFriendBanner(params: Params): JSX.Element {
         <p className={css(styles.smallFont)}>{STRINGS.helpOnboard}</p>
       </div>
       <div className={css(styles.btn)}>
-        <MainButton disable={!addresses.length} fullWidth callToAction={STRINGS.giftPassport} action={() => setShowModal(true)} />
+        <MainButton disable={!address} fullWidth callToAction={STRINGS.giftPassport} action={() => setShowModal(true)} />
         <p className={`${css(styles.smallFont)} ${css(styles.textAlign)}`}>After connecting your wallet 😉</p>
       </div>
-      <MintingForAFriendModal show={showModal} hide={() => setShowModal(false)} saleStatus={saleStatus} addresses={addresses} />
+      <MintingForAFriendModal show={showModal} hide={() => setShowModal(false)} saleStatus={saleStatus} address={address} />
     </div>
   );
 }

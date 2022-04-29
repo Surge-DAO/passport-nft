@@ -1,14 +1,15 @@
+import { useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { StyleSheet, css } from 'aphrodite'
 import { Alert, Modal } from 'react-bootstrap';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { CoinbaseWallet } from './Connectors';
 import MainButton from '../MainButton';
+import { isMobileDevice } from '../../utils/helpers';
 import coinbaseLogo from '../../images/walletLogos/coinbase.png';
 import surgeLogo from '../../images/Logo.png';
 import metamaskLogo from '../../images/walletLogos/metamask.png';
 import { STRINGS } from '../../strings';
-import { useState } from 'react';
 
 declare let window: any;
 
@@ -33,14 +34,14 @@ const styles = StyleSheet.create({
 });
 
 interface Params {
-  addresses: string[];
+  address: string;
   show: boolean;
   onHide: () => void;
-  setAddresses: (addresses: string[]) => any;
+  setAddress: (address: string) => any;
 }
 
 export default function ConnectWalletModal(params: Params): JSX.Element {
-  const { addresses, show, onHide, setAddresses } = params;
+  const { address, show, onHide, setAddress } = params;
 
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
@@ -58,7 +59,7 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
   //       await provider.enable();
   //       window.ethereum.request({ method: 'eth_requestAccounts' }).then((response: any) => {
   //         const accounts: string[] = response as string[];
-  //         setAddresses(accounts);
+  //         setAddress(accounts);
   //       });
   //     } else {
   //       setShowAlert(true);
@@ -79,8 +80,8 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
       if (provider && window.ethereum) {
         activate(CoinbaseWallet);
         window.ethereum.request({ method: 'eth_requestAccounts' }).then((response: any) => {
-          const accounts: string[] = response as string[];
-          setAddresses(accounts);
+        const accounts: string[] = response as string[];
+        setAddress(accounts[0]);
         });
       } else {
         setShowAlert(true);
@@ -95,14 +96,14 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
       setShowAlert(true);
     } else {
       await window.provider?.send('eth_requestAccounts', []);
-      const address = await window.signer?.getAddress();
-      setAddresses([address]);
+        const address = await window.signer?.getAddress();
+        setAddress(address);
     }
   }
 
   function logOut() {
+    setAddress('');
     deactivate();
-    setAddresses([]);
   }
 
   return (
@@ -118,9 +119,9 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={css(styles.wrapper)}>
-        {!!addresses.length && (
+        {!!address && (
           <p className={css(styles.button)}><span className={css(styles.boldFont)}>{STRINGS.connectedAccount} </span>
-            {addresses[0]}
+            {address}
           </p>
         )}
         <br />
@@ -136,9 +137,9 @@ export default function ConnectWalletModal(params: Params): JSX.Element {
         <MainButton action={() => metamaskConnect()} callToAction="Metamask" img={metamaskLogo} customStyle={css(styles.button)} />
         {/* <MainButton action={() => walletConnect()} callToAction="Wallet Connect" img={walletConnectLogo} customStyle={css(styles.button)} /> */}
         <MainButton action={() => coinbaseWallet()} callToAction="Coinbase" img={coinbaseLogo} customStyle={css(styles.button)} />
-        <MainButton link="https://www.surgewomen.io/learn-about-web3/open-a-wallet-101-for-visual-learners" img={surgeLogo} callToAction={STRINGS.dontHaveAWallet} customStyle={`${css(styles.button)} ${css(styles.createWalletBtn)}`} />
+        <MainButton link={STRINGS.visualLearnersDomain} img={surgeLogo} callToAction={STRINGS.dontHaveAWallet} customStyle={`${css(styles.button)} ${css(styles.createWalletBtn)}`} />
         <br />
-        {!!addresses.length && <MainButton primary action={logOut} callToAction={STRINGS.logOut} />}
+        {!!address && <MainButton primary action={logOut} callToAction={STRINGS.logOut} />}
       </Modal.Body>
     </Modal>
   )
