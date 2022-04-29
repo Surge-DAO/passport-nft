@@ -5,7 +5,6 @@ import { Alert, Modal } from 'react-bootstrap';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { CoinbaseWallet } from './Connectors';
 import MainButton from '../MainButton';
-import { isMobileDevice } from '../../utils/helpers';
 import coinbaseLogo from '../../images/walletLogos/coinbase.png';
 import surgeLogo from '../../images/Logo.png';
 import metamaskLogo from '../../images/walletLogos/metamask.png';
