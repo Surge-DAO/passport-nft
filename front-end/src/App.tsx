@@ -22,7 +22,7 @@ library.add(fab, faBars, faTimes);
 
 function App() {
   const [saleStatus, setSaleStatus] = useState<number>(0);
-  const [addresses, setAddresses] = useState<string[]>([]);
+  const [address, setAddress] = useState<string>('');
 
   useEffect(() => {
     if (window.ethereum) {
@@ -33,18 +33,18 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!!addresses.length) {
+    if (!!address) {
       getSaleStatus();
     }
-  }, [addresses])
+  }, [address])
 
   function addWalletListener() {
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', (accounts: any) => {
         if (!!accounts.length) {
-          setAddresses(accounts);
+          setAddress(accounts);
         } else {
-          setAddresses([]);
+          setAddress('');
         }
       })
     }
@@ -70,8 +70,8 @@ function App() {
 
   return (
     <div className="App">
-      <InitialBanner addresses={addresses} saleStatus={saleStatus} setAddresses={setAddresses} />
-      <MintForAFriendBanner saleStatus={saleStatus} addresses={addresses} />
+      <InitialBanner address={address} saleStatus={saleStatus} setAddress={setAddress} />
+      <MintForAFriendBanner saleStatus={saleStatus} address={address} />
       <PartnersBanner />
       <AboutCollectionBanner />
       <PerkBanner />

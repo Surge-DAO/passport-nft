@@ -1,3 +1,7 @@
+export function isMobileDevice() {
+  return 'ontouchstart' in window || 'onmsgesturechange' in window;
+}
+
 export function errorHandler(e: any): string {
   if (e.error) {
     switch (e.error.code) {

@@ -20,7 +20,6 @@ jobs:
   build:
     name: Build, tag, and push image to Amazon ECR
     runs-on: ubuntu-latest
-    needs: test
     permissions:
       id-token: write
       contents: read
@@ -66,7 +65,7 @@ jobs:
   deploy-to-test:
     name: Deploy to App Runner (Test)
     runs-on: ubuntu-latest
-    needs: [test, build]
+    needs: [build]
 
     steps:
       - name: Configure AWS credentials
@@ -109,7 +108,7 @@ jobs:
   deploy-to-prod:
     name: Deploy to App Runner (Prod)
     runs-on: ubuntu-latest
-    needs: [test, build, deploy-to-test]
+    needs: [build]
     if: github.ref == 'refs/heads/main'
 
     steps:
