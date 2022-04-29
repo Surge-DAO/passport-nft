@@ -56,20 +56,20 @@ const styles = StyleSheet.create({
 });
 
 interface Params {
-  addresses: string[];
+  address: string;
   saleStatus: number;
-  setAddresses: (addresses: string[]) => any;
+  setAddress: (address: string) => any;
 }
 
 export default function InitialComponent(params: Params): JSX.Element {
-  const { addresses, saleStatus, setAddresses } = params;
+  const { address, saleStatus, setAddress } = params;
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showWhatIsMintingModal, setShowWhatIsMintingModal] = useState<boolean>(false);
 
   return (
     <div className={css(styles.banner)}>
-      <Navbar addresses={addresses} setAddresses={setAddresses} />
+      <Navbar address={address} setAddress={setAddress} />
       <h1 className={css(styles.title)}>{STRINGS.surgePassportNFT}</h1>
       <PassportBanner />
       <div className={css(styles.bannerFooter)}>
@@ -79,7 +79,7 @@ export default function InitialComponent(params: Params): JSX.Element {
         {[0, 1, 2].includes(saleStatus) &&
           <MainButton callToAction={STRINGS.clickToMint} primary action={() => setShowModal(!showModal)} />
         }
-        <MintingModal show={showModal} hide={() => setShowModal(false)} saleStatus={saleStatus} address={addresses} />
+        <MintingModal show={showModal} hide={() => setShowModal(false)} saleStatus={saleStatus} address={address} />
         {saleStatus === 3 &&
           <p className={css(styles.soldOutCaption)} dangerouslySetInnerHTML={{ __html: STRINGS.soldOutCaption }} />
         }

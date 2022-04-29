@@ -97,19 +97,19 @@ const styles = StyleSheet.create({
 });
 
 interface Params {
-  addresses: string[];
-  setAddresses: (addresses: string[]) => any;
+  address: string;
+  setAddress: (address: string) => any;
 }
 
 export default function NavBar(params: Params): JSX.Element {
-  const { addresses, setAddresses } = params;
+  const { address, setAddress } = params;
 
   const [showConnectWalletModal, setShowConnectWalletModal] = useState<boolean>(false);
   const [callToAction, setCallToAction] = useState<string>(STRINGS.connectWallet.toUpperCase());
 
   useEffect(() => {
-    addresses[0] ? setCallToAction(`${addresses[0].substring(0, 5)}..${addresses[0].substring(34, 39)}`) : setCallToAction('Connect Wallet');
-  }, [addresses])
+    address ? setCallToAction(`${address.substring(0, 5)}..${address.substring(34, 39)}`) : setCallToAction(STRINGS.connectWallet);
+  }, [address])
 
   return (
     <Navbar bg="transparent" expand="sm" collapseOnSelect>
@@ -136,7 +136,7 @@ export default function NavBar(params: Params): JSX.Element {
               </div>
               <div className={css(styles.connectBtn)}>
                 <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary customStyle={css(styles.smallbtn)} />
-                <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
+                <ConnectWalletModal address={address} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddress={setAddress} />
               </div>
             </Nav>
           </div>
@@ -144,7 +144,7 @@ export default function NavBar(params: Params): JSX.Element {
         <Navbar.Toggle aria-controls="offcanvasNavbar" className={css(styles.navToggler)}>
           <div className={css(styles.connectBtn)}>
             <MainButton action={() => setShowConnectWalletModal(!showConnectWalletModal)} callToAction={callToAction} primary customStyle={css(styles.smallbtn)} />
-            <ConnectWalletModal addresses={addresses} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddresses={setAddresses} />
+            <ConnectWalletModal address={address} show={showConnectWalletModal} onHide={() => setShowConnectWalletModal(false)} setAddress={setAddress} />
           </div>
         </Navbar.Toggle>
       </Container>

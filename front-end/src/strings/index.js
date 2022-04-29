@@ -16,6 +16,7 @@ export const STRINGS = {
   `,
   checkOutCollection: 'Check out the collection',
   clickToMint: 'Click to Mint',
+  connectWalletToContinue: 'Connect your wallet to continue',
   connectedAccount: 'Connected account: ',
   connectWallet: 'Connect Wallet',
   connectWalletToMint: 'Connect wallet to mint',
@@ -55,6 +56,7 @@ export const STRINGS = {
   ourPartners: 'Our Partners',
   passportPerks: 'Passport Perks',
   passportPerksDescription: 'Here are some of the amazing goodies you get when you own the Surge Passport NFT',
+  payWithCard: 'Or pay with credit card',
   perks: 'Perks',
   presaleOpens: 'Presale mint opens April 28th',
   presaleNotOpen: 'Presale is not open.',
@@ -80,5 +82,6 @@ export const STRINGS = {
   howDoI: 'how do I ',
   wait: 'Wait, ',
   whatIsMinting: 'What is minting?',
-  whoops: 'Whoops!'
+  whoops: 'Whoops!',
+  visualLearnersDomain: 'https://www.surgewomen.io/learn-about-web3/open-a-wallet-101-for-visual-learners'
 };

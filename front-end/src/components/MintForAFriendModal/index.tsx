@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 })
 
 interface MintingModalParams {
-  addresses: string[];
+  address: string;
   hide?: () => void;
   saleStatus: number;
   show: boolean;
@@ -71,7 +71,7 @@ interface MintingStatus {
 }
 
 export default function MintingForAFriendModal(params: MintingModalParams): JSX.Element {
-  const { addresses, show, hide, saleStatus } = params;
+  const { address, show, hide, saleStatus } = params;
 
   const initialMintStatus: MintingStatus = {
     wait: false,
@@ -94,7 +94,7 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
   }
 
   async function publicSaleMintHandler() {
-    if (!!addresses.length) {
+    if (!!address) {
       const price = await window.contract.price();
 
       try {
@@ -138,8 +138,8 @@ export default function MintingForAFriendModal(params: MintingModalParams): JSX.
           </InputGroup>
           {[0, 1].includes(saleStatus) && <p className={css(styles.errorText)}>{STRINGS.onlyAvailablePublicSale}</p>}
           <br />
-          {saleStatus === 2 && !addresses.length && <p className={css(styles.font15)}>{STRINGS.connectWalletToMint}</p>}
-          <MainButton disable={saleStatus !== 2 || !addresses.length || mintStatus.wait} callToAction={STRINGS.mint1NFT} primary action={mintHandler} />
+          {saleStatus === 2 && !address && <p className={css(styles.font15)}>{STRINGS.connectWalletToMint}</p>}
+          <MainButton disable={saleStatus !== 2 || !address || mintStatus.wait} callToAction={STRINGS.mint1NFT} primary action={mintHandler} />
           {saleStatus !== 2 && (
             <MainButton customStyle={css(styles.marginLeft)} callToAction="Remind me of public sale" link="https://docs.google.com/forms/d/e/1FAIpQLSdVOZcCuzRgV58xWh0Mw83i6f9HTuC38iPSuRWe_SljwTQq-Q/viewform?edit2=2_ABaOnudgPdqoswMrXFA8sprW6TB_najCsj8Co2qCuDNUQ81Qj0Y6aOw-OICOWfSquQ" />
           )}
